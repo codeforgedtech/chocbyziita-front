@@ -1,0 +1,6 @@
+.custom-container {
+  width: 80%; /* Täck 80% av skärmens bredd */
+  max-width: 1400px; /* Begränsa den maximala bredden om du vill */
+  margin: 0 auto; /* Centrera den på sidan */
+}
+

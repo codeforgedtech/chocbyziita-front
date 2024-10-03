@@ -1,0 +1,53 @@
+/* SingleProduct.css */
+
+/* Grundläggande justeringar */
+.product-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Stora produktbilder */
+.single-product-image {
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Anpassning av formulärelement */
+.quantity-selector .form-control {
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.stock-status {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+/* Ingredienser */
+.ingredients {
+  font-size: 1rem;
+  color: #555;
+}
+
+.price {
+  font-size: 1.5rem;
+  color: #007bff;
+}
+
+/* Tillagt i kundvagn-knapp */
+.btn-primary {
+  font-size: 1.1rem;
+  padding: 10px;
+}
+
+
+  
