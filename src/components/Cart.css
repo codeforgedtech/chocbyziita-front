@@ -1,0 +1,47 @@
+.custom-container {
+  max-width: 80%; /* Håller innehållet inom 80% av bredden på större skärmar */
+  margin: 0 auto;
+}
+
+.cart-item img {
+  max-width: 100px; /* Begränsar produktbildens storlek */
+  height: auto;
+}
+
+.cart-item .quantity-control input {
+  width: 60px;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+
+

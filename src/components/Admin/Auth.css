@@ -1,0 +1,9 @@
+.auth-form {
+    width: 100%;
+    max-width: 600px;
+}
+.auth-form .btn-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
