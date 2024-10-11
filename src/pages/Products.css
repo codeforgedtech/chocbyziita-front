@@ -1,43 +1,117 @@
-.custom-container {
-  max-width: 90%; /* Håller innehållet inom 90% av bredden */
-  margin: 0 auto;
-}
-
+/* Custom styles for the product card and controls */
 .product-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  transition: box-shadow 0.2s ease-in-out;
+  background-color: white;
 }
 
 .product-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Ger en svag hover-effekt för att förbättra interaktionen */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.product-image {
-  max-height: 300px;
-  object-fit: cover; /* Gör att bilden anpassar sig bättre till sin container */
+.card-img-top {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  object-fit: cover;
 }
 
-.card-title {
+.custom-btn {
+  background-color: #f8e6d1;
+  border: none;
+  color: #6b4e34;
+  border-radius: 4px;
+  padding: 2px;
+  width: 200px;
+}
+
+.custom-btn:hover {
+  background-color: #e6d5bd;
+}
+
+.custom-input {
+  border: none;
+  box-shadow: none;
+}
+
+.btn-custom {
+  background-color: #f8e6d1;
+  color: #6b4e34;
+  border: 1px solid black;
+  margin-bottom: 10px;
+font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
+
+  /* Add the following properties to make the button smaller */
+  padding: 0.25rem 0.5rem; /* Adjust padding for a smaller button */
+  font-size: 0.875rem; /* Adjust font size to make it smaller */
+}
+
+.btn-custom:hover {
+  background-color: #e6d5bd;
+  border: 1px solid black;
+}
+
+.toast-body {
+  font-weight: bold;
+}
+
+/* Adjust input group for quantity control */
+.quantity-input .btn {
+
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-input .custom-input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+}
+
+.quantity-input {
+  gap: 8px;
+}
+
+/* Flexbox to align price and quantity controls */
+.d-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-text.fw-bold {
   font-size: 1.25rem;
-  font-weight: bold;
+  color: #6b4e34;
+}
+.small-quantity {
+  width: 120px;
+  background-color: white;
+  border: 1px solid black;
 }
 
-.price-text {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #007bff;
+.small-quantity .btn {
+  font-size: 0.75rem; /* Make button text smaller */
+  padding: 0.25rem 0.5rem; /* Reduce padding for buttons */
+background-color: white;
+}
+.small-quantity .btn :hover{
+  background-color: #e6d5bd;
+
 }
 
-.card-footer {
-  background-color: #f8f9fa; /* Lättare bakgrundsfärg för att avgränsa footern */
+.small-quantity .form-control {
+  font-size: 0.75rem; /* Make input text smaller */
+  padding: 0.25rem; /* Reduce padding for input */
+  width: 50px; /* Set a fixed width for input */    
+  text-align: center; /* Center align the text */
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
 
-.btn-primary:hover {
-  background-color: #0056b3;
-}
+
+
 

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './OrderConfirmation.css'; // För att inkludera anpassad CSS-styling
+import './OrderConfirmation.css';
 
 interface Product {
   name: string;
@@ -16,30 +17,60 @@ interface OrderData {
   city: string;
   postalCode: string;
   country: string;
+  orderId: number; // Se till att detta matchar datatypen i din databas
   phoneNumber: string;
   products: Product[];
-  totalAmount: number; // Exklusive moms, beräknad med moms nedan
+  totalAmount: number; // Exklusive moms
   shippingMethod: string;
-  shippingCost: number; // Exklusive moms, beräknad med moms nedan
+  shippingCost: number; // Exklusive moms
 }
 
 const TAX_RATE = 0.25; // Anta 25 % moms
 
 const OrderConfirmation: React.FC = () => {
   const location = useLocation();
-  const { orderData } = location.state as { orderData: OrderData }; // Hämta orderdata
+  const { orderData } = location.state as { orderData: OrderData };
 
-  // Kontrollera att orderData och dess värden är definierade
-  const totalAmount = orderData?.totalAmount ?? 0; // Fallback till 0 om totalAmount är undefined
-  const shippingCostWithTax = orderData.shippingCost; // Fraktkostnad inklusive moms
+  useEffect(() => {
+    console.log('Order Data:', orderData);
+    if (orderData?.orderId) {
+      const invoiceNumber = generateInvoiceNumber();
+      saveInvoiceNumber(invoiceNumber);
+    } else {
+      console.error('Order ID is undefined, cannot save invoice number.');
+    }
+  }, [orderData]);
 
+  const generateInvoiceNumber = () => {
+    const randomNum = Math.floor(100000 + Math.random() * 900000); // Genererar ett 6-siffrigt nummer
+    return `INV-${randomNum}`;
+  };
+
+  const saveInvoiceNumber = async (invoiceNumber: string) => {
+    if (!orderData.orderId) {
+      console.error('Order ID is undefined');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('orders')
+      .update({ invoice_number: invoiceNumber })
+      .eq('id', orderData.orderId); // Kontrollera att 'id' är rätt datatyp
+
+    if (error) {
+      console.error('Error updating invoice number:', error.message);
+    } else {
+      console.log('Invoice number saved successfully:', invoiceNumber);
+    }
+  };
+
+  // Räkna ut totalbeloppet med moms
   const calculateTotalWithTax = () => {
-    // Räkna ut totalbeloppet med moms för produkter och fraktkostnad
     const productsTotalWithTax = orderData.products.reduce((total, product) => {
       return total + product.price * (1 + TAX_RATE) * product.quantity; // Lägg till moms på varje produkt
     }, 0);
     
-    return productsTotalWithTax + shippingCostWithTax; // Totala summan inklusive moms
+    return productsTotalWithTax + orderData.shippingCost;
   };
 
   const totalWithTax = calculateTotalWithTax(); // Totalt belopp med moms
@@ -70,7 +101,7 @@ const OrderConfirmation: React.FC = () => {
       </div>
       <div className="d-flex justify-content-between font-weight-bold mb-2">
         <span>Fraktkostnad:</span>
-        <span>{shippingCostWithTax.toFixed(2)} SEK</span> {/* Fraktkostnad inklusive moms */}
+        <span>{orderData.shippingCost.toFixed(2)} SEK</span> {/* Fraktkostnad inklusive moms */}
       </div>
 
       <h2 className="mt-3 text-success">Totalt belopp: {totalWithTax.toFixed(2)} SEK</h2> {/* Totala summan för hela beställningen inklusive moms */}
@@ -89,6 +120,7 @@ const OrderConfirmation: React.FC = () => {
 };
 
 export default OrderConfirmation;
+
 
 
 

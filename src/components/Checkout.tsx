@@ -123,16 +123,16 @@ export default function Checkout() {
       toast.error('Du måste logga in för att genomföra en beställning.');
       return;
     }
-
+  
     setLoading(true);
     setError(null);
-
+  
     if (!userEmail) {
       toast.error('E-postadress saknas för användaren.');
       setLoading(false);
       return;
     }
-
+  
     const products = cartItems.map((item) => ({
       id: item.product.id,
       name: item.product.name,
@@ -140,11 +140,11 @@ export default function Checkout() {
       quantity: item.quantity,
       tax: item.product.tax,
     }));
-
+  
     const totalAmount = totalPrice + shippingCost;
-    const totalTax = calculateTotalTax();
     const grandTotal = parseFloat(calculateGrandTotal());
-
+  
+    // Update or insert user data
     const { error: userError } = await supabase
       .from('users')
       .upsert({
@@ -158,14 +158,15 @@ export default function Checkout() {
         country: formData.country,
         phone_number: formData.phoneNumber || '',
       }, { onConflict: 'id' });
-
+  
     if (userError) {
       setError(userError.message);
       setLoading(false);
       return;
     }
-
-    const { error: orderError } = await supabase
+  
+    // Insert order into database
+    const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .insert({
         user_id: userId,
@@ -175,16 +176,35 @@ export default function Checkout() {
         shipping_address: `${formData.address}, ${formData.city}, ${formData.postalCode}, ${formData.country}`,
         shipping_cost: shippingCost,
         status: 'pending',
-      });
-
+      })
+      .select(); // Use select to get the inserted data, including order ID
+  
     setLoading(false);
-
+  
     if (orderError) {
       setError(orderError.message);
     } else {
+      // Generate invoice number
+      const invoiceNumber = generateInvoiceNumber();
+  
+      // Save the invoice number in the database
+      const orderId = orderData[0].id;  // Assuming 'id' is returned from the inserted order
+      const { error: invoiceError } = await supabase
+        .from('orders')
+        .update({ invoice_number: invoiceNumber })
+        .eq('id', orderId);
+  
+      if (invoiceError) {
+        console.error('Error saving invoice number:', invoiceError.message);
+      } else {
+        console.log('Invoice number saved successfully:', invoiceNumber);
+      }
+  
+      // Navigate to order confirmation page
       navigate('/order-confirmation', {
         state: {
           orderData: {
+            orderId,
             firstName: formData.firstName,
             lastName: formData.lastName,
             address: formData.address,
@@ -193,15 +213,21 @@ export default function Checkout() {
             country: formData.country,
             phoneNumber: formData.phoneNumber,
             products,
-            grandTotal,
+            totalAmount,
             shippingMethod: formData.shippingMethod,
             shippingCost,
-            totalTax,
           },
         },
       });
+  
       clearCart();
     }
+  };
+  
+  // Helper function to generate invoice number
+  const generateInvoiceNumber = () => {
+    const randomNum = Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit number
+    return `INV-${randomNum}`;
   };
 
   return (
@@ -470,38 +496,3 @@ export default function Checkout() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

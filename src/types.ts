@@ -1,11 +1,13 @@
 export interface Product {
+  sku: string;
+  categories: string[];
 
   stock: number;
-  ingredients: any;
+  ingredients: string[];
   id: number;
   name: string;
   description: string;
   price: number;
   tax: number; 
-  image_url: string | null; // Definiera image_url som string eller null
+  image_url: string[]; // Definiera image_url som string eller null
 }

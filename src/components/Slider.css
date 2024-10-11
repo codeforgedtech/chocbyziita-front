@@ -1,0 +1,18 @@
+.slider-container {
+    width: 100%; /* Full bredd */
+    max-width: 800px; /* Maxbredd för slider */
+    margin: 20px auto; /* Centrerad med marginaler ovanför och under */
+    padding: 0 15px; /* Liten padding för att se snyggare ut */
+}
+
+.slick-slide img {
+    width: 100%; /* Bilderna ska fylla hela sliden */
+    height: 600px; /* Ställ in en fast höjd */
+    object-fit: cover; /* Bevara bildens proportioner och täck hela området */
+    border-radius: 10px; /* Rundade hörn för bilderna */
+}
+
+.slick-dots {
+    bottom: -30px; /* Justera positionen av navigeringsprickarna */
+}
+  

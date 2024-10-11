@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { Product } from '../types';
 import { useCart } from '../contexts/CartContext';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importera Bootstrap
-import './SingleProduct.css'; // Importera anpassad CSS
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap
+import './SingleProduct.css'; // Import custom CSS
 
 export default function SingleProduct() {
   const { id } = useParams<{ id: string }>();
@@ -12,7 +12,12 @@ export default function SingleProduct() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
   const { addToCart } = useCart();
+
+  // Define VAT percentage (25% in Sweden)
+  const VAT_RATE = 0.25;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -29,6 +34,7 @@ export default function SingleProduct() {
         }
 
         setProduct(data as Product);
+        setCurrentImage(data?.image_url[0] || ''); // Set first image as default current image
       } catch (error) {
         console.error('Error fetching product:', error);
         setError('Kunde inte hämta produktinformation');
@@ -48,35 +54,76 @@ export default function SingleProduct() {
       return;
     }
 
-    addToCart(product, quantity);
+    addToCart(product, quantity); // Only product and quantity
     alert(`${quantity} av ${product.name} har lagts till i kundvagnen!`);
+  };
+
+  const handleImageClick = (imageUrl: string) => {
+    setCurrentImage(imageUrl);
   };
 
   if (loading) return <p>Laddar produkt...</p>;
   if (error) return <p>{error}</p>;
   if (!product) return <p>Ingen produkt hittades.</p>;
 
+  // Calculate price including VAT
+  const priceWithVAT = product.price * (1 + VAT_RATE);
+
+  // Handle images
+  const imageUrls = product.image_url.length > 0 ? product.image_url : [];
+  const placeholderImage = 'https://via.placeholder.com/300';
+
   return (
-    <div className="container-fluid custom-container mt-5 p-4 border rounded bg-light shadow">
+    <div className="container custom-container mt-5 p-4 border rounded bg-light shadow">
       <div className="row">
-        <div className="col-md-6 d-flex justify-content-center">
-          <img 
-            src={product.image_url || 'https://via.placeholder.com/300'} 
-            alt={product.name} 
-            className="img-fluid rounded shadow-sm single-product-image" // Anpassad bildklass
+        <div className="col-md-6 d-flex flex-column align-items-center">
+          {/* Larger image */}
+          <img
+            src={currentImage || placeholderImage}
+            alt={product.name}
+            className="img-fluid rounded shadow-sm single-product-image mb-3"
+            style={{ maxHeight: '500px', objectFit: 'cover' }} // Ensure images fit within the area
           />
+
+          {/* Thumbnails */}
+          <div className="row g-2 justify-content-center">
+            {imageUrls.slice(0, 4).map((imageUrl, index) => (
+              <div className="col-3" key={index}>
+                <img
+                  src={imageUrl || placeholderImage}
+                  alt={`${product.name} bild ${index + 1}`}
+                  className={`img-fluid rounded shadow-sm smaller-image ${currentImage === imageUrl ? 'border border-primary' : ''}`}
+                  onClick={() => handleImageClick(imageUrl)}
+                  style={{ cursor: 'pointer', maxHeight: '100px', objectFit: 'cover' }} // Thumbnail styling
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = placeholderImage;
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+
         <div className="col-md-6">
           <h1 className="product-title mb-3">{product.name}</h1>
-          <p className="product-description text-muted">{product.description}</p>
-          <p className="price h3 text-primary">{product.price} SEK</p> {/* Pris i framträdande färg */}
+         
+          <p className="price h3 text-primary">{priceWithVAT.toFixed(2)} SEK inkl. moms</p>
           <p className="stock-status">
             Lager: <span className={`badge ${product.stock > 0 ? 'bg-success' : 'bg-danger'}`}>
               {product.stock > 0 ? `${product.stock} kvar` : 'Slut i lager'}
             </span>
           </p>
+          <p className="sku"><strong>SKU:</strong> {product.sku || 'Ingen SKU tillgänglig'}</p>
           <p className="ingredients"><strong>Ingredienser:</strong> {product.ingredients.join(', ')}</p>
-          
+          <p className="categories"><strong>Kategorier:</strong> {product.categories.join(', ')}</p>
+
+          {/* Additional Product Information */}
+          <div className="additional-info">
+            <h5>Mer information:</h5>
+            <p dangerouslySetInnerHTML={{ __html: product.description || 'Ingen ytterligare information tillgänglig.' }} />
+          </div>
+
           <div className="quantity-selector mb-4">
             <label htmlFor="quantity" className="form-label">Antal:</label>
             <div className="input-group">
@@ -107,6 +154,10 @@ export default function SingleProduct() {
     </div>
   );
 }
+
+
+
+
 
 
 
