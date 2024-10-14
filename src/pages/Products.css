@@ -1,4 +1,8 @@
 /* Custom styles for the product card and controls */
+.size {
+  max-width: 1200px;
+}
+
 .product-card {
   border-radius: 12px;
   transition: box-shadow 0.2s ease-in-out;
@@ -15,41 +19,24 @@
   object-fit: cover;
 }
 
-.custom-btn {
+.custom-btn, .btn-custom {
   background-color: #f8e6d1;
   border: none;
   color: #6b4e34;
-  border-radius: 4px;
-  padding: 2px;
-  width: 200px;
-}
-
-.custom-btn:hover {
-  background-color: #e6d5bd;
-}
-
-.custom-input {
-  border: none;
-  box-shadow: none;
-}
-
-.btn-custom {
-  background-color: #f8e6d1;
-  color: #6b4e34;
-  border: 1px solid black;
-  margin-bottom: 10px;
-font-weight: 600;
-  border-radius: 8px;
-  transition: background-color 0.2s ease-in-out;
-
-  /* Add the following properties to make the button smaller */
+  border-radius: 8px; /* Unified border radius */
   padding: 0.25rem 0.5rem; /* Adjust padding for a smaller button */
-  font-size: 0.875rem; /* Adjust font size to make it smaller */
+  font-size: 0.875rem; /* Adjust font size */
+  transition: background-color 0.2s ease-in-out;
+  margin-bottom: 10px; /* Bottom margin for spacing */
 }
 
-.btn-custom:hover {
+.custom-btn:hover, .btn-custom:hover {
   background-color: #e6d5bd;
-  border: 1px solid black;
+}
+
+.text-center {
+  margin-top: 20px;
+  color: #6b4e34;
 }
 
 .toast-body {
@@ -57,24 +44,38 @@ font-weight: 600;
 }
 
 /* Adjust input group for quantity control */
-.quantity-input .btn {
+.quantity-input {
+  display: flex; /* Ensure proper layout */
+  align-items: center; /* Center items vertically */
+ /* Space between buttons and input */
+}
 
-  width: 25px;
-  height: 25px;
+.quantity-input .btn {
+  width: 40px; /* Unified button width */
+  height: 40px; /* Unified button height */
   display: flex;
+  border: 1px solid black;
+ 
   justify-content: center;
   align-items: center;
 }
 
-.quantity-input .custom-input {
-  width: 50px;
-  text-align: center;
+.quantity-input .custom-input, .small-quantity .form-control {
+  width: 40px; /* Set a fixed width for input */
+  text-align: center; /* Center align the text */
   border: none;
   background-color: transparent;
 }
 
-.quantity-input {
-  gap: 8px;
+.small-quantity {
+  width: 120px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.card-text.fw-bold {
+  font-size: 1.25rem;
+  color: #6b4e34;
 }
 
 /* Flexbox to align price and quantity controls */
@@ -84,33 +85,24 @@ font-weight: 600;
   justify-content: space-between;
 }
 
-.card-text.fw-bold {
-  font-size: 1.25rem;
-  color: #6b4e34;
-}
-.small-quantity {
-  width: 120px;
-  background-color: white;
-  border: 1px solid black;
+/* Form control adjustments */
+.form-control {
+  width: 40px; /* Adjust width to fit nicely between buttons */
+  height: 40px; /* Ensure input height matches buttons */
+ border: 1px solid black;
+
+  font-size: 0.75rem; 
+  font-weight: 600;/* Make input text smaller */
+  text-align: center; /* Center the number in the input */
+ 
+  
+  margin-top: 0px;/* Ensure padding doesn't affect size */
 }
 
-.small-quantity .btn {
-  font-size: 0.75rem; /* Make button text smaller */
-  padding: 0.25rem 0.5rem; /* Reduce padding for buttons */
-background-color: white;
-}
-.small-quantity .btn :hover{
+/* Quantity control button hover effect */
+.small-quantity .btn:hover {
   background-color: #e6d5bd;
-
 }
-
-.small-quantity .form-control {
-  font-size: 0.75rem; /* Make input text smaller */
-  padding: 0.25rem; /* Reduce padding for input */
-  width: 50px; /* Set a fixed width for input */    
-  text-align: center; /* Center align the text */
-}
-
 
 
 

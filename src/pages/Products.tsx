@@ -7,12 +7,14 @@ import './Products.css'; // Custom CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
+
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -39,6 +41,10 @@ export default function Products() {
 
     fetchProducts();
   }, []);
+
+  // Load favorites from localStorage or API
+
+
 
   const calculatePriceWithTax = (price: number, taxRate: number) => {
     return (price * (1 + taxRate)).toFixed(2); 
@@ -67,14 +73,14 @@ export default function Products() {
   if (error) return <p className="error-text">{error}</p>;
 
   return (
-    <div className="container mt-5">
+    <div className="container-xl">
       <h1 className="text-center mb-5">Utvalda Produkter</h1>
       {products.length === 0 ? (
         <p className="text-center">Inga produkter tillgängliga just nu.</p>
       ) : (
-        <div className="row g-5"> {/* Ändrad till g-5 för mer mellanrum */}
+        <div className="row g-4">
           {products.map((product) => (
-            <div key={product.id} className="col-6"> {/* Kolumner för två kort per rad */}
+            <div key={product.id} className="col-4">
               <div className="card product-card shadow-sm h-100">
                 <Link to={`/product/${product.id}`} className="text-decoration-none text-dark position-relative">
                   <img
@@ -99,31 +105,40 @@ export default function Products() {
                   <p className="card-text fw-bold text-dark mb-0">
                     {calculatePriceWithTax(product.price, product.tax)} kr
                   </p>
-                  <div className="input-group quantity-input small-quantity">
-                    <button
-                      className="btn btn-outline btn-sm custom-btn"
-                      type="button"
-                      onClick={() => handleQuantityChange(product.id, -1)}
-                      disabled={quantities[product.id] <= 1 || product.stock === 0}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      className="form-control form-control-sm text-center custom-input"
-                      min="1"
-                      max={product.stock}
-                      value={quantities[product.id]}
-                      readOnly
-                    />
-                    <button
-                      className="btn btn-outline btn-sm custom-btn"
-                      type="button"
-                      onClick={() => handleQuantityChange(product.id, 1)}
-                      disabled={quantities[product.id] >= product.stock || product.stock === 0}
-                    >
-                      +
-                    </button>
+                  <div className="d-flex align-items-center">
+                  <div className="input-group quantity-input">
+  <button
+    className="btn btn-outline-primary"
+    type="button"
+    onClick={() => handleQuantityChange(product.id, -1)}
+    disabled={quantities[product.id] <= 1 || product.stock === 0}
+    style={{ borderTopLeftRadius: '0.25rem', borderBottomLeftRadius: '0.25rem' }} // Rounded left corners
+  >
+    <i className="fas fa-minus"></i> {/* Optional icon */}
+  </button>
+  
+  <input
+    type="number"
+    className="form-control text-center"
+    min="1"
+    max={product.stock}
+    value={quantities[product.id]}
+    readOnly
+    style={{ borderRadius: '0', textAlign: 'center' }} // Remove border radius to match buttons
+  />
+  
+  <button
+    className="btn btn-outline-primary"
+    type="button"
+    onClick={() => handleQuantityChange(product.id, 1)}
+    disabled={quantities[product.id] >= product.stock || product.stock === 0}
+    style={{ borderTopRightRadius: '0.25rem', borderBottomRightRadius: '0.25rem' }} // Rounded right corners
+  >
+    <i className="fas fa-plus"></i> {/* Optional icon */}
+  </button>
+</div>
+
+                   
                   </div>
                 </div>
                 <div className="d-flex justify-content-center mt-2">
@@ -161,6 +176,7 @@ export default function Products() {
     </div>
   );
 }
+
 
 
 

@@ -1,18 +1,27 @@
 .slider-container {
-    width: 100%; /* Full bredd */
-    max-width: 800px; /* Maxbredd för slider */
-    margin: 20px auto; /* Centrerad med marginaler ovanför och under */
-    padding: 0 15px; /* Liten padding för att se snyggare ut */
+    width: 1300px; /* Full bredd av viewport */
+    height: 400px; /* Full höjd av viewport */
+    margin: auto; /* Ta bort marginaler */
+    padding: 0; /* Ta bort padding */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+ 
 }
 
 .slick-slide img {
-    width: 100%; /* Bilderna ska fylla hela sliden */
-    height: 600px; /* Ställ in en fast höjd */
+    width: 100%; /* Bilderna ska fylla hela bredden */
+    height: auto; /* Bilderna ska fylla hela höjden */
     object-fit: cover; /* Bevara bildens proportioner och täck hela området */
-    border-radius: 10px; /* Rundade hörn för bilderna */
+    border: 1px black soild;
 }
 
 .slick-dots {
-    bottom: -30px; /* Justera positionen av navigeringsprickarna */
+    bottom: 20px; /* Justera positionen av navigeringsprickarna */
+}
+
+.slick-prev, .slick-next {
+    z-index: 1; /* Säkerställ att knapparna är synliga ovanpå bilderna */
+    color: white; /* Ge navigeringspilarna en synlig färg */
 }
   

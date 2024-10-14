@@ -3,8 +3,9 @@ import { useCart } from '../contexts/CartContext';
 import { supabase } from '../supabaseClient'; 
 import './Header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaRegUser } from "react-icons/fa";
 import logo from"../assets/Choc by Z.png"
-import { FaSearch , FaHeart } from "react-icons/fa";
+import { FaSearch , FaHeart, FaShoppingBag } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 
 export default function Header() {
@@ -68,13 +69,13 @@ export default function Header() {
                         </Link>
                     ) : (
                         <Link className="btn btn" to="/login">
-                           Logga in
+                           <FaRegUser />
                         </Link>
                     )}
 
                     {/* Search icon */}
                     <Link className="btn btn" to="/search">
-                    <FaSearch /> Sök
+                    <FaSearch /> 
                     </Link>
 
                     {/* Favorites (Heart) icon */}
@@ -84,7 +85,7 @@ export default function Header() {
 
                     {/* Cart icon */}
                     <Link className="btn btn position-relative" to="/cart">
-                        🛒
+                    <FaShoppingBag/>
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             {cartItems.reduce((total, item) => total + item.quantity, 0)}
                         </span>

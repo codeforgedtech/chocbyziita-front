@@ -9,12 +9,7 @@
   color: black;
 }
 
-.logo h1 {
-  font-size: 1.75rem;
-  font-weight: bold;
-  color: #6b4e34;
-  margin: 0;
-}
+
 
 .icons .badge {
   font-size: 0.75rem;
@@ -26,7 +21,7 @@
 
 /* Navbar styles */
 .navbar-nav .nav-link {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: #6b4e34;
   transition: color 0.2s ease-in-out;
 }
