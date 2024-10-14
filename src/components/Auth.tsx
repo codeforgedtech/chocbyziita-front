@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { AuthResponse } from '@supabase/supabase-js'; // Importera AuthResponse
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

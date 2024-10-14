@@ -35,7 +35,7 @@
   background-color: transparent;
 }
 
-.card-footer .btn {
+.card-footer {
   transition: background-color 0.3s ease;
 }
 

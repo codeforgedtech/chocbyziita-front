@@ -48,6 +48,11 @@
   font-size: 1.1rem;
   padding: 10px;
 }
-
+.smaller-image {
+  width: 300px; /* Gör bilden responsiv */
+  height: auto; /* Bevara bildens proportioner */
+  cursor: pointer; /* Ändra muspekaren till pekare */
+  max-height: 300px; /* Maximal höjd för mindre bilder */
+}
 
   

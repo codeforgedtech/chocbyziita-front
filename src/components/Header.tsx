@@ -3,6 +3,9 @@ import { useCart } from '../contexts/CartContext';
 import { supabase } from '../supabaseClient'; 
 import './Header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaRegUser } from "react-icons/fa";
+import logo from"../assets/Choc by Z.png"
+import { FaSearch , FaHeart, FaShoppingBag } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 
 export default function Header() {
@@ -14,14 +17,14 @@ export default function Header() {
             const { data: { session }, error } = await supabase.auth.getSession();
             if (error) {
                 console.error('Error fetching session:', error.message);
-                return; // Avbryt om det finns ett fel
+                return;
             }
 
             if (session) {
                 const user = session.user;
                 setUserEmail(user.email || null);
             } else {
-                setUserEmail(null); // Ingen användare inloggad
+                setUserEmail(null); 
             }
         };
 
@@ -33,63 +36,101 @@ export default function Header() {
         if (error) {
             console.error('Error logging out:', error.message);
         } else {
-            setUserEmail(null); // Rensa email efter utloggning
+            setUserEmail(null); 
             console.log('Användaren har loggats ut');
         }
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <div className="container">
-                <Link className="navbar-brand" to="/">
-                    <h1>Praline Shop</h1>
-                </Link>
+        <header>
+            {/* Top Bar with Phone and Icons */}
+            <div className="top-bar d-flex justify-content-between align-items-center py-2 px-4">
+                {/* Phone number on the left */}
+                <div className="phone-number">
+                    <span>+46 123 456 789</span>
+                </div>
 
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+                {/* Logo in the center */}
+                <div className="container d-flex flex-column align-items-center">
+        {/* Logotypen */}
+        <div className="logo text-center">
+            <Link className="navbar-brand" to="/">
+               <img src={logo} alt="logotype"/>
+            </Link>
+        </div>
+        </div>
 
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">Startsida</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/products">Produkter</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/about">Om</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/contact">Kontakt</Link>
-                        </li>
-                        <li className="nav-item">
-                            {userEmail ? (
-                                <Link className="nav-link" to="#" onClick={handleLogout}>Logga ut</Link> // Använd onClick för att logga ut
-                            ) : (
-                                <Link className="nav-link" to="/login">Logga in</Link>
-                            )}
-                        </li>
-                    </ul>
-
-                    <div className="d-flex">
-                        <Link className="btn btn-outline-primary" to="/cart">
-                            🛒 ({cartItems.reduce((total, item) => total + item.quantity, 0)})
+                {/* Icons (Login, Search, Favorites, Cart) on the right */}
+                <div className="icons d-flex align-items-center">
+                    {/* Login icon */}
+                    {userEmail ? (
+                        <Link className="btn btn" to="#" onClick={handleLogout}>
+                        Logga ut
                         </Link>
-                    </div>
+                    ) : (
+                        <Link className="btn btn" to="/login">
+                           <FaRegUser />
+                        </Link>
+                    )}
+
+                    {/* Search icon */}
+                    <Link className="btn btn" to="/search">
+                    <FaSearch /> 
+                    </Link>
+
+                    {/* Favorites (Heart) icon */}
+                    <Link className="btn btn" to="/favorites">
+                    <FaHeart />
+                    </Link>
+
+                    {/* Cart icon */}
+                    <Link className="btn btn position-relative" to="/cart">
+                    <FaShoppingBag/>
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {cartItems.reduce((total, item) => total + item.quantity, 0)}
+                        </span>
+                    </Link>
                 </div>
             </div>
-        </nav>
+
+            {/* Navigation Menu */}
+            <nav className="navbar navbar-expand-lg navbar-light">
+                <div className="container">
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul className="navbar-nav mb-2 mb-lg-0 text-center">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/">Hem</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/products">Produkter</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/about">Om</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/contact">Kontakt</Link>
+                </li>
+            </ul>
+        </div>
+    </div>
+            </nav>
+        </header>
     );
 }
+
+
 
 
 

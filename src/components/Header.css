@@ -1,37 +1,55 @@
-.header {
-    position: sticky; /* Fäster headern högst upp vid scroll */
-    top: 0;
-    z-index: 1000; /* Gör att headern ligger över andra element */
-  }
+/* Top bar styles */
+.top-bar {
+  background-color: white;
   
-  .header__logo h1 {
-    margin: 0; /* Ta bort standardmarginaler */
+}
+
+.phone-number {
+  font-size: 1rem;
+  color: black;
+}
+
+
+
+.icons .badge {
+  font-size: 0.75rem;
+  color: white;
+  background-color: lightskyblue;
+  padding: 0.25rem 0.5rem;
+  border-radius: 50%;
+}
+
+/* Navbar styles */
+.navbar-nav .nav-link {
+  font-size: 1.4rem;
+  color: #6b4e34;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #6b4e34;
+}
+
+.navbar-light .navbar-toggler {
+  border: none;
+  outline: none;
+}
+
+
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+  .phone-number {
+      font-size: 0.875rem;
   }
-  
-  .header__nav .nav-link {
-    font-weight: 500; /* Gör navigationslänkar lite mer framträdande */
+
+  .logo h1 {
+      font-size: 1.5rem;
   }
-  
-  .header__cart {
-    font-size: 1.5rem; /* Gör kundvagnsikonen större */
+
+  .icons .btn-link {
+      font-size: 1.25rem;
   }
-  .navbar-brand h1 {
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .navbar-nav .nav-link {
-    margin-right: 15px;
-    font-size: 1.1rem;
-  }
-  
-  .navbar-toggler {
-    border-color: transparent;
-  }
-  
-  .btn-outline-primary {
-    font-size: 1.1rem;
-  }
+}
 
   
