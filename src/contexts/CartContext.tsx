@@ -11,7 +11,7 @@ export interface CartContextType {
   addToCart: (product: Product, quantity: number) => void; 
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
-  clearCart: () => void;
+  clearCart: () => void;  // Add clearCart to the type
   totalPrice: number;
 }
 
@@ -28,20 +28,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(item => item.product.id === product.id);
-      
-      // Kontrollera lagersaldo
-      const currentQuantity = existingItem ? existingItem.quantity : 0;
-      const newQuantity = currentQuantity + quantity;
-
-      if (newQuantity > product.stock) {
-        alert(`Det finns endast ${product.stock} enheter kvar av denna produkt.`);
-        return prevItems;  // Returnerar de befintliga varorna utan att lägga till fler
-      }
-
       if (existingItem) {
         return prevItems.map(item =>
           item.product.id === product.id
-            ? { ...item, quantity: newQuantity }
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
@@ -54,30 +44,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
+    if (quantity < 1) return; // Prevent setting quantity to less than 1
     setCartItems((prevItems) => {
-      const item = prevItems.find(item => item.product.id === productId);
-      if (!item) return prevItems;
-
-      if (quantity < 1) {
-        alert("Antalet måste vara minst 1.");
-        return prevItems;
-      }
-
-      if (quantity > item.product.stock) {
-        alert(`Det finns endast ${item.product.stock} enheter kvar av denna produkt.`);
-        return prevItems.map(item =>
-          item.product.id === productId ? { ...item, quantity: item.product.stock } : item
-        );
-      }
-
-      return prevItems.map(item =>
+      return prevItems.map((item) =>
         item.product.id === productId ? { ...item, quantity } : item
       );
     });
   };
 
   const clearCart = () => {
-    setCartItems([]);
+    setCartItems([]); // Clear the cart items
   };
 
   // Calculate total price

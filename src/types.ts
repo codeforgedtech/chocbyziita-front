@@ -7,6 +7,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
+  
   price: number;
   tax: number; 
   image_url: string[]; // Definiera image_url som string eller null

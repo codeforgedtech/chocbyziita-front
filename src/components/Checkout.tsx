@@ -124,18 +124,18 @@ export default function Checkout() {
   const handleCheckout = async () => {
     setLoading(true);
     setError(null);
-
+  
     // Ensure that the necessary information is collected
     if (!formData.email || !formData.address || !formData.city || !formData.postalCode || !formData.country) {
       toast.error('Alla fält är obligatoriska.');
       setLoading(false);
       return;
     }
-
+  
     // Generate a new UUID for guest users
     const guestUserId = uuidv4();
     const customerNumber = 'G-' + guestUserId.substring(0, 8); // Generate a customer number
-
+  
     // Upsert guest user data if not logged in
     if (isGuest) {
       const { error: userError } = await supabase
@@ -152,17 +152,17 @@ export default function Checkout() {
           phone_number: formData.phoneNumber || '',
           customer_number: customerNumber,
         }, { onConflict: 'id' }); // Handle conflict on ID
-
+  
       if (userError) {
         setError(userError.message);
         setLoading(false);
         return;
       }
     }
-
+  
     // Proceed with the order insertion using the user ID (either logged in or guest)
     const userIdentifier = isGuest ? guestUserId : userId; // Use guest user ID for the order if guest
-
+  
     const products = cartItems.map((item) => ({
       id: item.product.id,
       name: item.product.name,
@@ -170,10 +170,10 @@ export default function Checkout() {
       quantity: item.quantity,
       tax: item.product.tax,
     }));
-
+  
     const totalAmount = totalPrice + shippingCost;
     const grandTotal = parseFloat(calculateGrandTotal());
-
+  
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .insert({
@@ -187,27 +187,38 @@ export default function Checkout() {
         email: formData.email, // Ensure email is stored with the order
       })
       .select(); // Use select to get the inserted data, including order ID
-
+  
     setLoading(false);
-
+  
     if (orderError) {
       setError(orderError.message);
     } else {
+      // Minska lagret för varje produkt i kundvagnen
+      for (const item of cartItems) {
+        const productId = item.product.id;
+        const newStock = item.product.stock - item.quantity; // Update to use 'stock'
+  
+        await supabase
+          .from('products')
+          .update({ stock: newStock }) // Update to use 'stock'
+          .eq('id', productId);
+      }
+  
       // Generate and save invoice number
       const invoiceNumber = generateInvoiceNumber();
       const orderId = orderData[0].id; // Assuming 'id' is returned from the inserted order
-
+  
       const { error: invoiceError } = await supabase
         .from('orders')
         .update({ invoice_number: invoiceNumber })
         .eq('id', orderId);
-
+  
       if (invoiceError) {
         console.error('Error saving invoice number:', invoiceError.message);
       } else {
         console.log('Invoice number saved successfully:', invoiceNumber);
       }
-
+  
       // Navigate to order confirmation page
       navigate('/order-confirmation', {
         state: {
@@ -228,10 +239,11 @@ export default function Checkout() {
           },
         },
       });
-
+  
       clearCart();
     }
   };
+  
 
   const generateInvoiceNumber = () => {
     const randomNum = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit number
@@ -239,182 +251,247 @@ export default function Checkout() {
   };
 
   return (
-    <div className="container-fluid custom-container mt-5 p-4 border rounded bg-light shadow">
+    <div className="container custom-container mt-5 p-4 border rounded bg-light shadow-lg">
       <ToastContainer />
+      {/* User Status Section */}
+      <div className="mb-4 text-center">
+        {isGuest ? (
+          <div className="alert alert-warning">Du checkar ut som gäst</div>
+        ) : (
+          <div className="alert alert-success">Du är inloggad som {userEmail}</div>
+        )}
+      </div>
+
+      <h2 className="text-center mb-4">Checkout</h2>
+      
       <div className="row">
-        <div className="col-md-4 mb-4">
-          <h4 className="mb-3">Beställningsinformation</h4>
+        <div className="col-md-6">
+          {/* Shipping Information */}
+          <h5>Fraktinformation</h5>
           <form>
-            <div className="form-group">
+            <div className="form-group mb-2">
               <label htmlFor="firstName">Förnamn</label>
               <input
                 type="text"
+                className="form-control"
                 id="firstName"
                 name="firstName"
-                className="form-control"
                 value={formData.firstName}
                 onChange={handleChange}
-                required
-                disabled={!isGuest} // Disable if logged in
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
+
+            <div className="form-group mb-2">
               <label htmlFor="lastName">Efternamn</label>
               <input
                 type="text"
+                className="form-control"
                 id="lastName"
                 name="lastName"
-                className="form-control"
                 value={formData.lastName}
                 onChange={handleChange}
-                required
-                disabled={!isGuest}
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="address">Adress</label>
+
+            <div className="form-group mb-2">
+              <label htmlFor="address">Address</label>
               <input
                 type="text"
+                className="form-control"
                 id="address"
                 name="address"
-                className="form-control"
                 value={formData.address}
                 onChange={handleChange}
-                required
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
+
+            <div className="form-group mb-2">
               <label htmlFor="city">Stad</label>
               <input
                 type="text"
+                className="form-control"
                 id="city"
                 name="city"
-                className="form-control"
                 value={formData.city}
                 onChange={handleChange}
-                required
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
+
+            <div className="form-group mb-2">
               <label htmlFor="postalCode">Postnummer</label>
               <input
                 type="text"
+                className="form-control"
                 id="postalCode"
                 name="postalCode"
-                className="form-control"
                 value={formData.postalCode}
                 onChange={handleChange}
-                required
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
+
+            <div className="form-group mb-2">
               <label htmlFor="country">Land</label>
               <input
                 type="text"
+                className="form-control"
                 id="country"
                 name="country"
-                className="form-control"
                 value={formData.country}
                 onChange={handleChange}
-                required
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="email">E-post</label>
+
+            <div className="form-group mb-2">
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
+                className="form-control"
                 id="email"
                 name="email"
-                className="form-control"
                 value={formData.email}
                 onChange={handleChange}
-                required
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <div className="form-group">
+            
+            <div className="form-group mb-2">
               <label htmlFor="phoneNumber">Telefonnummer</label>
               <input
                 type="text"
+                className="form-control"
                 id="phoneNumber"
                 name="phoneNumber"
-                className="form-control"
                 value={formData.phoneNumber}
                 onChange={handleChange}
+                disabled={!isGuest} // Disable for logged-in users
               />
             </div>
-            <h4 className="mb-3">Betalinformation</h4>
-            <div className="form-group">
+          </form>
+        </div>
+
+        {/* Payment Information */}
+        <div className="col-md-6">
+          <h5>Betalningsinformation</h5>
+          <form>
+            <div className="form-group mb-2">
               <label htmlFor="cardNumber">Kortnummer</label>
               <input
                 type="text"
+                className="form-control"
                 id="cardNumber"
                 name="cardNumber"
-                className="form-control"
                 value={formData.cardNumber}
                 onChange={handleChange}
-                required
+                placeholder="1234 5678 9101 1121"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="cardExpiry">Utgångsdatum (MM/ÅÅ)</label>
+
+            <div className="form-group mb-2">
+              <label htmlFor="cardExpiry">Giltigt till</label>
               <input
                 type="text"
+                className="form-control"
                 id="cardExpiry"
                 name="cardExpiry"
-                className="form-control"
                 value={formData.cardExpiry}
                 onChange={handleChange}
-                required
+                placeholder="MM/YY"
               />
             </div>
-            <div className="form-group">
+
+            <div className="form-group mb-2">
               <label htmlFor="cardCvc">CVC</label>
               <input
                 type="text"
+                className="form-control"
                 id="cardCvc"
                 name="cardCvc"
-                className="form-control"
                 value={formData.cardCvc}
                 onChange={handleChange}
-                required
+                placeholder="CVC"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="shippingMethod">Fraktmetod</label>
-              <select
-                id="shippingMethod"
-                name="shippingMethod"
-                className="form-control"
-                value={formData.shippingMethod}
-                onChange={handleShippingChange}
-              >
-                <option value="standard">Standard (50 kr)</option>
-                <option value="express">Express (100 kr)</option>
-              </select>
-            </div>
-            <button type="button" className="btn btn-primary" onClick={handleCheckout} disabled={loading}>
-              {loading ? 'Bearbetar...' : 'Slutför Beställning'}
-            </button>
-            {error && <div className="alert alert-danger mt-2">{error}</div>}
           </form>
         </div>
-        <div className="col-md-4 offset-md-1">
-          <h4 className="mb-3">Varukorg</h4>
-          <ul className="list-group">
-            {cartItems.map((item) => (
-              <li className="list-group-item" key={item.product.id}>
-                {item.product.name} - {item.quantity} x {item.product.price.toFixed(2)} kr
-              </li>
-            ))}
-          </ul>
-          <div className="mt-3">
-            <h5>Totalt: {totalPrice.toFixed(2)} kr</h5>
-            <h5>Fraktkostnad: {shippingCost} kr</h5>
-            <h5>Skatt: {calculateTotalTax().toFixed(2)} kr</h5>
-            <h5>Totalt att betala: {calculateGrandTotal()} kr</h5>
+      </div>
+
+      {/* Shipping Method and Order Summary */}
+      <div className="row mt-4">
+        <div className="col-md-6">
+          <h5>Fraktmetod</h5>
+          <div className="form-check">
+            <input
+              type="radio"
+              className="form-check-input"
+              id="standardShipping"
+              name="shippingMethod"
+              value="standard"
+              checked={formData.shippingMethod === 'standard'}
+              onChange={handleShippingChange}
+            />
+            <label className="form-check-label" htmlFor="standardShipping">
+              Standardfrakt - 50 SEK
+            </label>
+          </div>
+          <div className="form-check">
+            <input
+              type="radio"
+              className="form-check-input"
+              id="expressShipping"
+              name="shippingMethod"
+              value="express"
+              checked={formData.shippingMethod === 'express'}
+              onChange={handleShippingChange}
+            />
+            <label className="form-check-label" htmlFor="expressShipping">
+              Expressfrakt - 100 SEK
+            </label>
           </div>
         </div>
+
+        {/* Order Summary */}
+        <div className="col-md-6">
+          <h5>Orderöversikt</h5>
+          <ul className="list-group">
+            {cartItems.map((item, index) => (
+              <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                {item.product.name} x {item.quantity}
+                <span>{(item.product.price * item.quantity).toFixed(2)} SEK</span>
+              </li>
+            ))}
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              Frakt
+              <span>{shippingCost} SEK</span>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              Moms
+              <span>{calculateTotalTax().toFixed(2)} SEK</span>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-center">
+              Totalt
+              <span>{calculateGrandTotal()} SEK</span>
+            </li>
+          </ul>
+        </div>
       </div>
+
+      <div className="mt-4 text-center">
+        <button
+          className="btn btn-primary btn-lg"
+          onClick={handleCheckout}
+          disabled={loading}
+        >
+          {loading ? 'Processing...' : 'Slutför köp'}
+        </button>
+      </div>
+      {error && <div className="text-danger mt-3 text-center">{error}</div>}
     </div>
   );
 }
+
