@@ -1,109 +1,20 @@
-/* Custom styles for the product card and controls */
-.size {
-  max-width: 1200px;
+.custom-grid {
+  gap: 200px; /* Du kan öka detta värde för att göra mellanrummet ännu större */
 }
-
-.product-card {
-  border-radius: 12px;
-  transition: box-shadow 0.2s ease-in-out;
-  background-color: white;
+.custom-text{
+  font-size: 20px;
 }
-
-.product-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.card-img-top {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  object-fit: cover;
-}
-
-.custom-btn, .btn-custom {
-  background-color: #f8e6d1;
-  border: none;
-  color: #6b4e34;
-  border-radius: 8px; /* Unified border radius */
-  padding: 0.25rem 0.5rem; /* Adjust padding for a smaller button */
-  font-size: 0.875rem; /* Adjust font size */
-  transition: background-color 0.2s ease-in-out;
-  margin-bottom: 10px; /* Bottom margin for spacing */
-}
-
-.custom-btn:hover, .btn-custom:hover {
-  background-color: #e6d5bd;
-}
-
-.text-center {
-  margin-top: 20px;
-  color: #6b4e34;
-}
-
-.toast-body {
-  font-weight: bold;
-}
-
-/* Adjust input group for quantity control */
-.quantity-input {
-  display: flex; /* Ensure proper layout */
-  align-items: center; /* Center items vertically */
- /* Space between buttons and input */
-}
-
-.quantity-input .btn {
-  width: 40px; /* Unified button width */
-  height: 40px; /* Unified button height */
-  display: flex;
-  border: 1px solid black;
- 
-  justify-content: center;
-  align-items: center;
-}
-
-.quantity-input .custom-input, .small-quantity .form-control {
-  width: 40px; /* Set a fixed width for input */
-  text-align: center; /* Center align the text */
-  border: none;
-  background-color: transparent;
-}
-
-.small-quantity {
+.custom-cart{
   width: 120px;
-  background-color: white;
-  border: 1px solid black;
+  height: 30px;
+  background-color: bisque;
+  border-radius: 6px;
+
 }
-
-.card-text.fw-bold {
-  font-size: 1.25rem;
-  color: #6b4e34;
+.custom-container{
+  width: 1300px; /* Full bredd av viewport */
+  margin: auto;
+  padding: 0; /* Ta bort padding */
+justify-content: center;
+align-items: center;
 }
-
-/* Flexbox to align price and quantity controls */
-.d-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Form control adjustments */
-.form-control {
-  width: 40px; /* Adjust width to fit nicely between buttons */
-  height: 40px; /* Ensure input height matches buttons */
- border: 1px solid black;
-
-  font-size: 0.75rem; 
-  font-weight: 600;/* Make input text smaller */
-  text-align: center; /* Center the number in the input */
- 
-  
-  margin-top: 0px;/* Ensure padding doesn't affect size */
-}
-
-/* Quantity control button hover effect */
-.small-quantity .btn:hover {
-  background-color: #e6d5bd;
-}
-
-
-
-
