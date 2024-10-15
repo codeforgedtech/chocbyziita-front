@@ -15,7 +15,7 @@ export default function Products() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart(); // Get cartItems from context
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -65,6 +65,11 @@ export default function Products() {
     });
   };
 
+  const getCartItemQuantity = (productId: number) => {
+    const cartItem = cartItems.find(item => item.product.id === productId);
+    return cartItem ? cartItem.quantity : 0;
+  };
+
   if (loading) return <p className="loading-text text-center">Laddar produkter...</p>;
   if (error) return <p className="error-text text-center">{error}</p>;
 
@@ -72,88 +77,91 @@ export default function Products() {
     <div className="container mt-5 px-4 custom-container">
       <h2 className="text-center mb-6">Utvalda produkter</h2>
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
- 
-      
-        {products.map((product) => (
-          <div key={product.id} className="col">
-            <div className="card h-100 shadow-sm border-1">
-              {/* Product Image */}
-              <Link to={`/product/${product.id}`} className="text-decoration-none">
-                <img
-                  src={product.image_url && product.image_url.length > 0 ? product.image_url[0] : 'https://via.placeholder.com/300x300'}
-                  alt={product.name}
-                  className="card-img-top img-fluid"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = 'https://via.placeholder.com/300x300';
-                  }}
-                />
-              </Link>
+        {products.map((product) => {
+          const currentCartQuantity = getCartItemQuantity(product.id);
+          const isAddToCartDisabled = currentCartQuantity >= product.stock; // Disable if cart quantity meets or exceeds stock
+          const isOutOfStock = product.stock === 0; // Check if the product is out of stock
 
-              {/* Product Description */}
-              <div className="card-body text-center">
-                <h5 className="card-title text-dark">{product.name}</h5>
-                
-                <p className="card-text fw-bold text-dark mb-6 custom-text">{calculatePriceWithTax(product.price, product.tax)} kr</p>
-                <p className="text-muted small">
-                  {product.stock > 0 ? `I lager (${product.stock} st)` : 'Slut i lager'}
-                </p>
-              </div>
-
-              {/* Card Footer with Quantity Controls and Add to Cart Button */}
-              <div className="card-footer d-flex justify-content-between align-items-center p-2">
-                {/* Quantity Controls */}
-                <div className="input-group input-group-sm w-50">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={() => handleQuantityChange(product.id, -1)}
-                    disabled={quantities[product.id] <= 1 || product.stock === 0}
-                  >
-                    <i className="fas fa-minus"></i>
-                  </button>
-                  <input
-                    type="number"
-                    className="form-control text-center"
-                    min="1"
-                    max={product.stock}
-                    value={quantities[product.id]}
-                    readOnly
+          return (
+            <div key={product.id} className="col">
+              <div className="card h-100 shadow-sm border-1">
+                {/* Product Image */}
+                <Link to={`/product/${product.id}`} className="text-decoration-none">
+                  <img
+                    src={product.image_url && product.image_url.length > 0 ? product.image_url[0] : 'https://via.placeholder.com/300x300'}
+                    alt={product.name}
+                    className="card-img-top img-fluid"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://via.placeholder.com/300x300';
+                    }}
                   />
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={() => handleQuantityChange(product.id, 1)}
-                    disabled={quantities[product.id] >= product.stock || product.stock === 0}
-                  >
-                    <i className="fas fa-plus"></i>
-                  </button>
+                </Link>
+
+                {/* Product Description */}
+                <div className="card-body text-center">
+                  <h5 className="card-title text-dark">{product.name}</h5>
+                  <p className="card-text fw-bold text-dark mb-6 custom-text">{calculatePriceWithTax(product.price, product.tax)} kr</p>
+                  <p className="text-muted small">
+                    {isOutOfStock ? 'Slut i lager' : `I lager (${product.stock} st)`}
+                  </p>
                 </div>
 
-                {/* Add to Cart Button */}
-                <button
-                  className="custom-cart"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (product.stock > 0) {
-                      addToCart(product, quantities[product.id]);
-                      showToast(`${product.name} har lagts till i kundvagnen.`);
-                    } else {
-                      showToast('Produkten är slut i lager.');
-                    }
-                  }}
-                  disabled={product.stock === 0}
-                >
-               <i className="bi bi-basket-fill"></i>
-                </button>
+                {/* Card Footer with Quantity Controls and Add to Cart Button */}
+                <div className="card-footer d-flex justify-content-between align-items-center p-2">
+                  {/* Hide Quantity Controls if out of stock */}
+                  {!isOutOfStock && (
+                    <div className="input-group input-group-sm w-50">
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => handleQuantityChange(product.id, -1)}
+                        disabled={quantities[product.id] <= 1}
+                      >
+                        <i className="fas fa-minus"></i>
+                      </button>
+                      <input
+                        type="number"
+                        className="form-control text-center"
+                        min="1"
+                        max={product.stock}
+                        value={quantities[product.id]}
+                        readOnly
+                      />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={() => handleQuantityChange(product.id, 1)}
+                        disabled={quantities[product.id] >= product.stock}
+                      >
+                        <i className="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Add to Cart Button */}
+                  <button
+                    className="custom-cart"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!isOutOfStock) {
+                        addToCart(product, quantities[product.id]);
+                        showToast(`${product.name} har lagts till i kundvagnen.`);
+                      } else {
+                        showToast('Produkten är slut i lager.');
+                      }
+                    }}
+                    disabled={isOutOfStock || isAddToCartDisabled} // Disable if out of stock or cart has max quantity
+                  >
+                    <i className="bi bi-basket-fill"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          
-        ))}
-     
-     </div>
-    
+          );
+        })}
+      </div>
+
       {/* Toast notification */}
       <div aria-live="polite" aria-atomic="true" className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 11 }}>
         <div id="toast" className="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -166,6 +174,7 @@ export default function Products() {
     </div>
   );
 }
+
 
 
 

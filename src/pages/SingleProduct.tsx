@@ -14,7 +14,7 @@ export default function SingleProduct() {
   const [quantity, setQuantity] = useState(1);
 
   const [currentImage, setCurrentImage] = useState<string | null>(null);
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart(); // Fetch cartItems from context
 
   // Define VAT percentage (25% in Sweden)
   const VAT_RATE = 0.25;
@@ -46,15 +46,21 @@ export default function SingleProduct() {
     fetchProduct();
   }, [id]);
 
+  const getCartItemQuantity = (productId: number) => {
+    const cartItem = cartItems.find(item => item.product.id === productId);
+    return cartItem ? cartItem.quantity : 0;
+  };
+
   const handleAddToCart = () => {
     if (!product) return;
 
-    if (quantity > product.stock) {
+    const currentCartQuantity = getCartItemQuantity(product.id);
+    if (currentCartQuantity + quantity > product.stock) {
       alert('Du kan inte lägga till fler än vad som finns i lager.');
       return;
     }
 
-    addToCart(product, quantity); // Only product and quantity
+    addToCart(product, quantity); // Add product and quantity to cart
     alert(`${quantity} av ${product.name} har lagts till i kundvagnen!`);
   };
 
@@ -72,6 +78,10 @@ export default function SingleProduct() {
   // Handle images
   const imageUrls = product.image_url.length > 0 ? product.image_url : [];
   const placeholderImage = 'https://via.placeholder.com/300';
+
+  // Get current quantity in cart
+  const currentCartQuantity = getCartItemQuantity(product.id);
+  const isAddToCartDisabled = currentCartQuantity >= product.stock; // Disable if cart quantity meets or exceeds stock
 
   return (
     <div className="container custom-container mt-5 p-4 border rounded bg-light shadow">
@@ -133,11 +143,11 @@ export default function SingleProduct() {
                 className="form-control"
                 value={quantity}
                 onChange={(e) => {
-                  const value = Math.max(1, Math.min(Number(e.target.value), product.stock));
+                  const value = Math.max(1, Math.min(Number(e.target.value), product.stock - currentCartQuantity));
                   setQuantity(value);
                 }}
                 min="1"
-                max={product.stock}
+                max={product.stock - currentCartQuantity} // Ensure quantity does not exceed stock
               />
             </div>
           </div>
@@ -145,15 +155,16 @@ export default function SingleProduct() {
           <button 
             className="btn btn-primary w-100 btn-lg mb-3" 
             onClick={handleAddToCart} 
-            disabled={product.stock === 0}
+            disabled={product.stock === 0 || isAddToCartDisabled} // Disable if out of stock or max quantity in cart
           >
-            {product.stock > 0 ? 'Lägg till i kundvagn' : 'Slut i lager'}
+            {product.stock > 0 ? (isAddToCartDisabled ? 'Max antal i varukorg' : 'Lägg till i kundvagn') : 'Slut i lager'}
           </button>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 
