@@ -27,6 +27,18 @@ export default function Cart() {
     navigate('/checkout', { state: { cartItems } });
   };
 
+  const handleQuantityChange = (productId: number, newQuantity: number, maxQuantity: number) => {
+    if (newQuantity > maxQuantity) {
+      alert(`Det finns bara ${maxQuantity} enheter i lager för den här produkten.`);
+      updateQuantity(productId, maxQuantity);
+    } else if (newQuantity < 1) {
+      alert(`Antalet måste vara minst 1.`);
+      updateQuantity(productId, 1);
+    } else {
+      updateQuantity(productId, newQuantity);
+    }
+  };
+
   return (
     <div className="container-fluid custom-container mt-5 p-4 border rounded bg-light shadow-lg">
       <h1 className="text-center mb-4">Din varukorg</h1>
@@ -54,16 +66,17 @@ export default function Cart() {
                 <div className="col-md-6">
                   <h2 className="h5 mb-2">{item.product.name}</h2>
                   <p className="text-muted">Pris (inkl. moms): {priceWithTax.toFixed(2)} SEK</p>
-                  
                   <p className="text-muted">Subtotal: {subtotalWithTax.toFixed(2)} SEK (inkl. moms)</p>
+                  <p className="text-muted">I lager: {item.product.stock} st</p> {/* Lagersaldo */}
                 </div>
                 <div className="col-md-4 d-flex justify-content-md-end justify-content-start"> {/* Justera flexbox-beteende */}
                   <div className="quantity-control d-flex align-items-center">
                     <input
                       type="number"
                       value={item.quantity}
-                      onChange={(e) => updateQuantity(item.product.id, Number(e.target.value))}
+                      onChange={(e) => handleQuantityChange(item.product.id, Number(e.target.value), item.product.stock)}
                       min="1"
+                      max={item.product.stock} // Begränsa maxvärde till lagersaldo
                       className="form-control w-50 text-center"
                     />
                     <button
@@ -93,6 +106,8 @@ export default function Cart() {
     </div>
   );
 }
+
+
 
 
 
