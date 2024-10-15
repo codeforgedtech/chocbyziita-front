@@ -40,8 +40,8 @@ export default function Cart() {
   };
 
   return (
-    <div className="container-fluid custom-container mt-5 p-4 border rounded bg-light shadow-lg">
-      <h1 className="text-center mb-4">Din varukorg</h1>
+    <div className="container mt-5 p-4 border rounded bg-light shadow-lg">
+      <h1 className="text-center mb-4 display-5">Din varukorg</h1>
 
       {cartItems.length === 0 ? (
         <div className="text-center">
@@ -64,12 +64,14 @@ export default function Cart() {
                   />
                 </div>
                 <div className="col-md-6">
-                  <h2 className="h5 mb-2">{item.product.name}</h2>
-                  <p className="text-muted">Pris (inkl. moms): {priceWithTax.toFixed(2)} SEK</p>
-                  <p className="text-muted">Subtotal: {subtotalWithTax.toFixed(2)} SEK (inkl. moms)</p>
-                  <p className="text-muted">I lager: {item.product.stock} st</p> {/* Lagersaldo */}
+                  <h2 className="h5 mb-2 text-dark font-weight-bold">{item.product.name}</h2>
+                  <p className="text-muted mb-1">Pris (inkl. moms): {priceWithTax.toFixed(2)} SEK</p>
+                  <p className="text-muted mb-1">Subtotal: {subtotalWithTax.toFixed(2)} SEK (inkl. moms)</p>
+                  <span className={`badge ${item.product.stock > 5 ? 'bg-success' : 'bg-warning'} p-2`}>
+                    I lager: {item.product.stock} st
+                  </span> {/* Lagersaldo med färgberoende status */}
                 </div>
-                <div className="col-md-4 d-flex justify-content-md-end justify-content-start"> {/* Justera flexbox-beteende */}
+                <div className="col-md-4 d-flex justify-content-md-end justify-content-start align-items-center"> 
                   <div className="quantity-control d-flex align-items-center">
                     <input
                       type="number"
@@ -80,21 +82,25 @@ export default function Cart() {
                       className="form-control w-50 text-center"
                     />
                     <button
-                      className="btn btn-outline-danger ms-2" // Lägger till marginal mellan antalet och knappen
+                      className="btn btn-outline-danger ms-2 d-flex align-items-center" 
                       onClick={() => removeFromCart(item.product.id)}
                     >
-                      <FaTrashAlt size={20} />
+                      <FaTrashAlt size={18} />
                     </button>
                   </div>
                 </div>
               </div>
             );
           })}
-          <div className="row mt-4">
+
+          <div className="row mt-5">
             <div className="col-md-6 offset-md-6">
-              <h3 className="text-end">Total: {getTotalPriceWithTax().toFixed(2)} SEK (inkl. moms)</h3>
+              <div className="d-flex justify-content-between align-items-center">
+                <h3 className="text-end text-muted">Total (inkl. moms):</h3>
+                <h3 className="text-end">{getTotalPriceWithTax().toFixed(2)} SEK</h3>
+              </div>
               <button
-                className="btn btn-primary w-100 btn-lg mt-3"
+                className="btn btn-primary w-100 btn-lg mt-3 hover-effect"
                 onClick={handleCheckout}
               >
                 Gå till kassan
@@ -106,6 +112,7 @@ export default function Cart() {
     </div>
   );
 }
+
 
 
 
