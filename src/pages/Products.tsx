@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useCart } from '../contexts/CartContext';
 import { Product } from '../types';
+import './Products.css'; 
 import { Link } from 'react-router-dom';
-import './Products.css'; // Custom CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -30,7 +30,7 @@ export default function Products() {
             return acc;
           }, {})
         );
-        setProducts(data as Product[]);
+        setProducts(data.slice(0, 4) as Product[]); // Begränsar till max 4 produkter
       } catch (error) {
         console.error('Error fetching products:', error);
         setError('Failed to load products');
@@ -42,12 +42,8 @@ export default function Products() {
     fetchProducts();
   }, []);
 
-  // Load favorites from localStorage or API
-
-
-
   const calculatePriceWithTax = (price: number, taxRate: number) => {
-    return (price * (1 + taxRate)).toFixed(2); 
+    return (price * (1 + taxRate)).toFixed(2);
   };
 
   const showToast = (message: string) => {
@@ -69,101 +65,95 @@ export default function Products() {
     });
   };
 
-  if (loading) return <p className="loading-text">Laddar produkter...</p>;
-  if (error) return <p className="error-text">{error}</p>;
+  if (loading) return <p className="loading-text text-center">Laddar produkter...</p>;
+  if (error) return <p className="error-text text-center">{error}</p>;
 
   return (
-    <div className="container-xl">
-      <h1 className="text-center mb-5">Utvalda Produkter</h1>
-      {products.length === 0 ? (
-        <p className="text-center">Inga produkter tillgängliga just nu.</p>
-      ) : (
-        <div className="row g-4">
-          {products.map((product) => (
-            <div key={product.id} className="col-4">
-              <div className="card product-card shadow-sm h-100">
-                <Link to={`/product/${product.id}`} className="text-decoration-none text-dark position-relative">
-                  <img
-                    src={product.image_url && product.image_url.length > 0 ? product.image_url[0] : 'https://via.placeholder.com/300x300'}
-                    alt={product.name}
-                    className="card-img-top"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'https://via.placeholder.com/300x300';
-                    }}
-                  />
-                  {product.stock === 0 && (
-                    <span className="badge bg-danger position-absolute top-0 start-50 translate-middle rounded-pill">
-                      Slut i lager
-                    </span>
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title">{product.name}</h5>
-                  </div>
-                </Link>
-                <div className="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                  <p className="card-text fw-bold text-dark mb-0">
-                    {calculatePriceWithTax(product.price, product.tax)} kr
-                  </p>
-                  <div className="d-flex align-items-center">
-                  <div className="input-group quantity-input">
-  <button
-    className="btn btn-outline-primary"
-    type="button"
-    onClick={() => handleQuantityChange(product.id, -1)}
-    disabled={quantities[product.id] <= 1 || product.stock === 0}
-    style={{ borderTopLeftRadius: '0.25rem', borderBottomLeftRadius: '0.25rem' }} // Rounded left corners
-  >
-    <i className="fas fa-minus"></i> {/* Optional icon */}
-  </button>
-  
-  <input
-    type="number"
-    className="form-control text-center"
-    min="1"
-    max={product.stock}
-    value={quantities[product.id]}
-    readOnly
-    style={{ borderRadius: '0', textAlign: 'center' }} // Remove border radius to match buttons
-  />
-  
-  <button
-    className="btn btn-outline-primary"
-    type="button"
-    onClick={() => handleQuantityChange(product.id, 1)}
-    disabled={quantities[product.id] >= product.stock || product.stock === 0}
-    style={{ borderTopRightRadius: '0.25rem', borderBottomRightRadius: '0.25rem' }} // Rounded right corners
-  >
-    <i className="fas fa-plus"></i> {/* Optional icon */}
-  </button>
-</div>
+    <div className="container mt-5 px-4 custom-container">
+      <h2 className="text-center mb-6">Utvalda produkter</h2>
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+ 
+      
+        {products.map((product) => (
+          <div key={product.id} className="col">
+            <div className="card h-100 shadow-sm border-1">
+              {/* Product Image */}
+              <Link to={`/product/${product.id}`} className="text-decoration-none">
+                <img
+                  src={product.image_url && product.image_url.length > 0 ? product.image_url[0] : 'https://via.placeholder.com/300x300'}
+                  alt={product.name}
+                  className="card-img-top img-fluid"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://via.placeholder.com/300x300';
+                  }}
+                />
+              </Link>
 
-                   
-                  </div>
-                </div>
-                <div className="d-flex justify-content-center mt-2">
+              {/* Product Description */}
+              <div className="card-body text-center">
+                <h5 className="card-title text-dark">{product.name}</h5>
+                
+                <p className="card-text fw-bold text-dark mb-6 custom-text">{calculatePriceWithTax(product.price, product.tax)} kr</p>
+                <p className="text-muted small">
+                  {product.stock > 0 ? `I lager (${product.stock} st)` : 'Slut i lager'}
+                </p>
+              </div>
+
+              {/* Card Footer with Quantity Controls and Add to Cart Button */}
+              <div className="card-footer d-flex justify-content-between align-items-center p-2">
+                {/* Quantity Controls */}
+                <div className="input-group input-group-sm w-50">
                   <button
-                    className="btn btn-custom btn-sm w-50"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (product.stock > 0) {
-                        addToCart(product, quantities[product.id]);
-                        showToast(`${product.name} har lagts till i kundvagnen.`);
-                      } else {
-                        showToast('Produkten är slut i lager.');
-                      }
-                    }}
-                    disabled={product.stock === 0}
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={() => handleQuantityChange(product.id, -1)}
+                    disabled={quantities[product.id] <= 1 || product.stock === 0}
                   >
-                    Lägg i varukorg
+                    <i className="fas fa-minus"></i>
+                  </button>
+                  <input
+                    type="number"
+                    className="form-control text-center"
+                    min="1"
+                    max={product.stock}
+                    value={quantities[product.id]}
+                    readOnly
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={() => handleQuantityChange(product.id, 1)}
+                    disabled={quantities[product.id] >= product.stock || product.stock === 0}
+                  >
+                    <i className="fas fa-plus"></i>
                   </button>
                 </div>
+
+                {/* Add to Cart Button */}
+                <button
+                  className="custom-cart"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (product.stock > 0) {
+                      addToCart(product, quantities[product.id]);
+                      showToast(`${product.name} har lagts till i kundvagnen.`);
+                    } else {
+                      showToast('Produkten är slut i lager.');
+                    }
+                  }}
+                  disabled={product.stock === 0}
+                >
+               <i className="bi bi-basket-fill"></i>
+                </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
-
+          </div>
+          
+        ))}
+     
+     </div>
+    
       {/* Toast notification */}
       <div aria-live="polite" aria-atomic="true" className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 11 }}>
         <div id="toast" className="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -176,6 +166,11 @@ export default function Products() {
     </div>
   );
 }
+
+
+
+
+
 
 
 
