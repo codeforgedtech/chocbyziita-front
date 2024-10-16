@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Products from './pages/Products';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
-import Auth from './components/Auth';
+import Login from './components/Login';
+import SignUp from "./components/SignUp"
 import { CartProvider } from './contexts/CartContext'; 
 import SingleProduct from './pages/SingleProduct';
 import OrderConfirmation from './components/OrderConfirmation';
@@ -22,7 +23,8 @@ function App() {
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout/>} />
-        <Route path="/login" element={<Auth />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/products" element={<Products />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
               </Routes>
