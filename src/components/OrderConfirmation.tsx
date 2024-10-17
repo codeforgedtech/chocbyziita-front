@@ -29,7 +29,7 @@ const TAX_RATE = 0.25; // Anta 25 % moms
 
 const OrderConfirmation: React.FC = () => {
   const location = useLocation();
-  const { orderData } = location.state as { orderData: OrderData };
+  const { orderData } = location.state as { orderData?: OrderData } || {}; // Fallback to an empty object
 
   useEffect(() => {
     console.log('Order Data:', orderData);
@@ -47,7 +47,7 @@ const OrderConfirmation: React.FC = () => {
   };
 
   const saveInvoiceNumber = async (invoiceNumber: string) => {
-    if (!orderData.orderId) {
+    if (!orderData?.orderId) {
       console.error('Order ID is undefined');
       return;
     }
@@ -66,14 +66,25 @@ const OrderConfirmation: React.FC = () => {
 
   // Räkna ut totalbeloppet med moms
   const calculateTotalWithTax = () => {
-    const productsTotalWithTax = orderData.products.reduce((total, product) => {
+    const productsTotalWithTax = orderData?.products.reduce((total, product) => {
       return total + product.price * (1 + TAX_RATE) * product.quantity; // Lägg till moms på varje produkt
-    }, 0);
-    
-    return productsTotalWithTax + orderData.shippingCost;
+    }, 0) || 0; // Fallback to 0 if orderData is undefined
+
+    return productsTotalWithTax + (orderData?.shippingCost || 0); // Use fallback for shipping cost
   };
 
   const totalWithTax = calculateTotalWithTax(); // Totalt belopp med moms
+
+  // Check if orderData is available
+  if (!orderData) {
+    return (
+      <div className="container mt-5">
+        <h2 className="text-danger">Ingen beställningsinformation tillgänglig.</h2>
+        <p>Vänligen kontrollera din beställning och försök igen.</p>
+        <a href="/" className="btn btn-primary">Tillbaka till startsidan</a>
+      </div>
+    );
+  }
 
   return (
     <div className="container-fluid custom-container mt-5 p-4 border rounded bg-light shadow">
@@ -120,6 +131,7 @@ const OrderConfirmation: React.FC = () => {
 };
 
 export default OrderConfirmation;
+
 
 
 

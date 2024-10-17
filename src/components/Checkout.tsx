@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { FaUser, FaEnvelope, FaPhone, FaAddressCard, FaCreditCard } from 'react-icons/fa';
-import { Modal } from 'react-bootstrap'; // Import Modal from react-bootstrap
+import { Modal } from 'react-bootstrap';
 
 interface FormData {
   firstName: string;
@@ -29,7 +29,7 @@ interface Product {
   id: number;
   name: string;
   price: number;
-  tax: number; 
+  tax: number;
 }
 
 export default function Checkout() {
@@ -56,7 +56,7 @@ export default function Checkout() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(false);
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -126,20 +126,22 @@ export default function Checkout() {
 
   const handleCheckout = async () => {
     setLoading(true);
-    setShowModal(true); // Show the loading modal
+    setShowModal(true);
     setError(null);
-
+  
+    // Validera formuläret
     if (!formData.email || !formData.address || !formData.city || !formData.postalCode || !formData.country) {
       toast.error('Alla fält är obligatoriska.');
       setLoading(false);
-      setShowModal(false); // Hide the modal if there's an error
+      setShowModal(false);
       return;
     }
-
+  
     const guestUserId = uuidv4();
     const customerNumber = 'G-' + guestUserId.substring(0, 8);
-
+  
     if (isGuest) {
+      // Spara gäst-användare
       const { error: userError } = await supabase
         .from('users')
         .upsert({
@@ -154,14 +156,15 @@ export default function Checkout() {
           phone_number: formData.phoneNumber || '',
           customer_number: customerNumber,
         }, { onConflict: 'email' });
-
+  
       if (userError) {
         setError(userError.message);
         setLoading(false);
-        setShowModal(false); // Hide the modal if there's an error
+        setShowModal(false);
         return;
       }
     } else {
+      // Uppdatera befintlig användare
       const { error: updateError } = await supabase
         .from('users')
         .update({
@@ -174,17 +177,18 @@ export default function Checkout() {
           phone_number: formData.phoneNumber,
         })
         .eq('id', userId);
-
+  
       if (updateError) {
         setError(updateError.message);
         setLoading(false);
-        setShowModal(false); // Hide the modal if there's an error
+        setShowModal(false);
         return;
       }
     }
-
+  
     const userIdentifier = isGuest ? guestUserId : userId;
-
+  
+    // Förbered orderprodukter
     const products = cartItems.map((item) => ({
       id: item.product.id,
       name: item.product.name,
@@ -192,10 +196,11 @@ export default function Checkout() {
       quantity: item.quantity,
       tax: item.product.tax,
     }));
-
+  
     const totalAmount = totalPrice + shippingCost;
     const grandTotal = parseFloat(calculateGrandTotal());
-
+  
+    // Skapa beställning
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .insert({
@@ -209,47 +214,65 @@ export default function Checkout() {
         email: formData.email,
       })
       .select();
-
+  
     setLoading(false);
-    setShowModal(false); // Hide the modal after processing is complete
-
+    setShowModal(false);
+  
     if (orderError) {
       setError(orderError.message);
-    } else {
-      const invoiceNumber = generateInvoiceNumber();
-      const orderId = orderData[0].id;
-
-      const { error: invoiceError } = await supabase
-        .from('orders')
-        .update({ invoice_number: invoiceNumber })
-        .eq('id', orderId);
-
-      if (invoiceError) {
-        console.error('Error saving invoice number:', invoiceError.message);
-      }
-
-      navigate('/order-confirmation', {
-        state: {
-          orderData: {
-            orderId,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            address: formData.address,
-            city: formData.city,
-            postalCode: formData.postalCode,
-            country: formData.country,
-            phoneNumber: formData.phoneNumber,
-            products,
-            totalAmount,
-            grandTotal,
-            shippingCost,
-            shippingMethod: formData.shippingMethod,
-          },
-        },
-      });
-
-      clearCart();
+      return;
     }
+  
+    const invoiceNumber = generateInvoiceNumber();
+    const orderId = orderData[0].id;
+  
+    // Uppdatera fakturanummer
+    const { error: invoiceError } = await supabase
+      .from('orders')
+      .update({ invoice_number: invoiceNumber })
+      .eq('id', orderId);
+  
+    if (invoiceError) {
+      console.error('Error saving invoice number:', invoiceError.message);
+    }
+  
+    // Minska produktantalet i lagret
+    await Promise.all(
+      cartItems.map(async (item) => {
+        const { error: updateStockError } = await supabase
+          .from('products')
+          .update({ stock: item.product.stock - item.quantity }) // Justera här till den korrekta fältbeteckningen för lager
+          .eq('id', item.product.id);
+  
+        if (updateStockError) {
+          console.error(`Error updating stock for product ${item.product.id}:`, updateStockError.message);
+        }
+      })
+    );
+  
+    // Navigera till orderbekräftelse
+    navigate('/order-confirmation', {
+      state: {
+        orderData: {
+          orderId,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          address: formData.address,
+          city: formData.city,
+          postalCode: formData.postalCode,
+          country: formData.country,
+          phoneNumber: formData.phoneNumber,
+          products,
+          totalAmount,
+          grandTotal,
+          shippingCost,
+          shippingMethod: formData.shippingMethod,
+        },
+      },
+    });
+  
+    // Töm varukorgen
+    clearCart();
   };
 
   const generateInvoiceNumber = () => {
@@ -262,212 +285,108 @@ export default function Checkout() {
       <h2 className="text-center mb-4">Kassa</h2>
       <div className="row mb-4">
         <div className="col-12">
-          <div className="card">
+          <div className="card shadow-sm">
             <div className="card-header">
               <h5>Produkter i Kassan</h5>
             </div>
             <div className="card-body">
               {cartItems.length === 0 ? (
-                <p className="text-center">Ingen produkter i kassan.</p>
+                <p className="text-center">Din kundvagn är tom.</p>
               ) : (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Produkt</th>
-                      <th>Antal</th>
-                      <th>Pris</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cartItems.map((item) => (
-                      <tr key={item.product.id}>
-                        <td>{item.product.name}</td>
-                        <td>{item.quantity}</td>
-                        <td>{(item.product.price * item.quantity).toFixed(2)} kr</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <ul className="list-group">
+                  {cartItems.map((item) => (
+                    <li key={item.product.id} className="list-group-item d-flex justify-content-between align-items-center">
+                      <div>
+                        <strong>{item.product.name}</strong>
+                        <div>{item.quantity} x {item.product.price} SEK</div>
+                      </div>
+                      <span>{(item.quantity * item.product.price).toFixed(2)} SEK</span>
+                    </li>
+                  ))}
+                </ul>
               )}
-              <p className="text-end">Totalt: {totalPrice.toFixed(2)} kr</p>
-              <p className="text-end">Fraktkostnad: {shippingCost} kr</p>
-              <p className="text-end"><strong>Att betala: {calculateGrandTotal()} kr</strong></p>
+              <div className="mt-3">
+                <strong>Fraktkostnad:</strong> {shippingCost} SEK
+              </div>
+              <div className="mt-2">
+                <strong>Totalt:</strong> {calculateGrandTotal()} SEK
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="row mb-4">
-        <div className="col-12">
-          <h5>Leveransinformation</h5>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <div className="form-row">
-              <div className="form-group col-md-6">
-                <label htmlFor="firstName"><FaUser /> Förnamn</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="lastName">Efternamn</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="address"><FaAddressCard /> Adress</label>
-              <input
-                type="text"
-                className="form-control"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-6">
-                <label htmlFor="city"><FaAddressCard /> Stad</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="postalCode">Postnummer</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="postalCode"
-                  value={formData.postalCode}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="country">Land</label>
-              <input
-                type="text"
-                className="form-control"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email"><FaEnvelope /> E-post</label>
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="phoneNumber"><FaPhone /> Telefonnummer</label>
-              <input
-                type="tel"
-                className="form-control"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="shippingMethod">Fraktmetod</label>
-              <select
-                className="form-control"
-                name="shippingMethod"
-                value={formData.shippingMethod}
-                onChange={handleShippingChange}
-              >
-                <option value="standard">Standard (50 kr)</option>
-                <option value="express">Express (100 kr)</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="cardNumber"><FaCreditCard /> Kortnummer</label>
-              <input
-                type="text"
-                className="form-control"
-                name="cardNumber"
-                value={formData.cardNumber}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-row">
-              <div className="form-group col-md-6">
-                <label htmlFor="cardExpiry">Utgångsdatum</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="cardExpiry"
-                  value={formData.cardExpiry}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="cardCvc">CVC</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="cardCvc"
-                  value={formData.cardCvc}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            {error && <div className="alert alert-danger">{error}</div>}
-            <button
-              className="btn btn-primary"
-              onClick={handleCheckout}
-              disabled={loading}
-            >
-              {loading ? 'Behandlar...' : 'Slutför köp'}
-            </button>
-          </form>
+      <h5>Leveransinformation</h5>
+      <form onSubmit={(e) => { e.preventDefault(); handleCheckout(); }}>
+        <div className="mb-3">
+          <label className="form-label"><FaUser /> Förnamn:</label>
+          <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleChange} required />
         </div>
-      </div>
+        <div className="mb-3">
+          <label className="form-label"><FaUser /> Efternamn:</label>
+          <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label"><FaAddressCard /> Adress:</label>
+          <input type="text" className="form-control" name="address" value={formData.address} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label"><FaAddressCard /> Stad:</label>
+          <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label"><FaEnvelope /> E-post:</label>
+          <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label"><FaAddressCard /> Postnummer:</label>
+          <input type="text" className="form-control" name="postalCode" value={formData.postalCode} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label"><FaAddressCard /> Land:</label>
+          <input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Fraktmetod:</label>
+          <select className="form-select" name="shippingMethod" value={formData.shippingMethod} onChange={handleShippingChange}>
+            <option value="standard">Standard (50 SEK)</option>
+            <option value="express">Express (100 SEK)</option>
+          </select>
+        </div>
+        <div className="mb-3">
+          <label className="form-label"><FaPhone /> Telefonnummer:</label>
+          <input type="tel" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
+        </div>
+        <h5>Betalningsinformation</h5>
+        <div className="mb-3">
+          <label className="form-label"><FaCreditCard /> Kortnummer:</label>
+          <input type="text" className="form-control" name="cardNumber" value={formData.cardNumber} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Utgångsdatum:</label>
+          <input type="text" className="form-control" name="cardExpiry" value={formData.cardExpiry} onChange={handleChange} placeholder="MM/ÅÅ" required />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">CVC:</label>
+          <input type="text" className="form-control" name="cardCvc" value={formData.cardCvc} onChange={handleChange} required />
+        </div>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Bearbetar...' : 'Slutför köp'}
+        </button>
+      </form>
 
-      <ToastContainer />
-
-      {/* Loading Modal */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} backdrop="static" keyboard={false}>
-        <Modal.Header>
-          <Modal.Title>Bearbetar din beställning...</Modal.Title>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Laddar...</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>Vänligen vänta medan vi behandlar din beställning.</p>
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Laddar...</span>
-          </div>
-        </Modal.Body>
+        <Modal.Body>Vänligen vänta medan vi behandlar din beställning.</Modal.Body>
       </Modal>
+      <ToastContainer />
     </div>
   );
 }
+
 
 
 

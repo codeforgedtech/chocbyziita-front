@@ -34,6 +34,143 @@
   border: none;
   outline: none;
 }
+.cart-wrapper {
+  position: relative;
+}
+
+.cart-wrapper {
+  position: relative;
+}
+
+.cart-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width:600px;
+  background-color: white; /* Light cream background */
+  border: 1px solid #F5F5F4; /* Light brown border */
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.cart-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Cart item styling */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-item-img {
+  width: 60px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #d7b38c; /* Soft brown border */
+}
+
+.cart-item-details h4 {
+  color: black; /* Dark chocolate color for text */
+  font-size: 18px;
+  margin: 0;
+}
+
+.cart-item-details p {
+  font-size: 15px;
+  margin: 0;
+  color: black; /* Medium brown for price text */
+}
+
+.cart-item-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.cart-item-actions {
+  background-color:white; /* Light brown button background */
+  
+  color: black;
+border: solid 1px black;
+  padding: 2px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cart-item-transperant button{
+  background-color: white;
+  width: 30px;
+  border:0;
+  font-size: 14px;
+}
+.cart-item-transperant{
+  font-size: 14px;
+}
+.cart-item-actions button:hover {
+  background-color: white; /* Darker brown on hover */
+}
+
+/* Cart total section */
+.cart-total {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.cart-total h4 {
+  color: black; /* Dark chocolate color */
+  font-weight: bold;
+}
+
+/* Buttons: Proceed to checkout and Cancel */
+.btn-primary-cart{
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: #4E342E;
+}
+
+.btn-primary-cart{
+  background-color: #7a5230; /* Dark chocolate button for checkout */
+}
+
+.btn-primary:hover {
+  background-color: #5c3e20; /* Darker chocolate color on hover */
+}
+.cart-item-trash{
+border:0;
+background-color: white;
+}
+.btn-cancel-cart {
+  background-color: #d7b38c; /* Lighter brown for cancel */
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: solid 1px #4E342E;
+  cursor: pointer;
+  color: black;
+  background-color: white;
+}
+
+
+
+/* Badge styling for the cart icon */
+.position-absolute.badge {
+  background-color: #c69c6d; /* Light brown for cart badge */
+}
+
 
 
 
@@ -51,5 +188,7 @@
       font-size: 1.25rem;
   }
 }
+
+
 
   

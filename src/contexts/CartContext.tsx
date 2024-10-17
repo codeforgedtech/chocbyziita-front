@@ -29,13 +29,13 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(item => item.product.id === product.id);
       
-      // Kontrollera lagersaldo
+      // Check stock availability
       const currentQuantity = existingItem ? existingItem.quantity : 0;
       const newQuantity = currentQuantity + quantity;
 
       if (newQuantity > product.stock) {
         alert(`Det finns endast ${product.stock} enheter kvar av denna produkt.`);
-        return prevItems;  // Returnerar de befintliga varorna utan att lägga till fler
+        return prevItems;  // Return current items without adding more
       }
 
       if (existingItem) {
@@ -82,7 +82,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Calculate total price
   const totalPrice = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
-
+  
   return (
     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart, totalPrice }}>
       {children}
