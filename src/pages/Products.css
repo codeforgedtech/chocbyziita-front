@@ -5,14 +5,14 @@
   font-size: 20px;
 }
 .custom-cart{
-  width: 120px;
-  height: 30px;
+  width: 100%;
+  height: auto;
   background-color: bisque;
   border-radius: 6px;
 
 }
 .custom-container{
-  width: 1300px; /* Full bredd av viewport */
+  max-width: 1300px; /* Full bredd av viewport */
   margin: auto;
   padding: 0; /* Ta bort padding */
 justify-content: center;

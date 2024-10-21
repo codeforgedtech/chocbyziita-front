@@ -2,7 +2,7 @@ import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Products from './pages/Products';
-import Cart from './components/Cart';
+
 import Checkout from './components/Checkout';
 import Login from './components/Login';
 import SignUp from "./components/SignUp"
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<SingleProduct />} />
-        <Route path="/cart" element={<Cart />} />
+ 
         <Route path="/checkout" element={<Checkout/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

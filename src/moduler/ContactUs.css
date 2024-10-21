@@ -1,0 +1,74 @@
+/* ContactUs.css */
+.contact-container {
+    max-width: 1400px; /* Max bredd */
+    margin: 10px auto; /* Centrera */
+    padding: 20px; /* Padding */
+    background-color: #f8f9fa; /* Ljus bakgrundsfärg */
+    border-radius: 8px; /* Rundade hörn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Skugga för djup */
+  }
+  
+  .contact-image {
+    width: 300px; /* Sätt en fast bredd för bilden */
+    height: auto; /* Automatiskt höjd för att behålla proportioner */
+  }
+  
+  .contact-text {
+    flex: 1; /* Gör textavsnittet flexibelt */
+  }
+  
+  .contact-container h2 {
+    text-align: left; /* Vänsterjustera rubriken */
+    margin-bottom: 20px;
+  }
+  
+  .contact-container form {
+    display: flex;
+    flex-direction: column; /* Styla formens innehåll i kolumn */
+    align-items: flex-start; /* Vänsterjustera formulärinnehållet */
+  }
+  
+  .contact-container input,
+  .contact-container textarea {
+    width: 100%; /* Full bredd */
+    padding: 10px;
+    margin-bottom: 10px; /* Utrymme mellan input och knapp */
+    border: 1px solid #ced4da; /* Grå kant */
+    border-radius: 4px; /* Rundade hörn på input */
+  }
+  
+  .contact-container .btn {
+    width: 100%; /* Full bredd för knappen */
+  }
+  
+  .success-message {
+    color: green;
+    text-align: left; /* Vänsterjustera meddelandet */
+    margin-top: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: left; /* Vänsterjustera meddelandet */
+    margin-top: 10px;
+  }
+  .custom-contact{
+    width: 60%;
+  height: auto;
+  background-color: bisque;
+  border-radius: 6px;
+color:black;
+border: 2px solid #7a5230;
+
+  }
+  .custom-contact:hover{
+    background-color: #7a5230;
+    border: 2px solid bisque;
+}
+  /* Responsivitet */
+  @media (max-width: 768px) {
+    .contact-container {
+      flex-direction: column; /* Ställ in kolumnlayout för mobila enheter */
+    }
+  }
+  

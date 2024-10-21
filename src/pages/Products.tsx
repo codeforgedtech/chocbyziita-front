@@ -101,7 +101,7 @@ export default function Products() {
                 {/* Product Description */}
                 <div className="card-body text-center">
                   <h5 className="card-title text-dark">{product.name}</h5>
-                  <p className="card-text fw-bold text-dark mb-6 custom-text">{calculatePriceWithTax(product.price, product.tax)} kr</p>
+                 
                   <p className="text-muted small">
                     {isOutOfStock ? 'Slut i lager' : `I lager (${product.stock} st)`}
                   </p>
@@ -139,8 +139,10 @@ export default function Products() {
                     </div>
                   )}
 
-                  {/* Add to Cart Button */}
-                  <button
+<p className="card-text fw-bold text-dark mb-6 custom-text">{calculatePriceWithTax(product.price, product.tax)} kr</p>
+                  
+                </div>
+                <button
                     className="custom-cart"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -153,10 +155,10 @@ export default function Products() {
                     }}
                     disabled={isOutOfStock || isAddToCartDisabled} // Disable if out of stock or cart has max quantity
                   >
-                    <i className="bi bi-basket-fill"></i>
+                   Lägg i Varukorgen
                   </button>
-                </div>
               </div>
+              
             </div>
           );
         })}

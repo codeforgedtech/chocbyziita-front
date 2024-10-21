@@ -1,7 +1,7 @@
-/* Top bar styles */
+/* ------------------ Top bar styles ------------------ */
 .top-bar {
   background-color: white;
-  
+  margin-top: 10px;
 }
 
 .phone-number {
@@ -9,35 +9,76 @@
   color: black;
 }
 
-
-
-.icons .badge {
-  font-size: 0.75rem;
-  color: white;
-  background-color: lightskyblue;
-  padding: 0.25rem 0.5rem;
-  border-radius: 50%;
+@media (max-width: 768px) {
+  .phone-number {
+    font-size: 0.875rem;
+  }
 }
 
-/* Navbar styles */
+/* ------------------ Logo styles ------------------ */
+.logo-container {
+  display: flex;
+  justify-content: center; /* Centrerar horisontellt */
+  align-items: center; /* Centrerar vertikalt (om du vill ha detta) */
+  height: 100px; /* Justera beroende på behov */
+}
+
+.logo-centered {
+  max-width: 150px; /* Justera logotypens storlek */
+}
+
+.logo h1 {
+  font-size: 1.5rem; /* För mobilläge */
+}
+
+/* ------------------ Navbar styles ------------------ */
+.navbar .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.navbar-toggler {
+  position: absolute;
+  right: 20px;
+  top: -50px;
+  transform: translateY(-50%);
+  border: none;
+  outline: none;
+}
+
+@media (min-width: 992px) {
+  .navbar-toggler {
+    display: none; /* Dölj hamburgaren i desktop-läge */
+  }
+}
+
+.collapse.navbar-collapse {
+  width: 100%;
+  text-align: center; /* Menyn visas centrerat under logotypen */
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: center; /* Centrerar menyn horisontellt */
+  width: 100%;
+}
+
 .navbar-nav .nav-link {
   font-size: 1.4rem;
   color: #6b4e34;
   transition: color 0.2s ease-in-out;
+  margin: 0 15px; 
+  text-align: center; /* Ser till att texten är centrerad */
+  flex-grow: 1;
 }
 
 .navbar-nav .nav-link:hover {
   color: #6b4e34;
 }
 
-.navbar-light .navbar-toggler {
-  border: none;
-  outline: none;
-}
-.cart-wrapper {
-  position: relative;
-}
-
+/* ------------------ Cart styles ------------------ */
 .cart-wrapper {
   position: relative;
 }
@@ -46,7 +87,7 @@
   position: absolute;
   top: 100%;
   right: 0;
-  width:600px;
+  width: 600px;
   background-color: white; /* Light cream background */
   border: 1px solid #F5F5F4; /* Light brown border */
   border-radius: 8px;
@@ -60,7 +101,6 @@
   overflow-y: auto;
 }
 
-/* Cart item styling */
 .cart-item {
   display: flex;
   justify-content: space-between;
@@ -77,58 +117,56 @@
 }
 
 .cart-item-details h4 {
-  color: black; /* Dark chocolate color for text */
-  font-size: 18px;
+  font-size: 14px;
+  color: black;
   margin: 0;
 }
 
 .cart-item-details p {
-  font-size: 15px;
+  font-size: 12px;
+  color: black;
   margin: 0;
-  color: black; /* Medium brown for price text */
 }
 
 .cart-item-actions {
   display: flex;
   gap: 5px;
-}
-
-.cart-item-actions {
-  background-color:white; /* Light brown button background */
-  
+  background-color: white;
   color: black;
-border: solid 1px black;
+  border: solid 1px black;
   padding: 2px;
   font-size: 14px;
   border-radius: 4px;
   cursor: pointer;
 }
-.cart-item-transperant button{
-  background-color: white;
-  width: 30px;
-  border:0;
+
+.cart-item-transperant {
   font-size: 14px;
-}
-.cart-item-transperant{
-  font-size: 14px;
-}
-.cart-item-actions button:hover {
-  background-color: white; /* Darker brown on hover */
 }
 
-/* Cart total section */
+.cart-item-transperant button {
+  background-color: white;
+  width: 30px;
+  border: 0;
+  font-size: 14px;
+}
+
+.cart-item-actions button:hover {
+  background-color: white;
+}
+
 .cart-total {
   margin-top: 10px;
   text-align: right;
 }
 
 .cart-total h4 {
-  color: black; /* Dark chocolate color */
+  color: black;
   font-weight: bold;
 }
 
-/* Buttons: Proceed to checkout and Cancel */
-.btn-primary-cart{
+/* ------------------ Buttons ------------------ */
+.btn-primary-cart {
   width: 100%;
   margin-top: 10px;
   padding: 8px;
@@ -136,23 +174,16 @@ border: solid 1px black;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  color: white;
-  background-color: #4E342E;
-}
-
-.btn-primary-cart{
   background-color: #7a5230; /* Dark chocolate button for checkout */
+  color: white;
 }
 
 .btn-primary:hover {
   background-color: #5c3e20; /* Darker chocolate color on hover */
 }
-.cart-item-trash{
-border:0;
-background-color: white;
-}
+
 .btn-cancel-cart {
-  background-color: #d7b38c; /* Lighter brown for cancel */
+  background-color: white;
   width: 100%;
   margin-top: 10px;
   padding: 8px;
@@ -161,33 +192,62 @@ background-color: white;
   border: solid 1px #4E342E;
   cursor: pointer;
   color: black;
-  background-color: white;
 }
 
-
-
-/* Badge styling for the cart icon */
+/* ------------------ Badge styling ------------------ */
 .position-absolute.badge {
   background-color: #c69c6d; /* Light brown for cart badge */
 }
 
-
-
-
-/* Mobile specific styles */
+/* ------------------ Mobile specific styles ------------------ */
 @media (max-width: 768px) {
-  .phone-number {
-      font-size: 0.875rem;
+  .cart-dropdown {
+    max-width: 300px;
+    padding: 10px;
   }
 
-  .logo h1 {
-      font-size: 1.5rem;
+  .cart-item {
+    flex-direction: row;
+    align-items: flex-start;
   }
 
-  .icons .btn-link {
-      font-size: 1.25rem;
+  .cart-item-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 28px;
+  }
+
+  .cart-item-details {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .cart-item-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-primary-cart,
+  .btn-cancel-cart {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .cart-content {
+    max-height: 250px;
+  }
+
+  .cart-item-transperant button {
+    width: 20px;
+    margin-right: 10px;
   }
 }
+
+
+
+
+
+ 
 
 
 

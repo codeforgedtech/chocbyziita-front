@@ -1,6 +1,8 @@
 import React from 'react';
-import ImageSlider from '../components/Slider';
+import ImageSlider from '../moduler/Slider';
 import Products from './Products';
+
+import ContactUs from '../moduler/ContactUs';
 
 const Home: React.FC = () => {
   return (
@@ -12,6 +14,7 @@ const Home: React.FC = () => {
       <section className="featured-products">
     
         <Products />
+        <ContactUs />
       </section>
     </div>
   );

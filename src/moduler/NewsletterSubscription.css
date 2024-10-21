@@ -1,0 +1,62 @@
+/* NewsletterSubscription.css */
+.newsletter-container {
+    max-width: 1400px; /* Max bredd */
+    margin: 15px auto; /* Centrera */
+    padding: 20px; /* Padding */
+    background-color: #ffffff;
+    border-radius: 8px; /* Rundade hörn */
+    box-shadow: 0 4px 8px rgba(44, 9, 9, 0.1); 
+  
+  }
+  
+  .newsletter-image {
+    width: 300px; /* Sätt en fast bredd för bilden */
+    height: auto; /* Automatiskt höjd för att behålla proportioner */
+  }
+  
+  .newsletter-text {
+    flex: 1; /* Gör textavsnittet flexibelt */
+  }
+  
+  .newsletter-container h2 {
+    text-align: left; /* Vänsterjustera rubriken */
+    margin-bottom: 20px;
+  }
+  
+  .newsletter-container form {
+    display: flex;
+    flex-direction: column; /* Styla formens innehåll i kolumn */
+    align-items: flex-start; /* Vänsterjustera formulärinnehållet */
+  }
+  
+  .newsletter-container input {
+    width: 100%; /* Full bredd */
+    padding: 10px;
+    margin-bottom: 10px; /* Utrymme mellan input och knapp */
+    border: 1px solid #ced4da; /* Grå kant */
+    border-radius: 4px; /* Rundade hörn på input */
+  }
+  
+  .newsletter-container .btn {
+    width: 100%; /* Full bredd för knappen */
+  }
+  
+  .success-message {
+    color: green;
+    text-align: left; /* Vänsterjustera meddelandet */
+    margin-top: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: left; /* Vänsterjustera meddelandet */
+    margin-top: 10px;
+  }
+  
+  /* Responsivitet */
+  @media (max-width: 768px) {
+    .newsletter-container {
+      flex-direction: column; /* Ställ in kolumnlayout för mobila enheter */
+    }
+  }
+  

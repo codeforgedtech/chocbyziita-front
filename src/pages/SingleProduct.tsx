@@ -12,7 +12,6 @@ export default function SingleProduct() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const { addToCart, cartItems } = useCart(); 
 
@@ -69,10 +68,8 @@ export default function SingleProduct() {
   if (!product) return <p>Ingen produkt hittades.</p>;
 
   const priceWithVAT = product.price * (1 + VAT_RATE);
-
   const imageUrls = product.image_url.length > 0 ? product.image_url : [];
   const placeholderImage = 'https://via.placeholder.com/300';
-
   const currentCartQuantity = getCartItemQuantity(product.id);
   const isAddToCartDisabled = currentCartQuantity >= product.stock;
 
@@ -83,7 +80,7 @@ export default function SingleProduct() {
           <img
             src={currentImage || placeholderImage}
             alt={product.name}
-            className="img-fluid single-product-image mb-4"
+            className="img-fluid single-product-image mb-4 rounded shadow-sm"
           />
 
           <div className="row g-2">
@@ -92,7 +89,7 @@ export default function SingleProduct() {
                 <img
                   src={imageUrl || placeholderImage}
                   alt={`image ${index}`}
-                  className="img-fluid smaller-image"
+                  className="img-fluid smaller-image rounded"
                   onClick={() => handleImageClick(imageUrl)}
                 />
               </div>
@@ -102,57 +99,57 @@ export default function SingleProduct() {
 
         <div className="col-md-6">
           <h1 className="product-title">{product.name}</h1>
-          
-         
-<p className="description" dangerouslySetInnerHTML={{ __html: product.description }} />
+          <p className="description" dangerouslySetInnerHTML={{ __html: product.description }} />
           <p className="ingredients"><strong>Ingredienser:</strong> {product.ingredients.join(', ')}</p>
           <p className="categories"><strong>Kategorier:</strong> {product.categories.join(', ')}</p>
           <p className="stock-status">
-  Lager status: <span className={`status-dot ${product.stock > 0 ? 'bg-success' : 'bg-danger'}`}></span>
-</p>
+            Lager status: <span className={`status-dot ${product.stock > 0 ? 'bg-success' : 'bg-danger'}`}></span>
+          </p>
+      
+          <div className="quantity-selector mb-3 d-flex align-items-center">
           <p className="price">{priceWithVAT.toFixed(2)} kr</p>
-          <div className="quantity-selector mb-6 d-flex align-items-center">
-    <label htmlFor="quantity" className="form-label me-2">Antal:</label>
-    
-    <button 
-        className="btn btn-secondary" 
-        onClick={() => setQuantity(prev => Math.max(1, prev - 1))} 
-        disabled={quantity <= 1}
-    >
-        -
-    </button>
-    
-    <input
-        type="number"
-        className="form-control mx-2 text-center"
-        id="quantity"
-        value={quantity}
-        min="1"
-        max={product.stock - currentCartQuantity}
-        readOnly
-    />
-    
-    <button 
-        className="btn btn-secondary" 
-        onClick={() => setQuantity(prev => Math.min(product.stock - currentCartQuantity, prev + 1))} 
-        disabled={product.stock - currentCartQuantity <= quantity}
-    >
-        +
-    </button>
-</div>
-
-<button 
-    className="btn btn-primary w-100 mt-3"
-    onClick={handleAddToCart}
-    disabled={product.stock === 0 || isAddToCartDisabled}
->
-    {product.stock > 0 ? (isAddToCartDisabled ? 'Max antal i varukorg' : 'Lägg till i kundvagn') : 'Slut i lager'}
-</button>
-</div>
+            <div className="input-group input-group-sm w-50 custom-div">
+            <button 
+                className="bbtn btn-outline-secondar" 
+                onClick={() => setQuantity(prev => Math.max(1, prev - 1))} 
+                disabled={quantity <= 1}
+            >
+              <i className="fas fa-minus"></i>
+            </button>
+            
+            <input
+                type="number"
+                className="form-control text-center"
+                id="quantity"
+                value={quantity}
+                min="1"
+                max={product.stock - currentCartQuantity}
+                readOnly
+            />
+            <button 
+                className="btn btn-outline-secondary" 
+                onClick={() => setQuantity(prev => Math.min(product.stock - currentCartQuantity, prev + 1))} 
+                disabled={product.stock - currentCartQuantity <= quantity}
+            >
+             <i className="fas fa-plus"></i>
+            </button>
+          </div>
+         
+          </div>
+          
+          <button 
+              className="custom-cart-singel"
+              onClick={handleAddToCart}
+              disabled={product.stock === 0 || isAddToCartDisabled}
+          >
+              {product.stock > 0 ? (isAddToCartDisabled ? 'Max antal ' : 'Lägg i kundvagn') : 'Slut i lager'}
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
 
 
 
