@@ -1,27 +1,52 @@
-// Footer.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Footer.css'; // CSS för footern
+import { FaFacebook, FaInstagram} from 'react-icons/fa';
+import './Footer.css'; // Se till att du har en CSS-fil för stilar
 
-const Footer: React.FC = () => {
+const Footer = () => {
     return (
-        <footer className="footer bg-dark text-light py-3">
-            <div className="container text-center">
-                <p>&copy; {new Date().getFullYear()} Praline Shop. All Rights Reserved.</p>
-                <ul className="list-inline">
-                    <li className="list-inline-item">
-                        <Link to="/about" className="text-light">About Us</Link>
-                    </li>
-                    <li className="list-inline-item">
-                        <Link to="/contact" className="text-light">Contact</Link>
-                    </li>
-                    <li className="list-inline-item">
-                        <Link to="/privacy" className="text-light">Privacy Policy</Link>
-                    </li>
-                </ul>
+        <footer>
+            <div className="container">
+                <div className="row py-3">
+                    {/* Vänster kolumn - Företagsnamn och adress */}
+                    <div className="col text-start">
+                        <h5>Choc By Z</h5>
+                        <p>Adress: Exempelgatan 1, 123 45 Staden</p>
+                        <p>Org. nr: 123456-7890</p>
+                    </div>
+
+                    {/* Mitten kolumn - Sociala medier och nyhetsbrev */}
+                    <div className="col text-center">
+                        <h5>Följ oss</h5>
+                        <div className="social-icons">
+                            <a href="#" className="mx-2"><FaFacebook /></a>
+                         
+                            <a href="#" className="mx-2"><FaInstagram /></a>
+                            
+                        </div>
+                        <h6>Nyhetsbrev</h6>
+                        <form>
+                            <input
+                                type="email"
+                                className="form-control mb-2"
+                                placeholder="Din e-post"
+                                required
+                            />
+                            <button type="submit" className="btn btn-primary">Prenumerera</button>
+                        </form>
+                    </div>
+
+                    {/* Höger kolumn - Kontaktinformation */}
+                    <div className="col text-start footer-size">
+                        <h5>Kontakt</h5>
+                        <p>Email: kontakt@ziita.se</p>
+                        <p>Telefon: +46 123 456 789</p>
+                    </div>
+                </div>
             </div>
         </footer>
     );
 };
 
 export default Footer;
+
+

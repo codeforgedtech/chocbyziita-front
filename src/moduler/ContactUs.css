@@ -9,8 +9,8 @@
   }
   
   .contact-image {
-    width: 300px; /* Sätt en fast bredd för bilden */
-    height: auto; /* Automatiskt höjd för att behålla proportioner */
+    max-width: 400px; /* Sätt en fast bredd för bilden */
+    max-height: 300px; /* Automatiskt höjd för att behålla proportioner */
   }
   
   .contact-text {

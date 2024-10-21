@@ -8,7 +8,74 @@
   font-size: 1rem;
   color: black;
 }
+.search-bar {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease-in-out;
+}
+.search-link{
+  text-decoration: none;
+  color: black;
+  font-weight: 400;
+}
+.search-bar.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
+.search-bar input {
+  width: calc(100% - 40px);
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 8px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.search-bar button:hover {
+  background-color: #555;
+}
+
+/* Sökresultat */
+.search-results {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.search-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-results li {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-results li:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .phone-number {
     font-size: 0.875rem;
@@ -60,9 +127,11 @@
 }
 
 .navbar-nav {
-  display: flex;
+
   justify-content: center; /* Centrerar menyn horisontellt */
-  width: 100%;
+  width: 5%;
+  text-align: center;
+  
 }
 
 .navbar-nav .nav-link {
@@ -240,6 +309,13 @@
   .cart-item-transperant button {
     width: 20px;
     margin-right: 10px;
+  }
+  .navbar-nav {
+
+    justify-content: center; /* Centrerar menyn horisontellt */
+    width: 100%;
+    text-align: center;
+    
   }
 }
 
