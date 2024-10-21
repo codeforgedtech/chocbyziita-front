@@ -1,16 +1,33 @@
-/* Footer.css */
 .footer {
-    
-    bottom: 0;
-    width: 100%;
-    background-color: #343a40; /* Mörk bakgrund */
-    color: white; /* Vit text */
+    width: 100%; /* Täcker hela bredden */
+    position: relative; /* Gör att footern kan placeras relativt */
+    bottom: 0; /* Placera den längst ner */
+    left: 0; /* Placera den vid vänsterkant */
+    background-color: #f8f9fa; /* Färg på footern */
+    padding: 20px 0; /* Padding för att ge lite utrymme inuti footern */
+    justify-content: center;
+    align-items: center;
 }
 
-.footer a {
-    text-decoration: none; /* Ingen understrykning på länkar */
+.container {
+    max-width: 1300px; /* Justera efter din design */
+   margin: auto;
+    padding: 0; /* Ta bort padding */
+ /* Ta bort padding */
+
 }
 
-.footer a:hover {
-    text-decoration: underline; /* Understrykning vid hover */
+.footer h5, .footer h6 {
+    margin: 10px 0;
 }
+
+.social-icons a {
+    color: #007bff; /* Blå färg för ikoner */
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #0056b3; /* Mörkare blå vid hover */
+}
+

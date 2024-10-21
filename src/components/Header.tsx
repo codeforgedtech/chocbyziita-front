@@ -4,20 +4,32 @@ import { supabase } from '../supabaseClient';
 import './Header.css';
 import { useNavigate } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaRegUser, FaSearch, FaHeart, FaShoppingBag, FaTrash } from "react-icons/fa";
+import { FaRegUser, FaSearch, FaRegHeart, FaShoppingBag, FaTrash } from "react-icons/fa";
 import logo from "../assets/Choc by Z.png";
 import { useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap'; // Importera Modal
+import { Modal , ListGroup } from 'react-bootstrap';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image_url: string;
+  stock: number;
+}
 
 export default function Header() {
     const { cartItems, removeFromCart, updateQuantity } = useCart();
     const [userEmail, setUserEmail] = useState<string | null>(null);
-    const [userFirstName, setUserFirstName] = useState<string | null>(null); // Förnamn
-    const [isCartOpen, setIsCartOpen] = useState(false); // För att växla varukorgens dropdown
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // För att växla användarmenyn
-    const [isNavOpen, setIsNavOpen] = useState(false); // För att växla navigationsmenyn
-    const [showModal, setShowModal] = useState(false); // För att styra visningen av modalen
-    const [modalMessage, setModalMessage] = useState(''); // Meddelande för modalen
+    const [userFirstName, setUserFirstName] = useState<string | null>(null);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [isNavOpen, setIsNavOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false); // För att växla sökfältet
+    const [searchTerm, setSearchTerm] = useState(''); // För att hålla koll på söktermen
+    const [searchResults, setSearchResults] = useState<Product[]>([]); // Sökresultat
+    const [showModal, setShowModal] = useState(false);
+    const [hasSearched, setHasSearched] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,7 +44,6 @@ export default function Header() {
                 const user = session.user;
                 setUserEmail(user.email || null);
                 
-                // Hämta användarens metadata från databasen
                 const { data: userData, error: userError } = await supabase
                     .from('users')
                     .select('first_name')
@@ -42,7 +53,7 @@ export default function Header() {
                 if (userError) {
                     console.error('Error fetching user data:', userError.message);
                 } else {
-                    setUserFirstName(userData?.first_name || null); // Sätta förnamn
+                    setUserFirstName(userData?.first_name || null);
                 }
             } else {
                 setUserEmail(null); 
@@ -59,8 +70,7 @@ export default function Header() {
             console.error('Error logging out:', error.message);
         } else {
             setUserEmail(null); 
-            setUserFirstName(null); // Återställ förnamnet vid utloggning
-            console.log('Användaren har loggats ut');
+            setUserFirstName(null);
         }
     };
 
@@ -74,15 +84,17 @@ export default function Header() {
     };
 
     const toggleUserMenu = () => {
-        setIsUserMenuOpen(!isUserMenuOpen); // Växla användarmenyn
+        setIsUserMenuOpen(!isUserMenuOpen);
     };
 
     const toggleNav = () => {
-        setIsNavOpen(!isNavOpen); // Växla navigationsmenyn
+        setIsNavOpen(!isNavOpen);
     };
+    
     const closeNav = () => {
-        setIsNavOpen(false); // Stänger navigationsmenyn
+        setIsNavOpen(false);
     };
+
     const getTotalPriceWithTax = () => {
         const TAX_RATE = 0.25;
         return cartItems.reduce((total, item) => {
@@ -93,21 +105,44 @@ export default function Header() {
 
     const handleQuantityChange = (productId: number, newQuantity: number, maxQuantity: number) => {
         if (newQuantity > maxQuantity) {
-            setModalMessage(`Det finns bara ${maxQuantity} enheter i lager för den här produkten.`); // Ställ in meddelandet
-            setShowModal(true); // Visa modalen
+            setModalMessage(`Det finns bara ${maxQuantity} enheter i lager för den här produkten.`);
+            setShowModal(true);
             updateQuantity(productId, maxQuantity);
         } else if (newQuantity < 1) {
-            setModalMessage(`Antalet måste vara minst 1.`); // Ställ in meddelandet
-            setShowModal(true); // Visa modalen
+            setModalMessage(`Antalet måste vara minst 1.`);
+            setShowModal(true);
             updateQuantity(productId, 1);
         } else {
             updateQuantity(productId, newQuantity);
         }
     };
 
-    // Funktion för att stänga modalen
     const handleCloseModal = () => {
         setShowModal(false);
+    };
+    const closeSearch = () => {
+        setIsSearchOpen(false); // Stänger sökfältet
+    };
+    // Hantera sökningen
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setHasSearched(true); // Sätta hasSearched till true när en sökning görs
+    
+        const { data: products, error } = await supabase
+            .from('products')
+            .select('*')
+            .ilike('name', `%${searchTerm}%`);
+    
+        if (error) {
+            console.error('Error fetching products:', error.message);
+        } else {
+            setSearchResults(products as Product[]);
+        }
+    };
+    
+
+    const toggleSearch = () => {
+        setIsSearchOpen(!isSearchOpen); // Visa eller göm sökfältet
     };
 
     return (
@@ -118,7 +153,6 @@ export default function Header() {
                 </div>
 
                 <div className="icons d-flex align-items-center">
-                    {/* Login/Logout icon */}
                     {userEmail ? (
                         <div className="dropdown">
                             <button className="btn btn" onClick={toggleUserMenu}>
@@ -136,17 +170,14 @@ export default function Header() {
                         </Link>
                     )}
 
-                    {/* Search icon */}
-                    <Link className="btn btn" to="/search">
+                    <button className="btn btn" onClick={toggleSearch}>
                         <FaSearch />
-                    </Link>
+                    </button>
 
-                    {/* Favorites (Heart) icon */}
                     <Link className="btn btn" to="/favorites">
-                        <FaHeart />
+                        <FaRegHeart />
                     </Link>
 
-                    {/* Cart icon with dropdown */}
                     <div className="cart-wrapper position-relative">
                         <button className="btn btn position-relative" onClick={toggleCart}>
                             <FaShoppingBag />
@@ -199,16 +230,15 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-            <div className="logo-container">
-    <Link className="brand" to="/">
-        <img src={logo} alt="logotype" />
-    </Link>
-</div>
-<nav className="navbar navbar-expand-lg navbar-light">
-    <div className="container d-flex justify-content-between align-items-center">
-      
 
-        {/* Hamburger button */}
+            <div className="logo-container">
+                <Link className="brand" to="/">
+                    <img src={logo} alt="logotype" />
+                </Link>
+            </div>
+
+            <nav className="navbar navbar-expand-lg navbar-light">
+    <div className="container d-flex justify-content-between align-items-center">
         <button
             className="navbar-toggler"
             type="button"
@@ -221,9 +251,8 @@ export default function Header() {
         </button>
     </div>
 
-    {/* Navigation links */}
-    <div className={`collapse navbar-collapse justify-content-center ${isNavOpen ? 'show' : ''}`} id="navbarNav">
-        <ul className="navbar-nav mb-2 mb-lg-0 text-center">
+    <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
+        <ul className="navbar-nav   "> {/* Använd mx-auto för att centrera nav-elementen */}
             <li className="nav-item">
                 <Link className="nav-link" to="/" onClick={closeNav}>Hem</Link>
             </li>
@@ -240,6 +269,40 @@ export default function Header() {
     </div>
 </nav>
 
+            {/* Sökfält som fälls ner */}
+            {isSearchOpen && (
+    <div className={`search-bar ${isSearchOpen ? 'show' : ''}`}>
+        <form onSubmit={handleSearch}>
+            <input 
+                type="text"
+                className="form-control"
+                placeholder="Sök produkter..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button type="submit" className="btn btn-primary">Sök</button>
+        </form>
+        
+        {/* Visa sökresultat */}
+        <div className="search-results">
+    {hasSearched && searchResults.length === 0 ? (
+        <p>Inga produkter matchade din sökning.</p>
+    ) : (
+        <ListGroup>
+            {searchResults.map((product) => (
+                <ListGroup.Item key={product.id}>
+                    <Link to={`/product/${product.id}`} className="text-decoration-none search-link" onClick={closeSearch}>
+                        {product.name}
+                    </Link>
+                </ListGroup.Item>
+            ))}
+        </ListGroup>
+    )}
+</div>
+    </div>
+   
+)}
+
             {/* Modal för varning */}
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
@@ -255,6 +318,7 @@ export default function Header() {
         </header>
     );
 }
+
 
 
 

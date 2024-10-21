@@ -10,6 +10,7 @@ import { CartProvider } from './contexts/CartContext';
 import SingleProduct from './pages/SingleProduct';
 import OrderConfirmation from './components/OrderConfirmation';
 import Home from"./pages/Home"
+import Footer from './components/Footer';
 
 function App() {
 ;
@@ -28,7 +29,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
               </Routes>
-
+              <Footer />
     </Router>
     </CartProvider>
   );
