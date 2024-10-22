@@ -1,18 +1,121 @@
+/* Container */
+.container.custom-container {
+  padding: 20px;
+  background-color: #F5F5DC;
 
-.custom-text{
-  font-size: 20px;
 }
-.custom-cart{
+
+/* Titel */
+h2.custom-padding-top {
+  color: #4E342E; /* Mörkbrun färg */
+  margin-bottom: 30px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* Kortstil för produkter */
+.card {
+  border: none; /* Ta bort kant för ett renare utseende */
+  background-color: #F5F5F4; /* Ljusare bakgrund */
+  border-radius: 10px;
+  height: 100%; /* Se till att korten tar upp hela höjden */
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.card-title {
+  color: #4E342E; /* Mörkbrun text */
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-img-top {
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 200px; /* Se till att alla bilder är lika höga */
+}
+
+/* Lagerstatus */
+.text-muted.small {
+  font-size: 0.875rem; 
+  color: #5A5A5A; /* Neutral grå */
+}
+
+/* Knappar */
+.custom-cart {
   width: 100%;
-  height: auto;
-  background-color: bisque;
-  border-radius: 6px;
-
+  padding: 12px; /* Ger lite mer luft runt texten */
+  background-color: #3EA830; /* Grön bakgrund */
+  color:black; /* Beige text */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Mjuk övergång vid hover */
 }
-.custom-container{
-  max-width: 1300px; /* Full bredd av viewport */
-  margin: auto;
-  padding: 0; /* Ta bort padding */
-justify-content: center;
-align-items: center;
+
+.custom-cart:disabled {
+  background-color: #5A5A5A; /* Neutral grå när knappen är inaktiv */
+  color: #F5F5F4; /* Ljusare text när knappen är inaktiv */
+}
+
+.custom-cart:hover:not(:disabled) {
+  background-color: #4E342E; /* Mörkare brun vid hover */
+  color: #F5F5DC; /* Beige text vid hover */
+}
+
+/* Produktbeskrivningens styling */
+.card-body {
+  padding: 15px;
+  text-align: center;
+  flex-grow: 1; /* Fyller upp resten av kortet */
+}
+
+p.card-text.custom-text {
+  color: #4E342E; /* Mörkbrun färg för pris */
+  font-size: 1.3rem; /* Större och mer iögonfallande pris */
+  font-weight: 600;
+}
+
+/* Kvantitetskontroller */
+.input-group.input-group-sm {
+  display: flex;
+  justify-content: center; /* Centrerar kvantitetskontrollerna */
+}
+
+.input-group .btn-outline-secondary {
+  color: #4E342E;
+  border-color: #4E342E;
+}
+
+.input-group .btn-outline-secondary:hover {
+  background-color: #4E342E;
+  color: #F5F5DC;
+}
+
+.input-group input {
+  max-width: 50px;
+  text-align: center;
+}
+
+/* Toast notification */
+.toast {
+  background-color: #8B0000; /* Mörkröd toast */
+  color: #F5F5DC; /* Beige text på toast */
+}
+
+.toast .toast-body {
+  font-size: 1rem;
+}
+
+/* Produktkortens layout */
+.card-footer {
+  padding: 10px;
+  background-color: #F5F5F4; /* Ljusare bakgrund */
+  border-top: none; /* Tar bort eventuell kant mellan innehåll och footer */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

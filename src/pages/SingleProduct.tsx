@@ -13,6 +13,7 @@ export default function SingleProduct() {
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
   const { addToCart, cartItems } = useCart(); 
 
   const VAT_RATE = 0.25;
@@ -31,6 +32,20 @@ export default function SingleProduct() {
 
         setProduct(data as Product);
         setCurrentImage(data?.image_url[0] || '');
+
+        // Hämta liknande produkter
+        if (data && data.categories.length > 0) {
+          const { data: similarData, error: similarError } = await supabase
+            .from('products')
+            .select('*')
+            .contains('categories', data.categories) // Hämta produkter med samma kategorier
+            .neq('id', id) // Exkludera den aktuella produkten
+            .limit(3); // Hämta högst 3 liknande produkter
+
+          if (similarError) throw similarError;
+
+          setSimilarProducts(similarData as Product[]);
+        }
       } catch (error) {
         console.error('Error fetching product:', error);
         setError('Kunde inte hämta produktinformation');
@@ -76,13 +91,12 @@ export default function SingleProduct() {
   return (
     <div className="container custom-container">
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-5">
           <img
             src={currentImage || placeholderImage}
             alt={product.name}
             className="img-fluid single-product-image mb-4 rounded shadow-sm"
           />
-
           <div className="row g-2">
             {imageUrls.slice(0, 4).map((imageUrl, index) => (
               <div className="col-3" key={index}>
@@ -97,7 +111,7 @@ export default function SingleProduct() {
           </div>
         </div>
 
-        <div className="col-md-6">
+        <div className="col-md-5">
           <h1 className="product-title">{product.name}</h1>
           <p className="description" dangerouslySetInnerHTML={{ __html: product.description }} />
           <p className="ingredients"><strong>Ingredienser:</strong> {product.ingredients.join(', ')}</p>
@@ -105,19 +119,19 @@ export default function SingleProduct() {
           <p className="stock-status">
             Lager status: <span className={`status-dot ${product.stock > 0 ? 'bg-success' : 'bg-danger'}`}></span>
           </p>
-      
+
           <div className="quantity-selector mb-3 d-flex align-items-center">
-          <p className="price">{priceWithVAT.toFixed(2)} kr</p>
+            <p className="price">{priceWithVAT.toFixed(2)} kr</p>
             <div className="input-group input-group-sm w-50 custom-div">
-            <button 
-                className="bbtn btn-outline-secondar" 
+              <button 
+                className="btn btn-outline-secondary" 
                 onClick={() => setQuantity(prev => Math.max(1, prev - 1))} 
                 disabled={quantity <= 1}
-            >
-              <i className="fas fa-minus"></i>
-            </button>
-            
-            <input
+              >
+                <i className="fas fa-minus"></i>
+              </button>
+
+              <input
                 type="number"
                 className="form-control text-center"
                 id="quantity"
@@ -125,30 +139,57 @@ export default function SingleProduct() {
                 min="1"
                 max={product.stock - currentCartQuantity}
                 readOnly
-            />
-            <button 
+              />
+              <button 
                 className="btn btn-outline-secondary" 
                 onClick={() => setQuantity(prev => Math.min(product.stock - currentCartQuantity, prev + 1))} 
                 disabled={product.stock - currentCartQuantity <= quantity}
-            >
-             <i className="fas fa-plus"></i>
-            </button>
+              >
+                <i className="fas fa-plus"></i>
+              </button>
+            </div>
           </div>
-         
-          </div>
-          
+
           <button 
-              className="custom-cart-singel"
-              onClick={handleAddToCart}
-              disabled={product.stock === 0 || isAddToCartDisabled}
+            className="custom-cart-singel"
+            onClick={handleAddToCart}
+            disabled={product.stock === 0 || isAddToCartDisabled}
           >
-              {product.stock > 0 ? (isAddToCartDisabled ? 'Max antal ' : 'Lägg i kundvagn') : 'Slut i lager'}
+            {product.stock > 0 ? (isAddToCartDisabled ? 'Max antal ' : 'Lägg i kundvagn') : 'Slut i lager'}
           </button>
+        </div>
+      </div>
+
+      <div className="similar-products mt-3">
+        <h2>Liknande produkter</h2>
+        <div className="row">
+          {similarProducts.map((similarProduct) => (
+            <div className="col-md-2" key={similarProduct.id}>
+              <div className="card mb-2 shadow-sm">
+                <img
+                  src={similarProduct.image_url[0] || placeholderImage}
+                  alt={similarProduct.name}
+                  className="card-img-top"
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{similarProduct.name}</h5>
+                  <p className="card-text">{similarProduct.price.toFixed(2)} kr</p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {/* Länka till produktens sida */}}
+                  >
+                    Visa produkt
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
+
 
 
 

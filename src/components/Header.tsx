@@ -155,7 +155,7 @@ export default function Header() {
                 <div className="icons d-flex align-items-center">
                     {userEmail ? (
                         <div className="dropdown">
-                            <button className="btn btn" onClick={toggleUserMenu}>
+                            <button className="btn btn custom-link" onClick={toggleUserMenu}>
                                 {userFirstName || 'Användare'}
                             </button>
                             {isUserMenuOpen && (
@@ -211,9 +211,9 @@ export default function Header() {
                                                         <button onClick={() => handleQuantityChange(item.product.id, item.quantity + 1, item.product.stock)}>+</button>
                                                     </div>
                                                 </div>
-                                                <button onClick={() => removeFromCart(item.product.id)} className='cart-item-trash'>
+                                                <div onClick={() => removeFromCart(item.product.id)} className='cart-item-trash'>
                                                     <FaTrash />
-                                                </button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

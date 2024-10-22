@@ -1,0 +1,56 @@
+
+.custom-text{
+  font-size: 20px;
+}
+.custom-cart{
+  width: 100%;
+  height: auto;
+  background-color: #F5F5DC;
+  border-radius: 6px;
+
+}
+.custom-container{
+  max-width: 800px; /* Full bredd av viewport */
+  margin:auto;
+  padding: 0; /* Ta bort padding */
+justify-content: center;
+align-items: center;
+
+}
+.custom-padding{
+  margin-left:10px;
+}
+.card {
+  border: none; /* Ta bort kant för ett renare utseende */
+  background-color: #F5F5F4; /* Ljusare bakgrund */
+  border-radius: 10px;
+  height: 100%; /* Se till att korten tar upp hela höjden */
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+.pagination-container {
+  margin-top: 20px; /* Justera avståndet till övriga element */
+}
+.custom-padding-top{
+  padding-top:20px;
+}
+.pagination-button {
+  border-radius: 6px; /* Rundade hörn för knapparna */
+  padding: 5px 5px; /* Mer padding för större knappar */
+/* Smidig övergång för bakgrundsfärgen */
+background-color: #F5F5DC;
+margin-bottom: 10px;
+color:black;
+}
+
+.pagination-button:hover {
+  background-color: #4E342E; /* Ändra bakgrundsfärg vid hover */
+  color: white  ; /* Ändra textfärgen vid hover */
+}
+
+.pagination-text {
+  font-size: 1.2rem; /* Justera textstorleken */
+  font-weight: bold; /* Gör texten fetare */
+  margin: 0 15px; /* Marginaler för bättre avstånd */
+}

@@ -1,19 +1,23 @@
 /* ------------------ Top bar styles ------------------ */
 .top-bar {
-  background-color: white;
-  margin-top: 10px;
+  height: 70px;
+  background-color: #F5F5DC; /* Bakgrundsfärg för top bar */
+  margin-bottom: 20px;
+  border-bottom: #4E342E 2px solid;
 }
 
 .phone-number {
   font-size: 1rem;
-  color: black;
+  color: #4E342E;
+ font-weight: 600;
 }
+
 .search-bar {
   position: absolute;
-  top: 60px;
+  top: 70px;
   right: 20px;
   width: 300px;
-  background-color: #fff;
+  background-color: #fff; /* Vit bakgrund */
   border-radius: 4px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
@@ -22,11 +26,13 @@
   transform: translateY(-20px);
   transition: all 0.3s ease-in-out;
 }
-.search-link{
+
+.search-link {
   text-decoration: none;
-  color: black;
+  color: #4E342E; /* Färg för söklänk */
   font-weight: 400;
 }
+
 .search-bar.show {
   opacity: 1;
   transform: translateY(0);
@@ -35,13 +41,13 @@
 .search-bar input {
   width: calc(100% - 40px);
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #ddd; /* Border färg */
   border-radius: 4px;
 }
 
 .search-bar button {
   padding: 8px;
-  background-color: #333;
+  background-color: #8B0000; /* Mörk röd färg för knapp */
   color: white;
   border: none;
   border-radius: 4px;
@@ -51,7 +57,7 @@
 }
 
 .search-bar button:hover {
-  background-color: #555;
+  background-color: #5A5A5A; /* Grå färg på hover */
 }
 
 /* Sökresultat */
@@ -69,13 +75,14 @@
 
 .search-results li {
   padding: 8px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #F5F5F4; /* Light border */
 }
 
 .search-results li:hover {
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* Bakgrundsfärg vid hover */
   cursor: pointer;
 }
+
 @media (max-width: 768px) {
   .phone-number {
     font-size: 0.875rem;
@@ -104,6 +111,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+ 
 }
 
 .navbar-toggler {
@@ -127,16 +135,14 @@
 }
 
 .navbar-nav {
-
   justify-content: center; /* Centrerar menyn horisontellt */
   width: 5%;
   text-align: center;
-  
 }
 
 .navbar-nav .nav-link {
   font-size: 1.4rem;
-  color: #6b4e34;
+  color: #4E342E; /* Färg för nav-länkar */
   transition: color 0.2s ease-in-out;
   margin: 0 15px; 
   text-align: center; /* Ser till att texten är centrerad */
@@ -144,7 +150,7 @@
 }
 
 .navbar-nav .nav-link:hover {
-  color: #6b4e34;
+  color: #3EA830; /* Grön färg på hover */
 }
 
 /* ------------------ Cart styles ------------------ */
@@ -154,10 +160,10 @@
 
 .cart-dropdown {
   position: absolute;
-  top: 100%;
+  top: 60px;
   right: 0;
-  width: 600px;
-  background-color: white; /* Light cream background */
+  width: 400px;
+  background-color: #F5F5DC; /* Bakgrund för varukorg */
   border: 1px solid #F5F5F4; /* Light brown border */
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -187,13 +193,13 @@
 
 .cart-item-details h4 {
   font-size: 14px;
-  color: black;
+  color: #4E342E; /* Färg för item-namn */
   margin: 0;
 }
 
 .cart-item-details p {
   font-size: 12px;
-  color: black;
+  color: #888888; /* Grå färg för item-beskrivning */
   margin: 0;
 }
 
@@ -202,13 +208,17 @@
   gap: 5px;
   background-color: white;
   color: black;
-  border: solid 1px black;
+  border: solid 1px #4E342E; /* Border färg */
   padding: 2px;
   font-size: 14px;
   border-radius: 4px;
   cursor: pointer;
 }
-
+.cart-item-trash{
+  background-color: transparent;
+  color:#8B0000;
+  cursor: pointer;
+ }
 .cart-item-transperant {
   font-size: 14px;
 }
@@ -221,7 +231,7 @@
 }
 
 .cart-item-actions button:hover {
-  background-color: white;
+  background-color: #F5F5F4; /* Light hover färg */
 }
 
 .cart-total {
@@ -230,7 +240,7 @@
 }
 
 .cart-total h4 {
-  color: black;
+  color: #4E342E; /* Färg för totalpris */
   font-weight: bold;
 }
 
@@ -243,12 +253,12 @@
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  background-color: #7a5230; /* Dark chocolate button for checkout */
+  background-color: #7a5230; /* Mörk chokladfärg för checkout */
   color: white;
 }
 
-.btn-primary:hover {
-  background-color: #5c3e20; /* Darker chocolate color on hover */
+.btn-primary-cart:hover {
+  background-color: #5c3e20; /* Mörkare chokladfärg på hover */
 }
 
 .btn-cancel-cart {
@@ -258,9 +268,9 @@
   padding: 8px;
   font-size: 14px;
   border-radius: 6px;
-  border: solid 1px #4E342E;
+  border: solid 1px #4E342E; /* Border färg */
   cursor: pointer;
-  color: black;
+  color: #4E342E; /* Färg för avbryt-knapp */
 }
 
 /* ------------------ Badge styling ------------------ */
@@ -310,14 +320,15 @@
     width: 20px;
     margin-right: 10px;
   }
-  .navbar-nav {
 
+  .navbar-nav {
     justify-content: center; /* Centrerar menyn horisontellt */
     width: 100%;
     text-align: center;
-    
   }
 }
+
+
 
 
 

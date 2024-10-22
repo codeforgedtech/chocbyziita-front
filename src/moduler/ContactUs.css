@@ -1,74 +1,92 @@
-/* ContactUs.css */
+/* ------------------ ContactUs styles ------------------ */
 .contact-container {
-    max-width: 1400px; /* Max bredd */
-    margin: 10px auto; /* Centrera */
-    padding: 20px; /* Padding */
-    background-color: #f8f9fa; /* Ljus bakgrundsfärg */
-    border-radius: 8px; /* Rundade hörn */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Skugga för djup */
-  }
-  
-  .contact-image {
-    max-width: 400px; /* Sätt en fast bredd för bilden */
-    max-height: 300px; /* Automatiskt höjd för att behålla proportioner */
-  }
-  
-  .contact-text {
-    flex: 1; /* Gör textavsnittet flexibelt */
-  }
-  
-  .contact-container h2 {
-    text-align: left; /* Vänsterjustera rubriken */
-    margin-bottom: 20px;
-  }
-  
-  .contact-container form {
-    display: flex;
-    flex-direction: column; /* Styla formens innehåll i kolumn */
-    align-items: flex-start; /* Vänsterjustera formulärinnehållet */
-  }
-  
-  .contact-container input,
-  .contact-container textarea {
-    width: 100%; /* Full bredd */
-    padding: 10px;
-    margin-bottom: 10px; /* Utrymme mellan input och knapp */
-    border: 1px solid #ced4da; /* Grå kant */
-    border-radius: 4px; /* Rundade hörn på input */
-  }
-  
-  .contact-container .btn {
-    width: 100%; /* Full bredd för knappen */
-  }
-  
-  .success-message {
-    color: green;
-    text-align: left; /* Vänsterjustera meddelandet */
-    margin-top: 10px;
-  }
-  
-  .error-message {
-    color: red;
-    text-align: left; /* Vänsterjustera meddelandet */
-    margin-top: 10px;
-  }
-  .custom-contact{
-    width: 60%;
-  height: auto;
-  background-color: bisque;
-  border-radius: 6px;
-color:black;
-border: 2px solid #7a5230;
-
-  }
-  .custom-contact:hover{
-    background-color: #7a5230;
-    border: 2px solid bisque;
+  max-width: 1300px; /* Max bredd */
+  margin: 10px auto; /* Centrera */
+  padding: 20px; /* Padding */
+  background-color: #F5F5DC; /* Ljus bakgrundsfärg */
+  border-radius: 8px; /* Rundade hörn */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Skugga för djup */
 }
-  /* Responsivitet */
-  @media (max-width: 768px) {
-    .contact-container {
+
+.contact-image {
+  max-width: 600px; /* Sätt en fast bredd för bilden */
+  height: auto; /* Automatiskt höjd för att behålla proportioner */
+  border-radius: 5px;
+}
+
+.contact-text {
+  flex: 1; /* Gör textavsnittet flexibelt */
+}
+
+.contact-container h2 {
+  text-align: left; /* Vänsterjustera rubriken */
+  margin-bottom: 20px;
+  color: #5A5A5A; /* Mörkare textfärg för rubriker */
+}
+
+.contact-container form {
+  display: flex;
+  flex-direction: column; /* Styla formens innehåll i kolumn */
+  align-items: flex-start; /* Vänsterjustera formulärinnehållet */
+}
+
+.contact-container input,
+.contact-container textarea {
+  width: 100%; /* Full bredd */
+  padding: 10px;
+  margin-bottom: 10px; /* Utrymme mellan input och knapp */
+  border: 1px solid #ced4da; /* Grå kant */
+  border-radius: 4px; /* Rundade hörn på input */
+  background-color: #F5F5F4; /* Ljus bakgrund för inputfält */
+  color: #3EA830; /* Textfärg för inputfält */
+}
+
+.contact-container .btn {
+  width: 100%; /* Full bredd för knappen */
+  background-color: #7A5230; /* Bakgrundsfärg för knappen */
+  color: #F5F5DC; /* Textfärg för knappen */
+  border: none; /* Ingen kant */
+  border-radius: 4px; /* Rundade hörn */
+  padding: 10px; /* Padding */
+  cursor: pointer; /* Handpekare vid hover */
+}
+
+.contact-container .btn:hover {
+  background-color: #5A5A5A; /* Mörkare färg vid hover */
+}
+
+.success-message {
+  color: #3EA830; /* Grön färg för framgångsmeddelande */
+  text-align: left; /* Vänsterjustera meddelandet */
+  margin-top: 10px;
+}
+
+.error-message {
+  color: #8B0000; /* Röd färg för felmeddelande */
+  text-align: left; /* Vänsterjustera meddelandet */
+  margin-top: 10px;
+}
+
+.custom-contact {
+  width: 60%;
+  height: auto;
+  background-color: #F5F5F4; /* Ljus bakgrund för kontaktknappen */
+  border-radius: 6px;
+  color: black;
+  border: 2px solid #7A5230; /* Mörk kant */
+  padding: 10px; /* Padding */
+  cursor: pointer; /* Handpekare */
+}
+
+.custom-contact:hover {
+  background-color: #7A5230; /* Mörkare färg vid hover */
+  border: 2px solid #F5F5DC; /* Ljus kant vid hover */
+  color: #F5F5DC; /* Vit text vid hover */
+}
+
+/* Responsivitet */
+@media (max-width: 768px) {
+  .contact-container {
       flex-direction: column; /* Ställ in kolumnlayout för mobila enheter */
-    }
   }
-  
+}

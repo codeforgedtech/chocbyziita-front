@@ -1,3 +1,14 @@
+/* Färger (justera efter behov) */
+:root {
+  --primary-color: #4E342E; /* Mörkbrun färg */
+  --secondary-color: #F5F5DC; /* Ljus beige färg */
+  --danger-color: #8B0000; /* Mörkröd färg */
+  --text-color: #5A5A5A; /* Mörkgrå färg */
+  --background-color: #F5F5F4; /* Ljus bakgrundsfärg */
+  --success-color: #3EA830; /* Grön färg */
+  --gray-color: #888888; /* Grå färg */
+}
+
 /* Gör layouten responsiv och dela i två kolumner */
 .checkout-container {
   display: grid;
@@ -8,14 +19,14 @@
 }
 
 .checkout-form {
-  background: #f9f9f9;
+  background: var(--background-color);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .cart-summary {
-  background: #fff;
+  background: var(--secondary-color);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -23,6 +34,7 @@
 
 .cart-summary h5, .checkout-form h5 {
   margin-bottom: 20px;
+  color: var(--primary-color); /* Rubriker med mörkbrun färg */
 }
 
 .product-item {
@@ -41,10 +53,11 @@
 
 .total-section {
   margin-top: 20px;
+  color: var(--text-color); /* Mörkgrå färg */
 }
 
 .checkout-button {
-  background-color: #28a745;
+  background-color: var(--success-color);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -56,11 +69,11 @@
 }
 
 .checkout-button:disabled {
-  background-color: #999;
+  background-color: var(--gray-color); /* Grå färg för inaktiverad knapp */
 }
 
 .cancel-button {
-  background-color: #dc3545;
+  background-color: var(--danger-color); /* Mörkröd färg */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -68,6 +81,7 @@
   border-radius: 5px;
   width: 100%;
 }
+
 
 
 

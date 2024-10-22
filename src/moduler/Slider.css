@@ -1,12 +1,12 @@
 .slider-container {
-    max-width: 1300px; /* Full bredd av viewport */
+    max-width: 1250px; /* Full bredd av viewport */
     max-height: 400px; /* Full höjd av viewport */
     margin: auto; /* Ta bort marginaler */
     padding: 0; /* Ta bort padding */
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    border: 2px solid black;
+    border: 2px solid #4E342E;
     border-radius: 10px;
  
 }
@@ -22,9 +22,22 @@
     bottom: 20px; /* Justera positionen av navigeringsprickarna */
 }
 
+.slick-dots li button {
+    background-color: #4E342E; /* Färg för navigeringsprickar */
+    opacity: 0.7; /* Lägg till lite transparens */
+}
+
+.slick-dots li.slick-active button {
+    background-color: #3EA830; /* Grön färg för aktiv punkt */
+}
+
 .slick-prev, .slick-next {
     z-index: 1; /* Säkerställ att knapparna är synliga ovanpå bilderna */
-    color: white; /* Ge navigeringspilarna en synlig färg */
+    color: #F5F5DC; /* Vit färg för navigeringspilar */
+}
+
+.slick-prev:before, .slick-next:before {
+    color: #4E342E; /* Färg för pilar */
 }
 @media (max-width: 768px) {
     .slider-container {
@@ -35,7 +48,7 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
-        border: 2px solid black;
+        border: 2px solid #4E342E; /* Använd en av de angivna färgerna för ramen */
         border-radius: 4px;
      
     }
