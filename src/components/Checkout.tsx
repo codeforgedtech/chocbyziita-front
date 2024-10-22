@@ -119,38 +119,37 @@ export default function Checkout() {
       return total + productTax * item.quantity;
     }, 0);
   };
-const calculateTotalProductPrice = (): number => {
-  return cartItems.reduce((total, item) => {
-    // Här använder vi produktens pris direkt utan att lägga till moms igen
-    const itemTotalPrice = item.quantity * item.product.price; // Om price redan inkluderar moms
-    return total + itemTotalPrice;
-  }, 0);
-};
-const calculateGrandTotal = (): number => {
-  const totalProductPrice = calculateTotalProductPrice(); // Totalbeloppet för alla produkter
-  const totalTax = calculateTotalTax();  // Den totala momsen för alla produkter
-  const grandTotal = totalProductPrice + totalTax + shippingCost; // Totalt inklusive frakt
-  return grandTotal; // Returnera grand total som ett nummer
-};
+
+  const calculateTotalProductPrice = (): number => {
+    return cartItems.reduce((total, item) => {
+      const itemTotalPrice = item.quantity * item.product.price; 
+      return total + itemTotalPrice;
+    }, 0);
+  };
+
+  const calculateGrandTotal = (): number => {
+    const totalProductPrice = calculateTotalProductPrice(); 
+    const totalTax = calculateTotalTax(); 
+    const grandTotal = totalProductPrice + totalTax + shippingCost; 
+    return grandTotal;
+  };
 
   const handleCheckout = async () => {
     setLoading(true);
     setShowModal(true);
     setError(null);
-  
-    // Validera formuläret
+
     if (!formData.email || !formData.address || !formData.city || !formData.postalCode || !formData.country) {
       toast.error('Alla fält är obligatoriska.');
       setLoading(false);
       setShowModal(false);
       return;
     }
-  
+
     const guestUserId = uuidv4();
     const customerNumber = 'G-' + guestUserId.substring(0, 8);
-  
+
     if (isGuest) {
-      // Spara gäst-användare
       const { error: userError } = await supabase
         .from('users')
         .upsert({
@@ -165,7 +164,7 @@ const calculateGrandTotal = (): number => {
           phone_number: formData.phoneNumber || '',
           customer_number: customerNumber,
         }, { onConflict: 'email' });
-  
+
       if (userError) {
         setError(userError.message);
         setLoading(false);
@@ -173,7 +172,6 @@ const calculateGrandTotal = (): number => {
         return;
       }
     } else {
-      // Uppdatera befintlig användare
       const { error: updateError } = await supabase
         .from('users')
         .update({
@@ -186,7 +184,7 @@ const calculateGrandTotal = (): number => {
           phone_number: formData.phoneNumber,
         })
         .eq('id', userId);
-  
+
       if (updateError) {
         setError(updateError.message);
         setLoading(false);
@@ -194,10 +192,9 @@ const calculateGrandTotal = (): number => {
         return;
       }
     }
-  
+
     const userIdentifier = isGuest ? guestUserId : userId;
-  
-    // Förbered orderprodukter
+
     const products = cartItems.map((item) => ({
       id: item.product.id,
       name: item.product.name,
@@ -205,11 +202,10 @@ const calculateGrandTotal = (): number => {
       quantity: item.quantity,
       tax: item.product.tax,
     }));
-  
+
     const totalAmount = totalPrice + shippingCost;
     const grandTotal = parseFloat(calculateGrandTotal());
-  
-    // Skapa beställning
+
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .insert({
@@ -223,43 +219,40 @@ const calculateGrandTotal = (): number => {
         email: formData.email,
       })
       .select();
-  
+
     setLoading(false);
     setShowModal(false);
-  
+
     if (orderError) {
       setError(orderError.message);
       return;
     }
-  
+
     const invoiceNumber = generateInvoiceNumber();
     const orderId = orderData[0].id;
-  
-    // Uppdatera fakturanummer
+
     const { error: invoiceError } = await supabase
       .from('orders')
       .update({ invoice_number: invoiceNumber })
       .eq('id', orderId);
-  
+
     if (invoiceError) {
       console.error('Error saving invoice number:', invoiceError.message);
     }
-  
-    // Minska produktantalet i lagret
+
     await Promise.all(
       cartItems.map(async (item) => {
         const { error: updateStockError } = await supabase
           .from('products')
-          .update({ stock: item.product.stock - item.quantity }) // Justera här till den korrekta fältbeteckningen för lager
+          .update({ stock: item.product.stock - item.quantity })
           .eq('id', item.product.id);
-  
+
         if (updateStockError) {
           console.error(`Error updating stock for product ${item.product.id}:`, updateStockError.message);
         }
       })
     );
-  
-    // Navigera till orderbekräftelse
+
     navigate('/order-confirmation', {
       state: {
         orderData: {
@@ -279,8 +272,7 @@ const calculateGrandTotal = (): number => {
         },
       },
     });
-  
-    // Töm varukorgen
+
     clearCart();
   };
 
@@ -292,113 +284,116 @@ const calculateGrandTotal = (): number => {
   return (
     <div className="container-fluid checkout-container mt-5 p-4 border rounded bg-light shadow">
       <div className="checkout-form">
-        <h5>Leveransinformation</h5>
+        <h3>Leveransinformation</h3>
         <form onSubmit={(e) => { e.preventDefault(); handleCheckout(); }}>
-          {/* Förnamn och Efternamn */}
-          <div className="mb-3">
-            <label className="form-label"><FaUser /> Förnamn:</label>
-            <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleChange} required />
+          {/* Personlig information */}
+          <div className="form-group">
+            <label htmlFor="firstName"><FaUser /> Förnamn</label>
+            <input type="text" id="firstName" name="firstName" className="form-control" value={formData.firstName} onChange={handleChange} required />
           </div>
-          <div className="mb-3">
-            <label className="form-label"><FaUser /> Efternamn:</label>
-            <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="lastName"><FaUser /> Efternamn</label>
+            <input type="text" id="lastName" name="lastName" className="form-control" value={formData.lastName} onChange={handleChange} required />
           </div>
-          
-          {/* Leveransadress */}
-          <div className="mb-3">
-            <label className="form-label"><FaAddressCard /> Adress:</label>
-            <input type="text" className="form-control" name="address" value={formData.address} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="email"><FaEnvelope /> E-post</label>
+            <input type="email" id="email" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
           </div>
-          <div className="mb-3">
-            <label className="form-label"><FaAddressCard /> Stad:</label>
-            <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="phoneNumber"><FaPhone /> Telefonnummer</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" className="form-control" value={formData.phoneNumber} onChange={handleChange} />
           </div>
-  
-          {/* E-post och Postnummer */}
-          <div className="mb-3">
-            <label className="form-label"><FaEnvelope /> E-post:</label>
-            <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
+
+          {/* Adressinformation */}
+          <div className="form-group">
+            <label htmlFor="address"><FaAddressCard /> Adress</label>
+            <input type="text" id="address" name="address" className="form-control" value={formData.address} onChange={handleChange} required />
           </div>
-          <div className="mb-3">
-            <label className="form-label"><FaAddressCard /> Postnummer:</label>
-            <input type="text" className="form-control" name="postalCode" value={formData.postalCode} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="city">Stad</label>
+            <input type="text" id="city" name="city" className="form-control" value={formData.city} onChange={handleChange} required />
           </div>
-          <div className="mb-3">
-            <label className="form-label"><FaAddressCard /> Land:</label>
-            <input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="postalCode">Postnummer</label>
+            <input type="text" id="postalCode" name="postalCode" className="form-control" value={formData.postalCode} onChange={handleChange} required />
           </div>
-          
+          <div className="form-group">
+            <label htmlFor="country">Land</label>
+            <input type="text" id="country" name="country" className="form-control" value={formData.country} onChange={handleChange} required />
+          </div>
+
           {/* Fraktmetod */}
-          <div className="mb-3">
-            <label className="form-label">Fraktmetod:</label>
-            <select className="form-select" name="shippingMethod" value={formData.shippingMethod} onChange={handleShippingChange}>
-              <option value="standard">Standard (79 SEK)</option>
-              <option value="express">Express (150 SEK)</option>
-            </select>
+          <div className="form-group">
+            <label>Fraktmetod</label>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" id="standard" name="shippingMethod" value="standard" checked={formData.shippingMethod === 'standard'} onChange={handleShippingChange} />
+              <label className="form-check-label" htmlFor="standard">Standard (79 SEK)</label>
+            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" id="express" name="shippingMethod" value="express" checked={formData.shippingMethod === 'express'} onChange={handleShippingChange} />
+              <label className="form-check-label" htmlFor="express">Express (150 SEK)</label>
+            </div>
           </div>
-          
-          {/* Telefonnummer */}
-          <div className="mb-3">
-            <label className="form-label"><FaPhone /> Telefonnummer:</label>
-            <input type="tel" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
+
+          {/* Betalningsinformation */}
+          <div className="form-group">
+            <label htmlFor="cardNumber"><FaCreditCard /> Kortnummer</label>
+            <input type="text" id="cardNumber" name="cardNumber" className="form-control" value={formData.cardNumber} onChange={handleChange} required />
           </div>
-          
-          <h5>Betalningsinformation</h5>
-          <div className="mb-3">
-            <label className="form-label"><FaCreditCard /> Kortnummer:</label>
-            <input type="text" className="form-control" name="cardNumber" value={formData.cardNumber} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="cardExpiry">Utgångsdatum</label>
+            <input type="text" id="cardExpiry" name="cardExpiry" className="form-control" value={formData.cardExpiry} onChange={handleChange} required />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Utgångsdatum:</label>
-            <input type="text" className="form-control" name="cardExpiry" value={formData.cardExpiry} onChange={handleChange} placeholder="MM/ÅÅ" required />
+          <div className="form-group">
+            <label htmlFor="cardCvc">CVC</label>
+            <input type="text" id="cardCvc" name="cardCvc" className="form-control" value={formData.cardCvc} onChange={handleChange} required />
           </div>
-          <div className="mb-3">
-            <label className="form-label">CVC:</label>
-            <input type="text" className="form-control" name="cardCvc" value={formData.cardCvc} onChange={handleChange} required />
-          </div>
-          {error && <div className="alert alert-danger">{error}</div>}
+
+          {/* Slutför köp-knappen */}
           <button type="submit" className="btn checkout-button" disabled={loading}>
             {loading ? 'Bearbetar...' : 'Slutför köp'}
           </button>
         </form>
+
+        {/* Modal för bearbetning */}
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Bearbetar betalning</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Vänligen vänta medan vi bearbetar din betalning...</Modal.Body>
+        </Modal>
+
+        {/* Felmeddelande */}
+        {error && <div className="alert alert-danger mt-3">{error}</div>}
       </div>
-  
+
+      {/* Sammanfattning av varukorgen */}
       <div className="cart-summary">
-        <h5>Produkter i Kassan</h5>
+        <h3>Produkter i Kassan</h3>
         <ul className="list-group">
           {cartItems.map((item) => (
             <li key={item.product.id} className="list-group-item d-flex justify-content-between align-items-center">
               <div className="product-item">
-              <img src={item.product.image_url && item.product.image_url.length > 0 ? item.product.image_url[0] : 'https://via.placeholder.com/150'} alt={item.product.name}className="img-fluid rounded shadow-sm" />
+                <img src={item.product.image_url && item.product.image_url.length > 0 ? item.product.image_url[0] : 'https://via.placeholder.com/150'} alt={item.product.name} className="img-fluid rounded shadow-sm" />
                 <div>
                   <strong>{item.product.name}</strong>
-                  <div> {item.quantity} x {(item.product.price * (1 + item.product.tax))} kr</div>
+                  <div>{item.quantity} x {(item.product.price * (1 + item.product.tax)).toFixed(2)} kr</div>
                 </div>
               </div>
               {(item.quantity * item.product.price * (1 + item.product.tax)).toFixed(2)} kr
             </li>
           ))}
         </ul>
-  
+
         <div className="total-section">
           <div><strong>Fraktkostnad:</strong> {shippingCost} SEK</div>
-          <div><strong>Totalt:</strong> {calculateGrandTotal()} SEK</div>
+          <div><strong>Totalt:</strong> {calculateGrandTotal().toFixed(2)} SEK</div>
         </div>
-  
-        <button className="btn cancel-button">Avbryt</button>
       </div>
-  
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Laddar...</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Vänligen vänta medan vi behandlar din beställning.</Modal.Body>
-      </Modal>
-      <ToastContainer />
     </div>
   );
-  
 }
+
 
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaInstagram} from 'react-icons/fa';
+import { FaFacebook, FaInstagram } from 'react-icons/fa';
 import './Footer.css'; // Se till att du har en CSS-fil för stilar
 
 const Footer = () => {
@@ -7,39 +7,29 @@ const Footer = () => {
         <footer>
             <div className="container">
                 <div className="row py-3">
-                    {/* Vänster kolumn - Företagsnamn och adress */}
+                  
                     <div className="col text-start">
-                        <h5>Choc By Z</h5>
-                        <p>Adress: Exempelgatan 1, 123 45 Staden</p>
-                        <p>Org. nr: 123456-7890</p>
+                        <h3>Choc By Z</h3>
+                        <p>Adress: Bergviksvägen 11, 813 91 Hofors</p>
+                        <p>Org. nr: 760101-XXXX</p>
                     </div>
 
                     {/* Mitten kolumn - Sociala medier och nyhetsbrev */}
                     <div className="col text-center">
-                        <h5>Följ oss</h5>
-                        <div className="social-icons">
+                        <h3>Följ oss</h3>
+                        <div className="social-icons mb-2">
                             <a href="#" className="mx-2"><FaFacebook /></a>
-                         
-                            <a href="#" className="mx-2"><FaInstagram /></a>
-                            
+                            <a href="#" className="mx-2"><FaInstagram /></a><p/>
+                 CodeForged Tech
                         </div>
-                        <h6>Nyhetsbrev</h6>
-                        <form>
-                            <input
-                                type="email"
-                                className="form-control mb-2"
-                                placeholder="Din e-post"
-                                required
-                            />
-                            <button type="submit" className="btn btn-primary">Prenumerera</button>
-                        </form>
+                      
                     </div>
 
                     {/* Höger kolumn - Kontaktinformation */}
-                    <div className="col text-start footer-size">
-                        <h5>Kontakt</h5>
+                    <div className="col text-start">
+                        <h3>Kontakt</h3>
                         <p>Email: kontakt@ziita.se</p>
-                        <p>Telefon: +46 123 456 789</p>
+                        <p>Telefon: +46 290-861 23</p>
                     </div>
                 </div>
             </div>
@@ -48,5 +38,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
 

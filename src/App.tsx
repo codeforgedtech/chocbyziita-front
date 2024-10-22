@@ -8,6 +8,7 @@ import Login from './components/Login';
 import SignUp from "./components/SignUp"
 import { CartProvider } from './contexts/CartContext'; 
 import SingleProduct from './pages/SingleProduct';
+import AllProducts from './pages/AllProducts'
 import OrderConfirmation from './components/OrderConfirmation';
 import Home from"./pages/Home"
 import Footer from './components/Footer';
@@ -22,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<SingleProduct />} />
- 
+ <Route path="/products/" element={<AllProducts />} />
         <Route path="/checkout" element={<Checkout/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

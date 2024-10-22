@@ -1,7 +1,7 @@
 // ContactUs.tsx
 import React, { useState } from 'react';
 import './ContactUs.css'; // Importera en CSS-fil för stilning
-
+import contact from "../assets/contact.png"
 const ContactUs: React.FC = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -38,7 +38,7 @@ const ContactUs: React.FC = () => {
   return (
     <div className="contact-container d-flex flex-column flex-md-row align-items-center">
       <img 
-        src="https://via.placeholder.com/150" // Ersätt med din bild-URL
+        src={contact} // Ersätt med din bild-URL
         alt="Kontakta oss"
         className="contact-image mb-3 mb-md-0 me-md-3"
       />

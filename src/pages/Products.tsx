@@ -75,7 +75,7 @@ export default function Products() {
 
   return (
     <div className="container mt-5 px-4 custom-container">
-      <h2 className="text-center mb-6">Utvalda produkter</h2>
+      <h2 className="text-center mb-6 custom-padding-top">Utvalda produkter</h2>
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
         {products.map((product) => {
           const currentCartQuantity = getCartItemQuantity(product.id);

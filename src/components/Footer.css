@@ -1,33 +1,116 @@
-.footer {
-    width: 100%; /* Täcker hela bredden */
-    position: relative; /* Gör att footern kan placeras relativt */
-    bottom: 0; /* Placera den längst ner */
-    left: 0; /* Placera den vid vänsterkant */
-    background-color: #f8f9fa; /* Färg på footern */
-    padding: 20px 0; /* Padding för att ge lite utrymme inuti footern */
-    justify-content: center;
-    align-items: center;
+/* ------------------ Footer styles ------------------ */
+footer {
+    background-color: #F5F5DC; /* Ljus bakgrundsfärg */
+    padding: 20px 0; /* Padding ovan och under */
+    color: #333; /* Textfärg */
+    font-family: Arial, sans-serif;
+    margin-top: 30px; /* Avstånd ovanför footer */
+    border-top: #4E342E 2px solid; /* Översta kant */
 }
 
 .container {
-    max-width: 1300px; /* Justera efter din design */
-   margin: auto;
-    padding: 0; /* Ta bort padding */
- /* Ta bort padding */
-
+    max-width: 1250px; /* Max bredd för innehåll */
+    margin: 0 auto; /* Centrera */
 }
 
-.footer h5, .footer h6 {
-    margin: 10px 0;
+.row {
+    display: flex; /* Flexbox för layout */
+    justify-content: space-between; /* Utrymmet mellan kolumner */
+    align-items: center; /* Vertikal centrering */
+    gap: 20px; /* Justera detta för att ändra mellanrummet mellan kolumnerna */
+}
+
+.col {
+    flex: 1; /* Flexibel kolumn */
+    padding: 0 15px; /* Sidopadding för kolumner för att skapa mellanrum */
+}
+
+.text-start {
+    text-align: left; /* Vänsterjustera text */
+}
+
+/* Justera stil för vänster kolumn */
+.col.text-start:first-child {
+    align-items: flex-start; /* Justera innehållet helt till vänster */
+    justify-content: flex-start; /* Justera innehållet helt till toppen */
+}
+
+/* Justera stil för kontaktkolumnen */
+.col.text-start {
+    display: flex; /* Använd flexbox */
+    flex-direction: column; /* Vertikal layout */
+    align-items: flex-end; /* Justera innehållet åt höger */
+}
+
+.text-center {
+    text-align: center; /* Centrera text */
+}
+
+h5 {
+    font-size: 18px; /* Rubrikstorlek */
+    color: #4E342E; /* Mörkare rubrikfärg */
+}
+
+p {
+    margin: 5px 0; /* Marginaler ovan och under text */
+    font-size: 14px; /* Textstorlek */
+    color: #5A5A5A; /* Mörkare textfärg för paragrafer */
 }
 
 .social-icons a {
-    color: #007bff; /* Blå färg för ikoner */
-    font-size: 24px;
-    transition: color 0.3s;
+    font-size: 24px; /* Storlek på sociala ikoner */
+    color: #333; /* Standardfärg för ikoner */
+    transition: color 0.3s ease; /* Övergångseffekt vid hover */
 }
 
 .social-icons a:hover {
-    color: #0056b3; /* Mörkare blå vid hover */
+    color: #b04733; /* Färg vid hover */
 }
+
+form {
+    margin-top: 10px; /* Avstånd ovanför formuläret */
+}
+
+form input {
+    width: 80%; /* Bredd på inputfält */
+    padding: 8px; /* Padding för input */
+    margin-bottom: 10px; /* Utrymme mellan input och knapp */
+    border: 1px solid #ddd; /* Ljus grå kant */
+    border-radius: 5px; /* Rundade hörn */
+    background-color: #F5F5F4; /* Ljus bakgrund för input */
+    color: #333; /* Textfärg för input */
+}
+
+form button {
+    background-color: #7A5230; /* Bakgrundsfärg för knapp */
+    border: none; /* Ingen kant */
+    color: #F5F5DC; /* Vit textfärg */
+    padding: 8px 16px; /* Padding för knapp */
+    font-size: 14px; /* Textstorlek för knapp */
+    cursor: pointer; /* Handpekare */
+    border-radius: 5px; /* Rundade hörn */
+    transition: background-color 0.3s ease; /* Övergångseffekt */
+}
+
+form button:hover {
+    background-color: #5A5A5A; /* Mörkare färg vid hover */
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column; /* Kolumnlayout på små skärmar */
+        text-align: center; /* Centrera text */
+    }
+
+    .col {
+        margin-bottom: 20px; /* Avstånd mellan kolumner */
+        padding: 0; /* Ta bort padding för mobilvisning */
+    }
+}
+
+
+
+
+
+
 

@@ -1,134 +1,159 @@
-/* SingleProduct.css */
-.custom-container {
-  max-width: 1000px; /* Max container width */
-  margin: 0 auto; /* Center container */
-  background-color: #ffffff; /* White background */
-  border-radius: 15px;
-  padding:10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Allmänna stilar */
+body {
+  background-color: white; /* Ljus bakgrundsfärg */
+  color: #5A5A5A; /* Neutral textfärg */
 }
 
+.container.custom-container {
+  padding: 20px;
+  background-color: white; /* Bakgrund för containern */
+}
+
+/* Stilar för produktbild */
 .single-product-image {
-  border-radius: 10px;
-  max-width: 500px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: auto;
-  object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for the image */
+  max-height: 500px; /* Sätt en maxhöjd på produktbilden */
+  object-fit: cover; /* Bevara bildens proportioner */
 }
 
 .smaller-image {
   cursor: pointer;
-  border-radius: 8px;
-  margin-right: 8px;
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
 }
 
 .smaller-image:hover {
-  border: 2px solid #8A3D2F; /* Dark brown hover border */
+  border-color: #3EA830; /* Grön färg vid hover */
 }
 
+/* Stilar för produktinformation */
 .product-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #333333; /* Dark text color */
-  margin-bottom: 20px;
+  font-size: 2.5rem; /* Större textstorlek */
+  font-weight: bold;
+  color: #4E342E; /* Mörkbrun färg */
+  margin-bottom: 20px; /* Utrymme under titeln */
+  text-align: center; /* Centrera titeln */
+  padding: 10px 0; /* Padding för luft ovanför och nedanför */
+  border-bottom: 2px solid #4E342E; /* Grön linje under titeln */
+  width: 100%; /* Se till att titeln tar upp hela container-bredden */
+}
+
+.description, .ingredients, .categories, .stock-status {
+  margin-bottom: 15px; /* Utrymme mellan stycken */
+  color: #5A5A5A; /* Neutral textfärg */
 }
 
 .price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: black; /* Chocolate-like color */
-  margin-bottom: 0px;
+  color: #4E342E; /* Mörkbrun textfärg */
+  font-size: x-large; /* Större textstorlek */
+  font-weight: 600; /* Fet stil */
 }
 
-.stock-status {
-  font-size: 1rem;
-  margin-bottom: 10px;
+/* För rubrikerna som ingredienser och kategorier */
+.ingredients strong, .categories strong {
+  color: #4E342E; 
 }
+
+/* Lagerstatus */
 .status-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  margin-left: 8px; /* Spacing between text and dot */
+  display: inline-block;
 }
 
 .bg-success {
-  background-color: #28a745; /* Bootstrap green */
+  background-color: #3EA830; /* Grön för lagervara */
 }
 
 .bg-danger {
-  background-color: #dc3545; /* Bootstrap red */
+  background-color: #8B0000; /* Röd för slut i lager */
 }
 
-.additional-info h5 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #333333;
+/* Knapp för kundvagn */
+.custom-cart-singel {
+  width: 100%; /* Full bredd */
+  padding: 10px; /* Inre padding */
+  background-color: #3EA830; /* Grön för CTA */
+  color: #F5F5DC; /* Beige textfärg på knappen */
+  border: none; /* Ingen kant */
+  border-radius: 5px; /* Rundade hörn */
+  cursor: pointer; /* Handpekare */
+  transition: background-color 0.3s ease; /* Övergångseffekt */
 }
 
-.additional-info p {
-  color: #555555; /* Light grey for additional info */
-  font-size: 1rem;
-  line-height: 1.5;
+.custom-cart-singel:disabled {
+  background-color: #5A5A5A; /* Neutral grå när knappen är inaktiv */
 }
 
-.img-fluid {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-.form-label{
-margin-top: 10px;
-font-size: 18px;
+.custom-cart-singel:hover:not(:disabled) {
+  background-color: #4E342E; /* Mörkbrun hover-effekt */
 }
 
-/* Statusdot */
-.status-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-left: 5px;
-}
-.custom-cart-singel{
-  width: 60%;
-  height: auto;
-  background-color: bisque;
-  border-radius: 6px;
-
-}
-.description {
-  font-size: 1rem; /* Grundstorlek */
-  margin: 10px 0; /* Marginaler ovanför och under */
-  word-wrap: break-word; /* Bryt långa ord för att förhindra overflow */
-  overflow-wrap: break-word; /* För äldre webbläsare */
-  line-height: 1.5; /* Öka radavståndet för läsbarhet */
-  max-width: 100%; /* Förhindra att beskrivningen går utanför container */
-  white-space: normal; /* Tillåt text att brytas normalt */
-}
-.custom-div {
-  max-width: 150px; /* Sätt en maxbredd för att begränsa storleken */
-  margin: 0 auto; /* Centrera div om det behövs */
+/* Varningsmeddelanden (t.ex. om man försöker lägga till för många i kundvagnen) */
+.alert {
+  color: #F5F5DC; /* Beige text på mörkröd bakgrund */
+  background-color: #8B0000; /* Mörkröd bakgrund */
+  padding: 10px; /* Inre padding */
+  border-radius: 5px; /* Rundade hörn */
+  margin-top: 15px; /* Utrymme ovanför */
 }
 
-.input-group {
-  display: flex; /* Gör så att elementen ligger i rad */
+/* Justeringar för produktlayout */
+.row {
+  display: flex; /* Använd flexbox för layout */
 }
 
-.input-group .form-control {
-  width: 20px; /* Justera bredden på input-fältet */
+/* Layout för bilder och text */
+@media (min-width: 992px) {ffffffcn                                                  cv
+  .col-md-5 {
+    padding: 5px; /* Padding runt kolumner */
+  }
+
+  .product-title {
+    font-size: 2.5rem; /* Justera titelns storlek för större skärmar */
+  }
+
+  .description, .ingredients, .categories, .price {
+    padding-left: 15px; /* Inre padding till vänster */
+    padding-right: 15px; /* Inre padding till höger */
+  }
+
+  .stock-status {
+    padding-left: 15px; /* Inre padding till vänster */
+    padding-right: 15px; /* Inre padding till höger */
+    font-size: 1.1rem; /* Större text för lagerstatus */
+  }
+
+  .quantity-selector {
+    padding-left: 15px; /* Inre padding till vänster */
+    padding-right: 15px; /* Inre padding till höger */
+  }
+
+  .custom-cart-singel {
+    margin-left: 15px; /* Utrymme till vänster */
+    margin-right: 15px; /* Utrymme till höger */
+  }
 }
 
-.input-group button {
-  min-width: 20px; /* Minimera knapparnas bredd */
-  font-size: 1rem; /* Justera teckenstorlek för knapparna */
+/* Layout för mobila enheter */
+@media (max-width: 991px) {
+  .col-md-6 {
+    padding: 10px; /* Mindre padding på mobila enheter */
+  }
+
+  .order-md-1,
+  .order-md-2 {
+    order: 0; /* Återställ ordningen för mobil */
+  }
+
+  .col-md-6 img.single-product-image {
+    width: 100%; /* Gör bilden fullbredd på mobil */
+    margin-bottom: 20px; /* Utrymme under bilden */
+  }
 }
+
+
+
+
 
   
