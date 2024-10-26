@@ -1,40 +1,75 @@
-/* Container */
-.container.custom-container {
-  padding: 20px;
-  background-color: #F5F5DC;
-
+.custom-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 10px;
+  min-width: 90vw;
+  margin: 0 auto;
 }
+
+.card {
+  width: calc(100% - 10px); /* Two cards per row on mobile */
+  margin: 5px 0; /* Spacing between cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F4;
+  border-radius: 10px;
+}
+/* Kortstil för produkter */
+
+@media (min-width: 1024px) {
+  .card {
+    width: calc(100% - 10px); /* Four cards per row on desktop */
+
+  }
+}
+@media (mox-width: 500px) {
+  .card {
+    width: 100%; /* Full width on extra small screens */
+  }
+}
+
+
+
 
 /* Titel */
 h2.custom-padding-top {
   color: #4E342E; /* Mörkbrun färg */
   margin-bottom: 30px;
-  font-size: 2rem;
+  margin-top: 30px;
+  font-size: 2rem; /* Större storlek på desktop */
   text-align: center;
+  font-weight: bold; /* Gör titeln mer framträdande */
 }
 
-/* Kortstil för produkter */
-.card {
-  border: none; /* Ta bort kant för ett renare utseende */
-  background-color: #F5F5F4; /* Ljusare bakgrund */
-  border-radius: 10px;
-  height: 100%; /* Se till att korten tar upp hela höjden */
-  display: flex;
-  flex-direction: column;
-  width: 300px;
+/* Justera titeln för mobil */
+@media (max-width: 768px) {
+  h2.custom-padding-top {
+    font-size: 1.5rem; /* Mindre storlek för mobil */
+    margin-bottom: 20px;
+    margin-top: 20px /* Minska avståndet för mobil */
+  }
+  .card-img-top{
+    width: 100%; /* Ensure the image takes up full width of its container */
+    height: 120px; /* Set a specific height for the container */
+    object-fit: cover; /* Cover the container while maintaining aspect ratio */
+    border-radius: 5px;
+    
+  }
 }
 
+/* Kortets titel */
 .card-title {
   color: #4E342E; /* Mörkbrun text */
-  font-size: 1.2rem;
+  font-size: 0.9rem; /* Större och mer framträdande fontstorlek */
   font-weight: bold;
 }
 
+/* Bildinställningar */
 .card-img-top {
   object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  height: 200px; /* Se till att alla bilder är lika höga */
+  height: 200px; /* Justera höjden för bilderna */
 }
 
 /* Lagerstatus */
@@ -46,9 +81,9 @@ h2.custom-padding-top {
 /* Knappar */
 .custom-cart {
   width: 100%;
-  padding: 12px; /* Ger lite mer luft runt texten */
-  background-color: #3EA830; /* Grön bakgrund */
-  color:black; /* Beige text */
+  padding: 12px; /* Öka padding för knappen */
+  background-color: #F5F5DC; /* Grön bakgrund */
+  color: #4E342E; /* Ljus text */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -68,14 +103,14 @@ h2.custom-padding-top {
 
 /* Produktbeskrivningens styling */
 .card-body {
-  padding: 15px;
+  padding: 10px; /* Minska padding för kortinnehållet */
   text-align: center;
   flex-grow: 1; /* Fyller upp resten av kortet */
 }
 
 p.card-text.custom-text {
   color: #4E342E; /* Mörkbrun färg för pris */
-  font-size: 1.3rem; /* Större och mer iögonfallande pris */
+  font-size: 1.0rem; /* Justera storlek för bättre synlighet */
   font-weight: 600;
 }
 
@@ -119,3 +154,9 @@ p.card-text.custom-text {
   flex-direction: column;
   align-items: center;
 }
+
+
+
+
+
+

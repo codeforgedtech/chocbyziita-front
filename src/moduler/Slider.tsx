@@ -12,11 +12,11 @@ const ImageSlider: React.FC = () => {
   const settings = {
     dots: true, // Visa punkter för navigation
     infinite: true, // Oändlig rullning
-    speed: 500, // Hastighet av övergång
+    speed: 1000, // Hastighet av övergång
     slidesToShow: 1, // Antal slides som ska visas
     slidesToScroll: 1, // Antal slides som ska rullas vid varje klick
     autoplay: true, // Automatisk rullning
-    autoplaySpeed: 3000, // Hastighet för automatisk rullning (3 sekunder)
+    autoplaySpeed: 5000, // Hastighet för automatisk rullning (3 sekunder)
   };
 
   return (

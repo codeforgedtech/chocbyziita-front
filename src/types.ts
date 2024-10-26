@@ -1,4 +1,5 @@
 export interface Product {
+  priceWithVAT: number;
   tax_rate: number;
   sku: string;
   categories: string[];

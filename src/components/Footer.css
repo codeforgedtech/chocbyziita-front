@@ -1,112 +1,143 @@
 /* ------------------ Footer styles ------------------ */
 footer {
-    background-color: #F5F5DC; /* Ljus bakgrundsfärg */
-    padding: 20px 0; /* Padding ovan och under */
-    color: #333; /* Textfärg */
+    background-color: #F5F5DC; /* Light background color */
+    padding: 20px 0; /* Padding above and below */
+    color: #333; /* Text color */
     font-family: Arial, sans-serif;
-    margin-top: 30px; /* Avstånd ovanför footer */
-    border-top: #4E342E 2px solid; /* Översta kant */
+    margin-top: 30px; /* Space above footer */
+    border-top: #4E342E 2px solid; /* Top border */
 }
 
 .container {
-    max-width: 1250px; /* Max bredd för innehåll */
-    margin: 0 auto; /* Centrera */
+    max-width: 800px; /* Max width for content */
+    margin: 0 auto; /* Center content */
 }
 
 .row {
-    display: flex; /* Flexbox för layout */
-    justify-content: space-between; /* Utrymmet mellan kolumner */
-    align-items: center; /* Vertikal centrering */
-    gap: 20px; /* Justera detta för att ändra mellanrummet mellan kolumnerna */
+    display: flex; /* Flexbox for layout */
+    justify-content: space-between; /* Space between columns */
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Space between columns */
 }
 
 .col {
-    flex: 1; /* Flexibel kolumn */
-    padding: 0 15px; /* Sidopadding för kolumner för att skapa mellanrum */
+    flex: 1; /* Flexible column */
+    padding: 0 15px; /* Side padding for columns */
+    text-align: center; /* Center text in columns for better mobile view */
 }
 
-.text-start {
-    text-align: left; /* Vänsterjustera text */
-}
-
-/* Justera stil för vänster kolumn */
+/* Style adjustments for left column */
 .col.text-start:first-child {
-    align-items: flex-start; /* Justera innehållet helt till vänster */
-    justify-content: flex-start; /* Justera innehållet helt till toppen */
+    align-items: flex-start; /* Align content fully to the left */
+    justify-content: flex-start; /* Align content fully to the top */
 }
 
-/* Justera stil för kontaktkolumnen */
+/* Adjustments for contact column */
 .col.text-start {
-    display: flex; /* Använd flexbox */
-    flex-direction: column; /* Vertikal layout */
-    align-items: flex-end; /* Justera innehållet åt höger */
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Vertical layout */
+    align-items: flex-start; /* Align items to the left */
 }
 
 .text-center {
-    text-align: center; /* Centrera text */
+    text-align: center; /* Center text */
 }
 
 h5 {
-    font-size: 18px; /* Rubrikstorlek */
-    color: #4E342E; /* Mörkare rubrikfärg */
+    font-size: 18px; /* Heading size */
+    color: #4E342E; /* Darker heading color */
+    margin-bottom: 10px; /* Space below headings */
 }
 
 p {
-    margin: 5px 0; /* Marginaler ovan och under text */
-    font-size: 14px; /* Textstorlek */
-    color: #5A5A5A; /* Mörkare textfärg för paragrafer */
+    margin: 5px 0; /* Margins above and below text */
+    font-size: 14px; /* Text size */
+    color: #5A5A5A; /* Darker text color for paragraphs */
+}
+
+.social-icons {
+    display: flex; /* Flexbox for social icons */
+    justify-content: center; /* Center the icons */
+    margin: 10px 0; /* Space around icons */
 }
 
 .social-icons a {
-    font-size: 24px; /* Storlek på sociala ikoner */
-    color: #333; /* Standardfärg för ikoner */
-    transition: color 0.3s ease; /* Övergångseffekt vid hover */
+    font-size: 24px; /* Size of social icons */
+    color: #333; /* Default color for icons */
+    transition: color 0.3s ease; /* Transition effect on hover */
+    margin: 0 10px; /* Space between icons */
 }
 
 .social-icons a:hover {
-    color: #b04733; /* Färg vid hover */
+    color: #b04733; /* Color on hover */
 }
 
 form {
-    margin-top: 10px; /* Avstånd ovanför formuläret */
+    margin-top: 10px; /* Space above the form */
+    display: flex; /* Flexbox for form layout */
+    flex-direction: column; /* Vertical layout */
+    align-items: center; /* Center form items */
 }
 
 form input {
-    width: 80%; /* Bredd på inputfält */
-    padding: 8px; /* Padding för input */
-    margin-bottom: 10px; /* Utrymme mellan input och knapp */
-    border: 1px solid #ddd; /* Ljus grå kant */
-    border-radius: 5px; /* Rundade hörn */
-    background-color: #F5F5F4; /* Ljus bakgrund för input */
-    color: #333; /* Textfärg för input */
+    width: 80%; /* Width of input fields */
+    max-width: 400px; /* Max width for input fields */
+    padding: 8px; /* Padding for input */
+    margin-bottom: 10px; /* Space between input and button */
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #F5F5F4; /* Light background for input */
+    color: #333; /* Text color for input */
 }
 
 form button {
-    background-color: #7A5230; /* Bakgrundsfärg för knapp */
-    border: none; /* Ingen kant */
-    color: #F5F5DC; /* Vit textfärg */
-    padding: 8px 16px; /* Padding för knapp */
-    font-size: 14px; /* Textstorlek för knapp */
-    cursor: pointer; /* Handpekare */
-    border-radius: 5px; /* Rundade hörn */
-    transition: background-color 0.3s ease; /* Övergångseffekt */
+    background-color: #7A5230; /* Background color for button */
+    border: none; /* No border */
+    color: #F5F5DC; /* White text color */
+    padding: 8px 16px; /* Padding for button */
+    font-size: 14px; /* Button text size */
+    cursor: pointer; /* Pointer cursor */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Transition effect */
 }
 
 form button:hover {
-    background-color: #5A5A5A; /* Mörkare färg vid hover */
+    background-color: #5A5A5A; /* Darker color on hover */
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .row {
-        flex-direction: column; /* Kolumnlayout på små skärmar */
-        text-align: center; /* Centrera text */
+        flex-direction: column; /* Column layout on small screens */
+        text-align: center; /* Center text */
     }
 
     .col {
-        margin-bottom: 20px; /* Avstånd mellan kolumner */
-        padding: 0; /* Ta bort padding för mobilvisning */
+        margin-bottom: 20px; /* Space between columns */
+        padding: 0; /* Remove padding for mobile view */
+    }
+
+    form input {
+        width: 100%; /* Full width for input on mobile */
+    }
+
+    form button {
+        width: 100%; /* Full width for button on mobile */
+    }
+
+    h5 {
+        font-size: 20px; /* Increase font size for headings on mobile */
+    }
+
+    p {
+        font-size: 16px; /* Increase font size for paragraphs on mobile */
+    }
+
+    .social-icons {
+        justify-content: center; /* Center social icons on mobile */
     }
 }
+
 
 
 
