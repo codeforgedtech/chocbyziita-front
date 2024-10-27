@@ -101,7 +101,8 @@ const customerNumber = `R-${randomDigits}`;
     };
 
     return (
-        <div className="container-fluid custom-container mt-4 p-4 border rounded bg-light shadow">
+        <div className="d-flex justify-content-center align-items-center vh-75" style={{ padding: '10vh' }}> {/* Justerad höjd */}
+           
             <ToastContainer />
             <div className="auth-form p-4 border rounded bg-light shadow-lg">
                 <h1 className="text-center mb-4">Registrera</h1>

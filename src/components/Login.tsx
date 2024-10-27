@@ -45,7 +45,7 @@ export default function Login() {
     };
 
     return (
-        <div className="container-fluid custom-container mt-5 p-4 border rounded bg-light shadow">
+        <div className="d-flex justify-content-center align-items-center vh-75" style={{ padding: '10vh' }}> {/* Justerad höjd */}
             <div className="auth-form p-4 border rounded bg-light shadow-lg">
                 <h1 className="text-center mb-4">Logga in</h1>
                 <div className="mb-3">
@@ -103,5 +103,7 @@ export default function Login() {
         </div>
     );
 }
+
+
 
 

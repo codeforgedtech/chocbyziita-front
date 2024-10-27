@@ -67,7 +67,8 @@ export default function SingleProduct() {
   if (error) return <p>{error}</p>;
   if (!product) return <p>Ingen produkt hittades.</p>;
 
-  const priceWithVAT = product.price * (1 + (product.VAT_RATE || 0)); // Använd momssatsen från databasen
+  // Calculate the price with tax
+  const priceWithTax = product.tax ? product.price * (1 + product.tax) : product.price; // Use the tax from the database
   const imageUrls = product.image_url.length > 0 ? product.image_url : [];
   const placeholderImage = 'https://via.placeholder.com/300';
   const currentCartQuantity = getCartItemQuantity(product.id);
@@ -105,7 +106,7 @@ export default function SingleProduct() {
           </p>
 
           <div className="single-quantity-selector mb-3 d-flex align-items-center">
-            <p className="single-price">{priceWithVAT.toFixed(2)} kr</p>
+            <p className="single-price">{priceWithTax.toFixed(2)} kr</p>
             <div className="input-group input-group-sm w-50 single-div">
               <button 
                 className="btn btn-outline-secondary" 

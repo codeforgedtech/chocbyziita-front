@@ -53,7 +53,7 @@ export default function Checkout() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [shippingCost, setShippingCost] = useState(79);
+  const [shippingCost, setShippingCost] = useState(150);
   const [error, setError] = useState<string | null>(null);
   const [, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -317,37 +317,37 @@ export default function Checkout() {
           {/* Personlig information */}
           <div className="form-group">
             <label htmlFor="firstName"><FaUser /> Förnamn</label>
-            <input type="text" id="firstName" name="firstName" className="form-control" value={formData.firstName} onChange={handleChange} required />
+            <input type="text" id="firstName" name="firstName" size={100}className="form-control" value={formData.firstName} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="lastName"><FaUser /> Efternamn</label>
-            <input type="text" id="lastName" name="lastName" className="form-control" value={formData.lastName} onChange={handleChange} required />
+            <input type="text" id="lastName" name="lastName" size={100}className="form-control" value={formData.lastName} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="email"><FaEnvelope /> E-post</label>
-            <input type="email" id="email" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
+            <input type="email" id="email" name="email"size={100} className="form-control" value={formData.email} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="phoneNumber"><FaPhone /> Telefonnummer</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" className="form-control" value={formData.phoneNumber} onChange={handleChange} />
+            <input type="text" id="phoneNumber" name="phoneNumber"size={100} className="form-control" value={formData.phoneNumber} onChange={handleChange} />
           </div>
 
           {/* Adressinformation */}
           <div className="form-group">
             <label htmlFor="address"><FaAddressCard /> Adress</label>
-            <input type="text" id="address" name="address" className="form-control" value={formData.address} onChange={handleChange} required />
+            <input type="text" id="address" name="address" size={100}className="form-control" value={formData.address} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="city">Stad</label>
-            <input type="text" id="city" name="city" className="form-control" value={formData.city} onChange={handleChange} required />
+            <input type="text" id="city" name="city" size={100}className="form-control" value={formData.city} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="postalCode">Postnummer</label>
-            <input type="text" id="postalCode" name="postalCode" className="form-control" value={formData.postalCode} onChange={handleChange} required />
+            <input type="text" id="postalCode" name="postalCode"size={100} className="form-control" value={formData.postalCode} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="country">Land</label>
-            <input type="text" id="country" name="country" className="form-control" value={formData.country} onChange={handleChange} required />
+            <input type="text" id="country" name="country" size={100}className="form-control" value={formData.country} onChange={handleChange} required />
           </div>
 
           {/* Fraktmetod */}
@@ -369,6 +369,7 @@ export default function Checkout() {
                 className="form-check-input"
                 type="radio"
                 id="express"
+                size={100}
                 name="shippingMethod"
                 value="express"
                 checked={formData.shippingMethod === 'express'}
@@ -380,15 +381,15 @@ export default function Checkout() {
           {/* Betalningsinformation */}
           <div className="form-group">
             <label htmlFor="cardNumber"><FaCreditCard /> Kortnummer</label>
-            <input type="text" id="cardNumber" name="cardNumber" className="form-control" value={formData.cardNumber} onChange={handleChange} required />
+            <input type="text" id="cardNumber" name="cardNumber" size={100} className="form-control" value={formData.cardNumber} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="cardExpiry">Utgångsdatum</label>
-            <input type="text" id="cardExpiry" name="cardExpiry" className="form-control" value={formData.cardExpiry} onChange={handleChange} required />
+            <input type="text" id="cardExpiry" name="cardExpiry"size={100} placeholder='MM/YY' className="form-control" value={formData.cardExpiry} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="cardCvc">CVC</label>
-            <input type="text" id="cardCvc" name="cardCvc" className="form-control" value={formData.cardCvc} onChange={handleChange} required />
+            <input type="text" id="cardCvc" name="cardCvc" size={100} placeholder="123" className="form-control" value={formData.cardCvc} onChange={handleChange} required />
           </div>
 
           {/* Slutför köp-knappen */}
