@@ -1,331 +1,459 @@
-/* ------------------ Top bar styles ------------------ */
+/* Grundläggande stil för header */
+header {
+  background-color: white;
+  
+  padding: 6px 0;
+  z-index: 1000;
+  position: relative;
+}
+
+/* Toppbaren */
 .top-bar {
-  height: 70px;
-  background-color: #F5F5DC; /* Bakgrundsfärg för top bar */
-  margin-bottom: 20px;
+  background-color: #F5F5DC;
+  font-size: 14px;
+  margin-top:0; /* Avstånd ovanför footer */
   border-bottom: #4E342E 2px solid;
 }
 
-.phone-number {
-  font-size: 1rem;
-  color: #4E342E;
- font-weight: 600;
+.top-bar .phone-number {
+  font-weight: bold;
+}
+
+.top-bar .icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.top-bar .btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  position: relative;
+
+  
+}
+
+/* Logo-container */
+.logo-container {
+  padding: 20px 0;
+}
+
+.logo-container .brand img {
+  max-height: 120px;
+}
+
+/* Mobil navigationsbar */
+.navbar-toggler {
+  border: none;
+  background-color: transparent;
+  top: -89px; /* Flytta upp ytterligare */
+  position: relative; /* Lägg till position om det inte redan finns */
+right: -20px;
+}
+
+.navbar-toggler-icon {
+  width: 30px;
+  height: 2px;
+  background-color: transparent;
+  display: block;
+  margin: 10px auto;
+
+}
+
+/* Nav-meny */
+.navbar-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-item .nav-link {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.nav-item .nav-link:hover {
+  color: #f39c12;
+}
+
+.collapse.show {
+  display: flex !important;
+}
+
+/* Sökfält */
+.search-wrapper {
+  position: relative; /* Allow positioning of search results */
 }
 
 .search-bar {
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  width: 300px;
-  background-color: #fff; /* Vit bakgrund */
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
   padding: 10px;
-  z-index: 100;
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: absolute; /* Position relative to the wrapper */
+  right: 120px; /* Align with the right edge */
+  top: 70px; /* Position below the button */
+  width: 300px; /* Set a width for the dropdown */
+  z-index: 999; /* Ensure it appears above other elements */
+}
+
+.search-results {
+  max-height: 200px; /* Limit the height */
+  overflow-y: auto; /* Add scroll if necessary */
+  margin-top: 10px; /* Space between search bar and results */
 }
 
 .search-link {
+  display: block;
+  padding: 10px;
+  color: #333;
   text-decoration: none;
-  color: #4E342E; /* Färg för söklänk */
-  font-weight: 400;
 }
 
-.search-bar.show {
-  opacity: 1;
-  transform: translateY(0);
+.search-link:hover {
+  background-color: #f39c12;
+  color: #fff;
 }
 
-.search-bar input {
-  width: calc(100% - 40px);
-  padding: 8px;
-  border: 1px solid #ddd; /* Border färg */
-  border-radius: 4px;
-}
-
-.search-bar button {
-  padding: 8px;
-  background-color: #8B0000; /* Mörk röd färg för knapp */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-  margin-top: 5px;
-}
-
-.search-bar button:hover {
-  background-color: #5A5A5A; /* Grå färg på hover */
-}
-
-/* Sökresultat */
-.search-results {
-  margin-top: 10px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.search-results ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.search-results li {
-  padding: 8px;
-  border-bottom: 1px solid #F5F5F4; /* Light border */
-}
-
-.search-results li:hover {
-  background-color: #f9f9f9; /* Bakgrundsfärg vid hover */
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .phone-number {
-    font-size: 0.875rem;
-  }
-}
-
-/* ------------------ Logo styles ------------------ */
-.logo-container {
-  display: flex;
-  justify-content: center; /* Centrerar horisontellt */
-  align-items: center; /* Centrerar vertikalt (om du vill ha detta) */
-  height: 100px; /* Justera beroende på behov */
-}
-
-.logo-centered {
-  max-width: 150px; /* Justera logotypens storlek */
-}
-
-.logo h1 {
-  font-size: 1.5rem; /* För mobilläge */
-}
-
-/* ------------------ Navbar styles ------------------ */
-.navbar .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
- 
-}
-
-.navbar-toggler {
-  position: absolute;
-  right: 20px;
-  top: -50px;
-  transform: translateY(-50%);
-  border: none;
-  outline: none;
-}
-
-@media (min-width: 992px) {
-  .navbar-toggler {
-    display: none; /* Dölj hamburgaren i desktop-läge */
-  }
-}
-
-.collapse.navbar-collapse {
-  width: 100%;
-  text-align: center; /* Menyn visas centrerat under logotypen */
-}
-
-.navbar-nav {
-  justify-content: center; /* Centrerar menyn horisontellt */
-  width: 5%;
-  text-align: center;
-}
-
-.navbar-nav .nav-link {
-  font-size: 1.4rem;
-  color: #4E342E; /* Färg för nav-länkar */
-  transition: color 0.2s ease-in-out;
-  margin: 0 15px; 
-  text-align: center; /* Ser till att texten är centrerad */
-  flex-grow: 1;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #3EA830; /* Grön färg på hover */
-}
-
-/* ------------------ Cart styles ------------------ */
+/* Kundvagnsdropdown */
 .cart-wrapper {
   position: relative;
 }
 
 .cart-dropdown {
   position: absolute;
-  top: 60px;
   right: 0;
-  width: 400px;
-  background-color: #F5F5DC; /* Bakgrund för varukorg */
-  border: 1px solid #F5F5F4; /* Light brown border */
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  top: 100%;
+  width: 500px;
+  background-color: #fff;
+  border: 1px solid #ddd;
   padding: 20px;
-  z-index: 1000;
-}
-
-.cart-content {
-  max-height: 300px;
-  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cart-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .cart-item-img {
   width: 60px;
-  height: 50px;
+  height: 60px;
   object-fit: cover;
-  border-radius: 5px;
-  border: 1px solid #d7b38c; /* Soft brown border */
+  margin-right: 10px;
 }
 
 .cart-item-details h4 {
-  font-size: 14px;
-  color: #4E342E; /* Färg för item-namn */
   margin: 0;
-}
-
-.cart-item-details p {
-  font-size: 12px;
-  color: #888888; /* Grå färg för item-beskrivning */
-  margin: 0;
+  font-size: 16px;
 }
 
 .cart-item-actions {
   display: flex;
-  gap: 5px;
-  background-color: white;
-  color: black;
-  border: solid 1px #4E342E; /* Border färg */
-  padding: 2px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.cart-item-trash{
-  background-color: transparent;
-  color:#8B0000;
-  cursor: pointer;
- }
-.cart-item-transperant {
-  font-size: 14px;
+  align-items: center;
 }
 
-.cart-item-transperant button {
-  background-color: white;
-  width: 30px;
-  border: 0;
-  font-size: 14px;
+.cart-item-actions button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.cart-item-actions button:hover {
-  background-color: #F5F5F4; /* Light hover färg */
+.cart-item-trash {
+  color: #ff4d4d;
+  cursor: pointer;
 }
 
 .cart-total {
-  margin-top: 10px;
   text-align: right;
-}
-
-.cart-total h4 {
-  color: #4E342E; /* Färg för totalpris */
   font-weight: bold;
+  margin-top: 20px;
 }
 
-/* ------------------ Buttons ------------------ */
 .btn-primary-cart {
+  background-color: #f39c12;
+  color: #fff;
   width: 100%;
-  margin-top: 10px;
-  padding: 8px;
-  font-size: 14px;
-  border-radius: 6px;
+  padding: 10px;
   border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
   cursor: pointer;
-  background-color: #7a5230; /* Mörk chokladfärg för checkout */
-  color: white;
-}
-
-.btn-primary-cart:hover {
-  background-color: #5c3e20; /* Mörkare chokladfärg på hover */
 }
 
 .btn-cancel-cart {
-  background-color: white;
+  background-color: #ddd;
+  color: #333;
   width: 100%;
-  margin-top: 10px;
-  padding: 8px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: solid 1px #4E342E; /* Border färg */
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  color: #4E342E; /* Färg för avbryt-knapp */
 }
 
-/* ------------------ Badge styling ------------------ */
-.position-absolute.badge {
-  background-color: #c69c6d; /* Light brown for cart badge */
+/* Användarmeny */
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.close-menu-btn {
+  font-size: 42px;
+  background: none;
+  border: none;
+  color: #333;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1001; /* Make sure it's above other elements */
+}
+.mobile-logo {
+  position: absolute;
+  top: 40px;
+  right: 70px;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
-/* ------------------ Mobile specific styles ------------------ */
+.mobile-logo-img {
+  width: 150px; /* Adjust the size of the logo as needed */
+}
+/* Media Queries */
 @media (max-width: 768px) {
-  .cart-dropdown {
-    max-width: 300px;
+  header {
+    background-color: #F5F5F4;
+    max-height:160px ;
+    padding: 6px 0;
+    z-index: 1000;
+    position: relative;
+  }
+ 
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 75%;
+    height: 100%;
+    background-color: #F5F5F4;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    padding-top: 10px;
+ border-right: #4E342E solid 2px;
+}
+
+.navbar-collapse.show {
+    transform: translateX(0);
+}
+
+/* Align the navigation items below the logo */
+.navbar-nav {
+    margin-top: 10px;
+}
+  
+    .navbar-nav .nav-link {
+        display: block;
+        padding: 10px;
+        text-align: center;
+    }
+  
+    /* Adjust the navbar-toggler if necessary */
+    .navbar-toggler {
+        position: relative;
+        right: -20px;
+        top: -89px;
+    }
+  }
+  .search-bar {
+    background-color: #f8f9fa;
     padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute; /* Position relative to the wrapper */
+    right: 0px; /* Align with the right edge */
+    top: 75px; /* Position below the button */
+    width: 300px; /* Set a width for the dropdown */
+    z-index: 999; /* Ensure it appears above other elements */
+  }
+  
+  .search-results {
+    max-height: 200px; /* Limit the height */
+    overflow-y: auto; /* Add scroll if necessary */
+    margin-top: 10px; /* Space between search bar and results */
+  }
+  
+  .search-link {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .search-link:hover {
+    background-color: #f39c12;
+    color: #fff;
+  }
+
+  .top-bar .icons {
+      gap: 10px;
+  }
+
+  .search-bar input {
+      width: 100%;
+  }
+
+  .cart-dropdown {
+    background-color: #f8f9fa;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute; /* Position relative to the wrapper */
+    right: -20px; /* Align with the right edge */
+    top: 50px; /* Position below the button */
+    width: 350px; /* Position below the button */
+   /* Set a width for the dropdown */
+    z-index: 999;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .cart-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .cart-item-details h4 {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .cart-item-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-item-actions button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cart-item-trash {
+    color: #ff4d4d;
+    cursor: pointer;
+  }
+  
+  .cart-total {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .btn-primary-cart {
+    background-color: #f39c12;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .btn-cancel-cart {
+    background-color: #ddd;
+    color: #333;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .logo-container {
+    padding: 20px 0;
+  }
+  
+  .logo-container .brand img {
+    max-height: 60px;
+  }
+
+@media (min-width: 769px) {
+  .top-bar .icons {
+      gap: 20px;
+  }
+
+  .logo-container {
+      padding: 0;
+  }
+
+  .cart-dropdown {
+      width: 300px;
   }
 
   .cart-item {
-    flex-direction: row;
-    align-items: flex-start;
+      flex-direction: row;
+      justify-content: space-between;
   }
 
-  .cart-item-img {
-    width: 50px;
-    height: 50px;
-    margin-right: 28px;
+  .cart-item-details h4 {
+      font-size: 16px;
   }
 
-  .cart-item-details {
-    width: 100%;
-    margin-bottom: 5px;
+  .cart-item-details p {
+      font-size: 14px;
   }
 
-  .cart-item-actions {
-    width: 100%;
-    justify-content: space-between;
+  .cart-total h4 {
+      font-size: 18px;
+  }
+}
+
+@media (min-width: 769px) {
+  .navbar-collapse {
+      position: static;
+      transform: translateX(0);
+      height: auto;
+      background-color: transparent;
   }
 
-  .btn-primary-cart,
-  .btn-cancel-cart {
-    font-size: 12px;
-    padding: 6px;
+  /* Dölj "X"-knappen i desktop-vy */
+  .close-menu-btn {
+      display: none;
   }
 
-  .cart-content {
-    max-height: 250px;
+  /* Dölj mobil-logotypen på större skärmar */
+  .mobile-logo {
+      display: none;
   }
-
-  .cart-item-transperant button {
-    width: 20px;
-    margin-right: 10px;
+  .logo-container {
+    padding: 20px 0;
   }
-
-  .navbar-nav {
-    justify-content: center; /* Centrerar menyn horisontellt */
-    width: 100%;
-    text-align: center;
+  
+  .logo-container .brand img {
+    max-height: 120px;
   }
+  
 }
 
 

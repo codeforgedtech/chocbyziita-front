@@ -1,56 +1,99 @@
+/* CustomAllProducts.css */
 
-.custom-text{
-  font-size: 20px;
-}
-.custom-cart{
-  width: 100%;
-  height: auto;
-  background-color: #F5F5DC;
-  border-radius: 6px;
-
-}
-.custom-container{
-  max-width: 800px; /* Full bredd av viewport */
-  margin:auto;
-  padding: 0; /* Ta bort padding */
-justify-content: center;
-align-items: center;
-
-}
-.custom-padding{
-  margin-left:10px;
-}
-.card {
-  border: none; /* Ta bort kant för ett renare utseende */
-  background-color: #F5F5F4; /* Ljusare bakgrund */
-  border-radius: 10px;
-  height: 100%; /* Se till att korten tar upp hela höjden */
+/* För att centrera rubriken och ge unik stil */
+.custom-allproducts-container {
   display: flex;
   flex-direction: column;
-  width: 300px;
-}
-.pagination-container {
-  margin-top: 20px; /* Justera avståndet till övriga element */
-}
-.custom-padding-top{
-  padding-top:20px;
-}
-.pagination-button {
-  border-radius: 6px; /* Rundade hörn för knapparna */
-  padding: 5px 5px; /* Mer padding för större knappar */
-/* Smidig övergång för bakgrundsfärgen */
-background-color: #F5F5DC;
-margin-bottom: 10px;
-color:black;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.pagination-button:hover {
-  background-color: #4E342E; /* Ändra bakgrundsfärg vid hover */
-  color: white  ; /* Ändra textfärgen vid hover */
+/* Rubrikstil */
+.custom-allproducts-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
 }
 
-.pagination-text {
-  font-size: 1.2rem; /* Justera textstorleken */
-  font-weight: bold; /* Gör texten fetare */
-  margin: 0 15px; /* Marginaler för bättre avstånd */
+/* Grid layout för produkterna, centrera produkterna och lägg till mellanrum */
+.custom-allproducts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tre produkter per rad på stora skärmar */
+  gap: 20px;
+  justify-items: center; /* Centrera produkter */
+}
+
+/* För mindre skärmar (ex. tablets), två produkter per rad */
+@media (max-width: 768px) {
+  .custom-allproducts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* För mobiltelefoner, en produkt per rad */
+@media (max-width: 576px) {
+  .custom-allproducts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Stil för varje produktkort, för att centrera innehåll och lägga till skuggor */
+.custom-allproducts-card {
+  width: 100%;
+  max-width: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Bildstil för produkten */
+.custom-allproducts-card img {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Kortets innehåll */
+.custom-allproducts-card-body {
+  padding: 15px;
+}
+
+/* Textstil för produktnamn */
+.custom-allproducts-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Pris och lagerstatus */
+.custom-allproducts-price,
+.custom-allproducts-stock {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Stilkod för knappen */
+.custom-allproducts-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.custom-allproducts-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

@@ -1,92 +1,108 @@
 /* ------------------ ContactUs styles ------------------ */
 .contact-container {
-  max-width: 1300px; /* Max bredd */
-  margin: 10px auto; /* Centrera */
+  max-width: 90vw; /* Max width */
+  margin: 10px auto; /* Centered */
   padding: 20px; /* Padding */
-  background-color: #F5F5DC; /* Ljus bakgrundsfärg */
-  border-radius: 8px; /* Rundade hörn */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Skugga för djup */
+  background-color: #F5F5DC; /* Light background color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  display: flex; /* Flexbox for layout */
+  flex-direction: column; /* Column layout */
+  align-items: center; /* Center items */
 }
 
 .contact-image {
-  max-width: 600px; /* Sätt en fast bredd för bilden */
-  height: auto; /* Automatiskt höjd för att behålla proportioner */
+  max-width: 100%; /* Full width for responsive image */
+  height: auto; /* Maintain aspect ratio */
   border-radius: 5px;
+  margin-bottom: 20px; /* Space below image */
 }
 
 .contact-text {
-  flex: 1; /* Gör textavsnittet flexibelt */
+  flex: 1; /* Make text section flexible */
+  text-align: center; /* Center text */
 }
 
 .contact-container h2 {
-  text-align: left; /* Vänsterjustera rubriken */
+  text-align: center; /* Center align header */
   margin-bottom: 20px;
-  color: #5A5A5A; /* Mörkare textfärg för rubriker */
+  color: #5A5A5A; /* Darker text color for headings */
 }
 
 .contact-container form {
   display: flex;
-  flex-direction: column; /* Styla formens innehåll i kolumn */
-  align-items: flex-start; /* Vänsterjustera formulärinnehållet */
+  flex-direction: column; /* Column layout for form content */
+  align-items: stretch; /* Stretch items to full width */
+  width: 100%; /* Full width */
 }
 
 .contact-container input,
 .contact-container textarea {
-  width: 100%; /* Full bredd */
+  width: 100%; /* Full width */
   padding: 10px;
-  margin-bottom: 10px; /* Utrymme mellan input och knapp */
-  border: 1px solid #ced4da; /* Grå kant */
-  border-radius: 4px; /* Rundade hörn på input */
-  background-color: #F5F5F4; /* Ljus bakgrund för inputfält */
-  color: #3EA830; /* Textfärg för inputfält */
+  margin-bottom: 10px; /* Space between input and button */
+  border: 1px solid #ced4da; /* Gray border */
+  border-radius: 4px; /* Rounded corners on inputs */
+  background-color: #F5F5F4; /* Light background for input fields */
+  color: #3EA830; /* Text color for input fields */
 }
 
 .contact-container .btn {
-  width: 100%; /* Full bredd för knappen */
-  background-color: #7A5230; /* Bakgrundsfärg för knappen */
-  color: #F5F5DC; /* Textfärg för knappen */
-  border: none; /* Ingen kant */
-  border-radius: 4px; /* Rundade hörn */
+  width: 100%; /* Full width for button */
+  background-color: #7A5230; /* Button background color */
+  color: #F5F5DC; /* Button text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
   padding: 10px; /* Padding */
-  cursor: pointer; /* Handpekare vid hover */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Transition for hover effect */
 }
 
 .contact-container .btn:hover {
-  background-color: #5A5A5A; /* Mörkare färg vid hover */
+  background-color: #5A5A5A; /* Darker color on hover */
 }
 
 .success-message {
-  color: #3EA830; /* Grön färg för framgångsmeddelande */
-  text-align: left; /* Vänsterjustera meddelandet */
+  color: #3EA830; /* Green color for success message */
+  text-align: center; /* Center align message */
   margin-top: 10px;
 }
 
 .error-message {
-  color: #8B0000; /* Röd färg för felmeddelande */
-  text-align: left; /* Vänsterjustera meddelandet */
+  color: #8B0000; /* Red color for error message */
+  text-align: center; /* Center align message */
   margin-top: 10px;
 }
 
 .custom-contact {
   width: 60%;
   height: auto;
-  background-color: #F5F5F4; /* Ljus bakgrund för kontaktknappen */
+  background-color: #F5F5F4; /* Light background for contact button */
   border-radius: 6px;
   color: black;
-  border: 2px solid #7A5230; /* Mörk kant */
+  border: 2px solid #7A5230; /* Dark border */
   padding: 10px; /* Padding */
-  cursor: pointer; /* Handpekare */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s, border 0.3s, color 0.3s; /* Transition effects */
 }
 
 .custom-contact:hover {
-  background-color: #7A5230; /* Mörkare färg vid hover */
-  border: 2px solid #F5F5DC; /* Ljus kant vid hover */
-  color: #F5F5DC; /* Vit text vid hover */
+  background-color: #7A5230; /* Darker color on hover */
+  border: 2px solid #F5F5DC; /* Light border on hover */
+  color: #F5F5DC; /* White text on hover */
 }
 
-/* Responsivitet */
+/* Responsiveness */
 @media (max-width: 768px) {
   .contact-container {
-      flex-direction: column; /* Ställ in kolumnlayout för mobila enheter */
+    padding: 15px; /* Reduce padding for mobile */
+  }
+
+  .custom-contact {
+    width: 100%; /* Full width button on mobile */
+  }
+
+  .contact-container h2 {
+    font-size: 1.5rem; /* Slightly smaller header font */
   }
 }

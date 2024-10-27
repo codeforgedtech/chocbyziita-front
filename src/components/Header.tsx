@@ -5,9 +5,9 @@ import './Header.css';
 import { useNavigate } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegUser, FaSearch, FaRegHeart, FaShoppingBag, FaTrash } from "react-icons/fa";
-import logo from "../assets/Choc by Z.png";
+import logo from "../assets/Chocbyzbrown.svg";
 import { useEffect, useState } from 'react';
-import { Modal , ListGroup } from 'react-bootstrap';
+import { Modal, ListGroup } from 'react-bootstrap';
 
 interface Product {
   id: number;
@@ -24,11 +24,10 @@ export default function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);
-    const [isSearchOpen, setIsSearchOpen] = useState(false); // För att växla sökfältet
-    const [searchTerm, setSearchTerm] = useState(''); // För att hålla koll på söktermen
-    const [searchResults, setSearchResults] = useState<Product[]>([]); // Sökresultat
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState<Product[]>([]);
     const [showModal, setShowModal] = useState(false);
-    const [hasSearched, setHasSearched] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const navigate = useNavigate();
 
@@ -90,7 +89,7 @@ export default function Header() {
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
     };
-    
+
     const closeNav = () => {
         setIsNavOpen(false);
     };
@@ -120,29 +119,28 @@ export default function Header() {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
     const closeSearch = () => {
-        setIsSearchOpen(false); // Stänger sökfältet
+        setIsSearchOpen(false);
     };
-    // Hantera sökningen
+
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
-        setHasSearched(true); // Sätta hasSearched till true när en sökning görs
-    
+
         const { data: products, error } = await supabase
             .from('products')
             .select('*')
             .ilike('name', `%${searchTerm}%`);
-    
+
         if (error) {
             console.error('Error fetching products:', error.message);
         } else {
             setSearchResults(products as Product[]);
         }
     };
-    
 
     const toggleSearch = () => {
-        setIsSearchOpen(!isSearchOpen); // Visa eller göm sökfältet
+        setIsSearchOpen(!isSearchOpen);
     };
 
     return (
@@ -231,77 +229,81 @@ export default function Header() {
                 </div>
             </div>
 
-            <div className="logo-container">
+            <div className="logo-container text-center">
                 <Link className="brand" to="/">
-                    <img src={logo} alt="logotype" />
+                    <img src={logo} alt="logotype" className="img-fluid" />
                 </Link>
             </div>
 
             <nav className="navbar navbar-expand-lg navbar-light">
-    <div className="container d-flex justify-content-between align-items-center">
-        <button
-            className="navbar-toggler"
-            type="button"
-            onClick={toggleNav}
-            aria-controls="navbarNav"
-            aria-expanded={isNavOpen}
-            aria-label="Toggle navigation"
-        >
-            <span className="navbar-toggler-icon"></span>
-        </button>
-    </div>
+                <div className="container-fluid">
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        onClick={toggleNav}
+                        aria-controls="navbarNav"
+                        aria-expanded={isNavOpen}
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
 
-    <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
-        <ul className="navbar-nav   "> {/* Använd mx-auto för att centrera nav-elementen */}
-            <li className="nav-item">
-                <Link className="nav-link" to="/" onClick={closeNav}>Hem</Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/products" onClick={closeNav}>Produkter</Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/about" onClick={closeNav}>Om</Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/contact" onClick={closeNav}>Kontakt</Link>
-            </li>
-        </ul>
+                    <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
+                    <button className="close-menu-btn" onClick={closeNav}>×</button>
+                   
+                        <ul className="navbar-nav mx-auto">
+                        <div className="mobile-logo">
+        <img src={logo} alt="Logotype" className="mobile-logo-img" />
     </div>
-</nav>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/" onClick={closeNav}>Hem</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/products" onClick={closeNav}>Produkter</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/about" onClick={closeNav}>Om</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/contact" onClick={closeNav}>Kontakt</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
             {/* Sökfält som fälls ner */}
             {isSearchOpen && (
-    <div className={`search-bar ${isSearchOpen ? 'show' : ''}`}>
-        <form onSubmit={handleSearch}>
-            <input 
-                type="text"
-                className="form-control"
-                placeholder="Sök produkter..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="submit" className="btn btn-primary">Sök</button>
-        </form>
-        
-        {/* Visa sökresultat */}
-        <div className="search-results">
-    {hasSearched && searchResults.length === 0 ? (
-        <p>Inga produkter matchade din sökning.</p>
-    ) : (
-        <ListGroup>
-            {searchResults.map((product) => (
-                <ListGroup.Item key={product.id}>
-                    <Link to={`/product/${product.id}`} className="text-decoration-none search-link" onClick={closeSearch}>
-                        {product.name}
-                    </Link>
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
-    )}
-</div>
-    </div>
-   
-)}
+                <div className={`search-bar ${isSearchOpen ? 'show' : ''}`}>
+                    <form onSubmit={handleSearch}>
+                        <input 
+                            type="text"
+                            className="form-control"
+                            placeholder="Sök produkter..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button type="submit" className="btn btn-primary">Sök</button>
+                    </form>
+
+                    {/* Visa sökresultat */}
+                    <div className="search-results">
+                        {searchResults.length === 0 ? (
+                            <p>Inga produkter matchade din sökning.</p>
+                        ) : (
+                            <ListGroup>
+                                {searchResults.map((product) => (
+                                    <ListGroup.Item key={product.id}>
+                                        <Link to={`/product/${product.id}`} className="text-decoration-none search-link" onClick={closeSearch}>
+                                            {product.name}
+                                        </Link>
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* Modal för varning */}
             <Modal show={showModal} onHide={handleCloseModal}>
@@ -318,6 +320,7 @@ export default function Header() {
         </header>
     );
 }
+
 
 
 

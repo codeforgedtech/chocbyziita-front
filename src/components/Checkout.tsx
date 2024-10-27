@@ -3,12 +3,14 @@ import { useCart } from '../contexts/CartContext';
 import { supabase } from '../supabaseClient';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Checkout.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { FaUser, FaEnvelope, FaPhone, FaAddressCard, FaCreditCard } from 'react-icons/fa';
 import { Modal } from 'react-bootstrap';
+import ImageSlider from '../moduler/Slider';
+import ContactUs from '../moduler/ContactUs';
 
 interface FormData {
   firstName: string;
@@ -43,7 +45,7 @@ export default function Checkout() {
     email: '',
     postalCode: '',
     country: '',
-    shippingMethod: 'standard',
+    shippingMethod: 'express',
     cardNumber: '',
     cardExpiry: '',
     cardCvc: '',
@@ -51,9 +53,9 @@ export default function Checkout() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [shippingCost, setShippingCost] = useState(50);
+  const [shippingCost, setShippingCost] = useState(79);
   const [error, setError] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -204,7 +206,7 @@ export default function Checkout() {
     }));
 
     const totalAmount = totalPrice + shippingCost;
-    const grandTotal = parseFloat(calculateGrandTotal());
+    const grandTotal = parseFloat(calculateGrandTotal().toString());
 
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
@@ -282,10 +284,36 @@ export default function Checkout() {
   };
 
   return (
-    <div className="container-fluid checkout-container mt-5 p-4 border rounded bg-light shadow">
+    <><ImageSlider />
+    <div className="container-fluid checkout-container mt-5 p-4">
+
+
+      {/* Sammanfattning av varukorgen */}
+      <div className="cart-summary">
+        <h3>Produkter i Kassan</h3>
+        <ul className="list-group">
+          {cartItems.map((item) => (
+            <li key={item.product.id} className="list-group-item d-flex justify-content-between align-items-center">
+              <div className="product-item">
+                <img src={item.product.image_url && item.product.image_url.length > 0 ? item.product.image_url[0] : 'https://via.placeholder.com/150'} alt={item.product.name} className="img-fluid rounded shadow-sm" />
+                <div>
+                  <strong>{item.product.name}</strong>
+                  <div>{item.quantity} x {(item.product.price * (1 + item.product.tax)).toFixed(2)} kr</div>
+                </div>
+              </div>
+              {(item.quantity * item.product.price * (1 + item.product.tax)).toFixed(2)} kr
+            </li>
+          ))}
+        </ul>
+
+        <div className="total-section">
+          <div><strong>Fraktkostnad:</strong> {shippingCost} SEK</div>
+          <div><strong>Totalt:</strong> {calculateGrandTotal().toFixed(2)} SEK</div>
+        </div>
+      </div>
       <div className="checkout-form">
         <h3>Leveransinformation</h3>
-        <form onSubmit={(e) => { e.preventDefault(); handleCheckout(); }}>
+        <form onSubmit={(e) => { e.preventDefault(); handleCheckout(); } }>
           {/* Personlig information */}
           <div className="form-group">
             <label htmlFor="firstName"><FaUser /> Förnamn</label>
@@ -326,15 +354,29 @@ export default function Checkout() {
           <div className="form-group">
             <label>Fraktmetod</label>
             <div className="form-check">
-              <input className="form-check-input" type="radio" id="standard" name="shippingMethod" value="standard" checked={formData.shippingMethod === 'standard'} onChange={handleShippingChange} />
+              <input
+                className="form-check-input"
+                type="radio"
+                id="standard"
+                name="shippingMethod"
+                value="standard"
+                checked={formData.shippingMethod === 'standard'}
+                onChange={handleShippingChange} />
               <label className="form-check-label" htmlFor="standard">Standard (79 SEK)</label>
             </div>
             <div className="form-check">
-              <input className="form-check-input" type="radio" id="express" name="shippingMethod" value="express" checked={formData.shippingMethod === 'express'} onChange={handleShippingChange} />
+              <input
+                className="form-check-input"
+                type="radio"
+                id="express"
+                name="shippingMethod"
+                value="express"
+                checked={formData.shippingMethod === 'express'}
+                onChange={handleShippingChange} />
               <label className="form-check-label" htmlFor="express">Express (150 SEK)</label>
             </div>
+            {formData.shippingMethod === '' && <div className="text-danger">Vänligen välj en fraktmetod.</div>} {/* Optional error message */}
           </div>
-
           {/* Betalningsinformation */}
           <div className="form-group">
             <label htmlFor="cardNumber"><FaCreditCard /> Kortnummer</label>
@@ -366,31 +408,10 @@ export default function Checkout() {
         {/* Felmeddelande */}
         {error && <div className="alert alert-danger mt-3">{error}</div>}
       </div>
-
-      {/* Sammanfattning av varukorgen */}
-      <div className="cart-summary">
-        <h3>Produkter i Kassan</h3>
-        <ul className="list-group">
-          {cartItems.map((item) => (
-            <li key={item.product.id} className="list-group-item d-flex justify-content-between align-items-center">
-              <div className="product-item">
-                <img src={item.product.image_url && item.product.image_url.length > 0 ? item.product.image_url[0] : 'https://via.placeholder.com/150'} alt={item.product.name} className="img-fluid rounded shadow-sm" />
-                <div>
-                  <strong>{item.product.name}</strong>
-                  <div>{item.quantity} x {(item.product.price * (1 + item.product.tax)).toFixed(2)} kr</div>
-                </div>
-              </div>
-              {(item.quantity * item.product.price * (1 + item.product.tax)).toFixed(2)} kr
-            </li>
-          ))}
-        </ul>
-
-        <div className="total-section">
-          <div><strong>Fraktkostnad:</strong> {shippingCost} SEK</div>
-          <div><strong>Totalt:</strong> {calculateGrandTotal().toFixed(2)} SEK</div>
-        </div>
-      </div>
     </div>
+    <ContactUs/>
+    </>
+    
   );
 }
 
