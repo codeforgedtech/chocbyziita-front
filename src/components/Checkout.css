@@ -12,10 +12,10 @@
 /* Gör layouten responsiv och dela i två kolumner */
 .checkout-container {
   display: grid;
-  grid-template-columns: 1fr 1.5fr; /* Ändrad bredd för bättre balans */
+  grid-template-columns: 1.2fr 1.1fr; /* Ändrad bredd för bättre balans */
   gap: 40px;
   margin: 20px auto; /* Centrerar och ger utrymme ovan och under */
-  max-width: 90vw;
+  max-width: 70vw;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
@@ -32,8 +32,8 @@
 }
 
 .product-item img {
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   margin-right: 15px;
 }
@@ -45,6 +45,7 @@
 
 .checkout-form {
   background: var(--background-color);
+
 }
 
 .cart-summary {
@@ -99,6 +100,8 @@
     grid-template-columns: 1fr; /* Endast en kolumn på mindre skärmar */
     gap: 20px; /* Mindre avstånd mellan sektioner */
     padding: 10px;
+    max-width: 95vw;
+
   }
 
   .product-item {

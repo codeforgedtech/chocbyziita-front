@@ -1,33 +1,64 @@
 .container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 70vw; /* Maximal bredd på 70% av viewportens bredd */
+  margin: 0 auto; /* Centrera container */
+  padding: 20px; /* Padding för inre utrymme */
 }
 
+/* Rubriker */
 h1, h4 {
   color: #28a745; /* Grön färg */
 }
 
+/* Listor */
 .list-group-item {
   background-color: #e9f5ee; /* Ljusgrön bakgrund för att matcha den gröna färgen */
-  border: none;
+  border: none; /* Ingen kantlinje */
 }
 
+/* Framgångsmeddelanden */
 .alert-success {
   background-color: #d4edda; /* Mjuk grön bakgrund för framgångsmeddelande */
   border-color: #c3e6cb; /* Grönaktig kantfärg för alert */
   color: #155724; /* Mörkare grön textfärg */
 }
 
+/* Primära knappar */
 .btn-primary {
   background-color: #28a745; /* Använder samma gröna färg som rubriker */
-  border: none;
+  border: none; /* Ingen kantlinje */
   color: white; /* Vit text för bättre kontrast */
 }
 
+/* Hover-effekt för knappar */
 .btn-primary:hover {
   background-color: #218838; /* Lite mörkare grön på hover */
 }
+
+/* Responsiva justeringar */
+@media (max-width: 768px) {
+  .container {
+    max-width: 90vw; /* Öka max bredd för mobilvisning */
+    padding: 10px; /* Minska padding på mobil */
+  }
+
+  h1 {
+    font-size: 1.5em; /* Större rubrik på mobil */
+  }
+
+  h4 {
+    font-size: 1.2em; /* Större underrubrik på mobil */
+  }
+
+  .list-group-item {
+    font-size: 0.9em; /* Mindre text i listan på mobil */
+  }
+
+  .btn-primary {
+    width: 100%; /* Knappen tar hela bredden på mobil */
+    padding: 10px; /* Mer padding för knappen på mobil */
+  }
+}
+
 
 
   

@@ -1,8 +1,9 @@
 import React from 'react';
 import Slider from 'react-slick';
-import slide1 from "../assets/slid1.png";
-import slide2 from "../assets/slid2.png";
-import slide3 from "../assets/slid3.png";
+import slide1 from "../assets/hero.png";
+import slide2 from "../assets/hero2.png";
+import slide3 from "../assets/hero3.png";
+
 // Importera slick-carousel CSS-filer
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

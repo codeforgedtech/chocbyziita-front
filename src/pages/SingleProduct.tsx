@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { Product } from '../types';
@@ -96,7 +96,7 @@ export default function SingleProduct() {
           </div>
         </div>
 
-        <div className="col-md-6">
+        <div className="col-md-6 singel-product-header">
           <h1 className="single-product-title">{product.name}</h1>
           <p className="single-description" dangerouslySetInnerHTML={{ __html: product.description }} />
           <p className="single-ingredients"><strong>Ingredienser:</strong> {product.ingredients.join(', ')}</p>

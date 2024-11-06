@@ -19,7 +19,7 @@ export default function Products() {
 
   // Get the number of products to display based on screen width
   const getNumberOfProductsToShow = () => {
-    return window.innerWidth < 768 ? 2 : 6; // 2 för mobil, 6 för desktop
+    return window.innerWidth < 768 ? 2 : 4; // 2 för mobil, 6 för desktop
   };
 
   useEffect(() => {

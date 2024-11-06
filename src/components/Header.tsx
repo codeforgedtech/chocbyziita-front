@@ -194,11 +194,7 @@ export default function Header() {
                                     <div className="cart-content">
                                         {cartItems.map((item) => (
                                             <div key={item.product.id} className="cart-item">
-                                                <img
-                                                    src={item.product.image_url && item.product.image_url.length > 0 ? item.product.image_url[0] : 'https://via.placeholder.com/150'} 
-                                                    alt={item.product.name}
-                                                    className="cart-item-img"
-                                                />
+                                               
                                                 <div className="cart-item-details">
                                                     <h4>{item.product.name}</h4>
                                                     <p>{(item.product.price * (1 + (item.product.tax || 0))).toFixed(2)} kr</p> {/* Calculate with tax */}

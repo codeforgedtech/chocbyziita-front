@@ -48,6 +48,7 @@ const ContactUs: React.FC = () => {
           <input
             type="email"
             value={email}
+            size={(100)}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Din e-postadress"
             required

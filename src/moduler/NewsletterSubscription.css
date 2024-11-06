@@ -1,6 +1,6 @@
 /* NewsletterSubscription.css */
 .newsletter-container {
-    max-width: 1400px; /* Max bredd */
+    max-width:70vw; /* Max bredd */
     margin: 15px auto; /* Centrera */
     padding: 20px; /* Padding */
     background-color: #ffffff;

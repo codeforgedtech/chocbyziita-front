@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
 import './Footer.css'; // Se till att du har en CSS-fil för stilar
 

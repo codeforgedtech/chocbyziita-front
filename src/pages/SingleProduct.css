@@ -1,15 +1,30 @@
 /* Unika CSS-stilar för SingleProduct-komponenten */
 
+/* Global reset styles */
+body {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
 /* Container */
 .single-container {
-  max-width: 90vw;
-  padding: 20px 40px;
-  margin: 0 auto; /* Centrerar hela containern horisontellt */
+  max-width: 70vw;
+  padding: 0; /* Reset padding to remove extra space */
+  margin: 0 auto; /* Centrera hela containern horisontellt */
+   /* Example background color */
+}
+
+.singel-product-header {
+  margin: 10px 40px; /* Spacing between cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F4;
+  border-radius: 10px;
 }
 
 @media (max-width: 768px) {
   .single-container {
-    padding: 10px;
+    padding: 10px; /* Optional: Adjust for mobile if needed */
+    max-width: 95vw; /* Adjust for mobile if needed */
   }
 }
 
@@ -17,6 +32,7 @@
 .single-product-title {
   font-size: 2.5rem;
   margin-bottom: 20px;
+  padding: 10px;
 }
 
 @media (max-width: 768px) {
@@ -33,7 +49,7 @@
   border-radius: 8px;
   display: block;
   margin-left: auto;
-  margin-right: auto; /* Centrerar produktbilden */
+  margin-right: auto; /* Centrera produktbilden */
 }
 
 @media (max-width: 768px) {
@@ -45,7 +61,7 @@
 /* Miniatyrbilder - Justeringar */
 .single-thumbnail-container {
   display: flex;
-  justify-content: center; /* Centrerar miniatyrbilderna under huvudbilden */
+  justify-content: center; /* Centrera miniatyrbilderna under huvudbilden */
   gap: 10px; /* Lägger till mellanrum mellan miniatyrbilderna */
   margin-top: 10px; /* Lägger till lite utrymme över */
 }
@@ -64,14 +80,19 @@
     height: 70px; /* Minska storlek på mobil */
   }
 }
+
 .single-description {
   max-height: 200px; /* Maxhöjd för att begränsa höjden */
   overflow: hidden; /* Döljer överskjutande text */
   text-overflow: ellipsis; /* Visar tre punkter om texten är för lång */
   white-space: nowrap; /* Förhindrar att texten bryts till nästa rad */
-  padding: 0 20px; /* Se till att det finns lite inre avstånd */
+  padding: 0; /* Ta bort padding */
+  margin: 0; /* Ta bort eventuell marginal */
   box-sizing: border-box; /* Se till att padding ingår i totalhöjden */
-}
+  background-color: transparent; /* Se till att bakgrunden är transparent */
+}/* Se till att padding ingår i totalhöjden */
+
+
 /* Produktinformation */
 .single-ingredients,
 .single-categories,
@@ -90,7 +111,7 @@
     text-overflow: ellipsis; /* Visar tre punkter om texten är för lång */
     white-space: nowrap; /* Förhindrar att texten bryts till nästa rad */
     padding: 0 20px; /* Se till att det finns lite inre avstånd */
-    box-sizing: border-box; /* Se till att padding ingår i totalhöjden */
+    background-color: transparent; /* Se till att padding ingår i totalhöjden */
   }
   .single-ingredients,
   .single-categories,
@@ -168,6 +189,7 @@
   width: 100%; /* Gör korten 100% av kolumnens bredd */
   max-width: 100%; /* Se till att korten inte överskrider kolumnens bredd */
 }
+
 @media (min-width: 992px) { /* Desktop */
   .single-similar-products {
     grid-template-columns: repeat(4, 1fr);
@@ -182,6 +204,7 @@
     grid-template-columns: repeat(2, 1fr); /* Två kolumner på mobil */
   }
 }
+
 
 
 

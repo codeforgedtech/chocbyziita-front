@@ -1,8 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
-import slideParlin from "../assets/slidepralin .png";
-import slide2 from "../assets/slid2.png";
-import slide3 from "../assets/slid3.png";
+import slideParlin from "../assets/hero.png";
+
 // Importera slick-carousel CSS-filer
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -26,12 +25,7 @@ const ImageSlider: React.FC = () => {
           <img src={slideParlin} alt="Slide 1" />
 
         </div>
-        <div>
-          <img src={slide2} alt="Slide 2" />
-        </div>
-        <div>
-          <img src={slide3} alt="Slide 3" />
-        </div>
+        
       </Slider>
     </div>
   );
