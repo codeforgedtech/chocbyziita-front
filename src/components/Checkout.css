@@ -12,45 +12,44 @@
 /* Gör layouten responsiv och dela i två kolumner */
 .checkout-container {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* Produkterna till vänster (2/3), beställning till höger (1/3) */
+  grid-template-columns: 1.2fr 1.1fr; /* Ändrad bredd för bättre balans */
   gap: 40px;
-  margin-top: -20px;
-  max-width: 1275px;
+  margin: 20px auto; /* Centrerar och ger utrymme ovan och under */
+  max-width: 70vw;
+  padding: 20px;
   background-color: white;
+  border-radius: 10px;
  
-  
 }
 
-/* Använd flexbox för att placera produkter och summering */
+/* Flexbox för att placera produkter och summering */
 .product-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Justerar innehållet åt vänster */
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+
 }
 
 .product-item img {
-  width: 50px;
-  height: 50px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .checkout-form, .cart-summary {
   padding: 20px;
   border-radius: 8px;
-  
-
 }
 
 .checkout-form {
   background: var(--background-color);
- 
+
 }
 
 .cart-summary {
   background: var(--secondary-color);
-  
 }
 
 .cart-summary h5, .checkout-form h5 {
@@ -61,18 +60,24 @@
 .total-section {
   margin-top: 20px;
   color: var(--text-color); /* Mörkgrå färg */
+  font-weight: bold;
 }
 
 .checkout-button {
   background-color: var(--success-color);
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 25px;
   border-radius: 5px;
   width: 100%;
   text-align: center;
   margin-top: 20px;
   font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.checkout-button:hover {
+  background-color: #34a227; /* Lite mörkare nyans på hover */
 }
 
 .checkout-button:disabled {
@@ -93,7 +98,10 @@
 @media (max-width: 768px) {
   .checkout-container {
     grid-template-columns: 1fr; /* Endast en kolumn på mindre skärmar */
-    gap: 15px; /* Mindre avstånd mellan sektioner */
+    gap: 20px; /* Mindre avstånd mellan sektioner */
+    padding: 10px;
+    max-width: 95vw;
+
   }
 
   .product-item {
@@ -113,6 +121,7 @@
     margin-top: 15px; /* Mindre marginal överst för totalsumman */
   }
 }
+
 
 
 

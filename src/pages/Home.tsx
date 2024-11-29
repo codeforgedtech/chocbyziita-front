@@ -11,7 +11,7 @@ const Home: React.FC = () => {
       <ImageSlider />
       
       {/* Utvalda produkter */}
-      <section className="featured-products">
+      <section>
     
         <Products />
         <ContactUs />

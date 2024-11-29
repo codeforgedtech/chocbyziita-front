@@ -7,10 +7,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { FaUser, FaEnvelope, FaPhone, FaAddressCard, FaCreditCard } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaAddressCard } from 'react-icons/fa';
 import { Modal } from 'react-bootstrap';
 import ImageSlider from '../moduler/Slider';
 import ContactUs from '../moduler/ContactUs';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51QDOFnELhcEO3pbG3prZJ62svRAfSqpEYMmh0EdGsEmHEVrO6DZ2UXrkQSMIMWZQBOABfGN08V1vIKryG8qANYxs008R2yMI5w');
 
 interface FormData {
   firstName: string;
@@ -53,12 +57,13 @@ export default function Checkout() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [shippingCost, setShippingCost] = useState(79);
+  const [shippingCost, setShippingCost] = useState(150);
   const [error, setError] = useState<string | null>(null);
   const [, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -284,7 +289,8 @@ export default function Checkout() {
   };
 
   return (
-    <><ImageSlider />
+    <Elements stripe={stripePromise}>
+    <ImageSlider />
     <div className="container-fluid checkout-container mt-5 p-4">
 
 
@@ -317,37 +323,37 @@ export default function Checkout() {
           {/* Personlig information */}
           <div className="form-group">
             <label htmlFor="firstName"><FaUser /> Förnamn</label>
-            <input type="text" id="firstName" name="firstName" className="form-control" value={formData.firstName} onChange={handleChange} required />
+            <input type="text" id="firstName" name="firstName"  size={(100)} className="form-control" value={formData.firstName} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="lastName"><FaUser /> Efternamn</label>
-            <input type="text" id="lastName" name="lastName" className="form-control" value={formData.lastName} onChange={handleChange} required />
+            <input type="text" id="lastName" name="lastName"  size={(100)}className="form-control" value={formData.lastName} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="email"><FaEnvelope /> E-post</label>
-            <input type="email" id="email" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
+            <input type="email" id="email" name="email"size={100} className="form-control" value={formData.email} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="phoneNumber"><FaPhone /> Telefonnummer</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" className="form-control" value={formData.phoneNumber} onChange={handleChange} />
+            <input type="text" id="phoneNumber" name="phoneNumber"size={100} className="form-control" value={formData.phoneNumber} onChange={handleChange} />
           </div>
 
           {/* Adressinformation */}
           <div className="form-group">
             <label htmlFor="address"><FaAddressCard /> Adress</label>
-            <input type="text" id="address" name="address" className="form-control" value={formData.address} onChange={handleChange} required />
+            <input type="text" id="address" name="address" size={100}className="form-control" value={formData.address} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="city">Stad</label>
-            <input type="text" id="city" name="city" className="form-control" value={formData.city} onChange={handleChange} required />
+            <input type="text" id="city" name="city" size={100}className="form-control" value={formData.city} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="postalCode">Postnummer</label>
-            <input type="text" id="postalCode" name="postalCode" className="form-control" value={formData.postalCode} onChange={handleChange} required />
+            <input type="text" id="postalCode" name="postalCode"size={100} className="form-control" value={formData.postalCode} onChange={handleChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="country">Land</label>
-            <input type="text" id="country" name="country" className="form-control" value={formData.country} onChange={handleChange} required />
+            <input type="text" id="country" name="country" size={100}className="form-control" value={formData.country} onChange={handleChange} required />
           </div>
 
           {/* Fraktmetod */}
@@ -369,6 +375,7 @@ export default function Checkout() {
                 className="form-check-input"
                 type="radio"
                 id="express"
+                size={100}
                 name="shippingMethod"
                 value="express"
                 checked={formData.shippingMethod === 'express'}
@@ -377,20 +384,17 @@ export default function Checkout() {
             </div>
             {formData.shippingMethod === '' && <div className="text-danger">Vänligen välj en fraktmetod.</div>} {/* Optional error message */}
           </div>
-          {/* Betalningsinformation */}
-          <div className="form-group">
-            <label htmlFor="cardNumber"><FaCreditCard /> Kortnummer</label>
-            <input type="text" id="cardNumber" name="cardNumber" className="form-control" value={formData.cardNumber} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="cardExpiry">Utgångsdatum</label>
-            <input type="text" id="cardExpiry" name="cardExpiry" className="form-control" value={formData.cardExpiry} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="cardCvc">CVC</label>
-            <input type="text" id="cardCvc" name="cardCvc" className="form-control" value={formData.cardCvc} onChange={handleChange} required />
-          </div>
+          <CardElement options={{ hidePostalCode: true }} className="form-control my-3" />
+          
+  {/* Checkbox för nyhetsbrev */}
+ 
 
+            {/* Sekretesspolicy och Villkor */}
+            <div className="terms-text mt-4">
+              Genom att göra en beställning bekräftar du att du har läst och att du godkänner vår{" "}
+              <a href="/sekretesspolicy" target="_blank" rel="noopener noreferrer">Sekretesspolicy</a> och våra{" "}
+              <a href="/villkor" target="_blank" rel="noopener noreferrer">Villkor</a>.
+            </div>
           {/* Slutför köp-knappen */}
           <button type="submit" className="btn checkout-button" disabled={loading}>
             {loading ? 'Bearbetar...' : 'Slutför köp'}
@@ -409,8 +413,10 @@ export default function Checkout() {
         {error && <div className="alert alert-danger mt-3">{error}</div>}
       </div>
     </div>
+    
     <ContactUs/>
-    </>
+    
+    </Elements>
     
   );
 }

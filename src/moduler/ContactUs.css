@@ -1,6 +1,6 @@
 /* ------------------ ContactUs styles ------------------ */
 .contact-container {
-  max-width: 90vw; /* Max width */
+  max-width: 70vw; /* Max width */
   margin: 10px auto; /* Centered */
   padding: 20px; /* Padding */
   background-color: #F5F5DC; /* Light background color */
@@ -95,7 +95,8 @@
 /* Responsiveness */
 @media (max-width: 768px) {
   .contact-container {
-    padding: 15px; /* Reduce padding for mobile */
+    padding: 15px;
+    max-width: 95vw; /* Reduce padding for mobile */
   }
 
   .custom-contact {

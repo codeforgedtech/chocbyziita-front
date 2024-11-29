@@ -6,18 +6,20 @@ import './Products.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { Modal, Button } from 'react-bootstrap'; // Importera modal och knapp
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false); // State för modal
+  const [modalMessage, setModalMessage] = useState(''); // State för meddelande
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
   const { addToCart, cartItems } = useCart();
 
   // Get the number of products to display based on screen width
   const getNumberOfProductsToShow = () => {
-    return window.innerWidth < 768 ? 2 : 6; // 4 for mobile, 6 for desktop
+    return window.innerWidth < 768 ? 2 : 4; // 2 för mobil, 6 för desktop
   };
 
   useEffect(() => {
@@ -62,15 +64,6 @@ export default function Products() {
     return (price * (1 + taxRate)).toFixed(2);
   };
 
-  const showToast = (message: string) => {
-    setToastMessage(message);
-    const toastElement = document.getElementById('toast');
-    if (toastElement) {
-      const toast = new window.bootstrap.Toast(toastElement);
-      toast.show();
-    }
-  };
-
   const getCartItemQuantity = (productId: number) => {
     const cartItem = cartItems.find(item => item.product.id === productId);
     return cartItem ? cartItem.quantity : 0;
@@ -81,7 +74,7 @@ export default function Products() {
 
   return (
     <>
-      <h2 className="custom-padding-top">Dina produkter</h2>
+      <h2 className="custom-padding-top">Senaste produkterna</h2>
       <div className="custom-container"> {/* Använd anpassad container */}
 
         {products.map((product) => {
@@ -126,9 +119,11 @@ export default function Products() {
                     e.stopPropagation();
                     if (!isOutOfStock) {
                       addToCart(product, quantities[product.id]);
-                      showToast(`${product.name} har lagts till i kundvagnen.`);
+                      setModalMessage(`${product.name} har lagts till i kundvagnen.`);
+                      setShowModal(true); // Visa modalen
                     } else {
-                      showToast('Produkten är slut i lager.');
+                      setModalMessage('Produkten är slut i lager.');
+                      setShowModal(true); // Visa modalen
                     }
                   }}
                   disabled={isOutOfStock || isAddToCartDisabled} // Disable if out of stock or cart has max quantity
@@ -140,19 +135,23 @@ export default function Products() {
           );
         })}
 
-        {/* Toast notification */}
-        <div aria-live="polite" aria-atomic="true" className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 11 }}>
-          <div id="toast" className="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div className="d-flex">
-              <div className="toast-body">{toastMessage}</div>
-              <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-          </div>
-        </div>
+        {/* Modal för att visa meddelande om att produkten har lagts till */}
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{modalMessage}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Stäng
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );
 }
+
 
 
 

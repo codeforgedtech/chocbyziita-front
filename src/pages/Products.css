@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 0 10px;
-  min-width: 90vw;
+  min-width: 70vw;
   margin: 0 auto;
 }
 
@@ -21,6 +21,17 @@
     width: calc(100% - 10px); /* Four cards per row on desktop */
 
   }
+ 
+}
+@media (max-width: 768px) {
+  .custom-container {
+   
+    min-width: 100vw;
+   
+  }
+ 
+   
+  
 }
 @media (mox-width: 500px) {
   .card {

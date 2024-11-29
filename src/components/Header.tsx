@@ -15,6 +15,7 @@ interface Product {
   price: number;
   image_url: string;
   stock: number;
+  tax?: number; // Add tax property
 }
 
 export default function Header() {
@@ -94,11 +95,12 @@ export default function Header() {
         setIsNavOpen(false);
     };
 
+    // Update the total price calculation to include specific tax rates
     const getTotalPriceWithTax = () => {
-        const TAX_RATE = 0.25;
         return cartItems.reduce((total, item) => {
+            const productTaxRate = item.product.tax || 0; // Use the tax from product or default to 0
             const subtotal = item.product.price * item.quantity;
-            return total + subtotal * (1 + TAX_RATE);
+            return total + subtotal * (1 + productTaxRate); // Apply product-specific tax
         }, 0).toFixed(2);
     };
 
@@ -192,14 +194,10 @@ export default function Header() {
                                     <div className="cart-content">
                                         {cartItems.map((item) => (
                                             <div key={item.product.id} className="cart-item">
-                                                <img
-                                                    src={item.product.image_url && item.product.image_url.length > 0 ? item.product.image_url[0] : 'https://via.placeholder.com/150'} 
-                                                    alt={item.product.name}
-                                                    className="cart-item-img"
-                                                />
+                                               
                                                 <div className="cart-item-details">
                                                     <h4>{item.product.name}</h4>
-                                                    <p>{(item.product.price * 1.25).toFixed(2)} kr</p>
+                                                    <p>{(item.product.price * (1 + (item.product.tax || 0))).toFixed(2)} kr</p> {/* Calculate with tax */}
                                                     <p>Antal: {item.quantity}</p>
                                                 </div>
                                                 <div className='cart-item-actions'>
@@ -253,8 +251,8 @@ export default function Header() {
                    
                         <ul className="navbar-nav mx-auto">
                         <div className="mobile-logo">
-        <img src={logo} alt="Logotype" className="mobile-logo-img" />
-    </div>
+                            <img src={logo} alt="Logotype" className="mobile-logo-img" />
+                        </div>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/" onClick={closeNav}>Hem</Link>
                             </li>
@@ -320,6 +318,7 @@ export default function Header() {
         </header>
     );
 }
+
 
 
 
